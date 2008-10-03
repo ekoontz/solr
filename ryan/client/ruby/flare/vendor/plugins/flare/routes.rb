@@ -1,1 +1,0 @@
-connect '', :controller => "browse"
