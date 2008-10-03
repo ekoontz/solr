@@ -1,0 +1,16 @@
+== Welcome to Solr Flare
+
+Flare promises to expose the power of Solr through a Rails-based user interface. Integral to Flare will be general purpose faceted browsing, auto-suggest, folksonomy tagging/annotating, and much more.
+
+  Visit the Solr Flare wiki for more information: http://wiki.apache.org/solr/Flare
+
+== Getting started
+
+Launch Solr:
+
+  cd solr
+  java -jar start.jar
+
+Launch Rails:
+  script/server
+  
