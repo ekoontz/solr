@@ -571,7 +571,7 @@ public class NamedListCodec {
        throws IOException {
     final int end = start + length;
     for (int i = start; i < end; i++) {
-      final int code = (int)s.charAt(i);
+      final int code = s.charAt(i);
       if (code >= 0x01 && code <= 0x7F)
 	os.write(code);
       else if (((code >= 0x80) && (code <= 0x7FF)) || code == 0) {

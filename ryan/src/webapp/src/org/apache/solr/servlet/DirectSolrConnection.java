@@ -53,17 +53,6 @@ public class DirectSolrConnection
   final SolrRequestParsers parser;
   
   /**
-   * Initialize using the static singleton SolrCore.getSolrCore().
-   * 
-   * @deprecated use {@link #DirectSolrConnection(SolrCore)}
-   */
-  @Deprecated
-  public DirectSolrConnection()
-  {
-    this( SolrCore.getSolrCore() );
-  }
-
-  /**
    * Initialize using an explicit SolrCore
    */
   public DirectSolrConnection( SolrCore c )

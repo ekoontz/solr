@@ -364,6 +364,7 @@ public class CharArrayMap<V> extends AbstractMap<String, V>
       return old;
     }
 
+    @Override
     public String toString() {
       return getKey() + '=' + getValue();
     }
@@ -372,9 +373,11 @@ public class CharArrayMap<V> extends AbstractMap<String, V>
 
 
   private class EntrySet extends AbstractSet<Map.Entry<String, V>> {
+    @Override
     public EntryIterator iterator() {
       return new EntryIterator();
     }
+    @Override
     public boolean contains(Object o) {
       if (!(o instanceof Map.Entry))
         return false;
@@ -385,12 +388,15 @@ public class CharArrayMap<V> extends AbstractMap<String, V>
       Object v = get(key);
       return v==null ? val==null : v.equals(val);
     }
+    @Override
     public boolean remove(Object o) {
       throw new UnsupportedOperationException();
     }
+    @Override
     public int size() {
       return count;
     }
+    @Override
     public void clear() {
       CharArrayMap.this.clear();
     }

@@ -20,7 +20,6 @@ package org.apache.solr.analysis;
 import org.apache.lucene.analysis.ru.*;
 import java.util.Map;
 import java.util.HashMap;
-import org.apache.solr.core.SolrConfig;
 import org.apache.solr.common.SolrException;
 import org.apache.solr.common.SolrException.ErrorCode;
 public class RussianCommon {

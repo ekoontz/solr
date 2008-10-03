@@ -91,13 +91,14 @@ public abstract class AbstractSolrTestCase extends TestCase {
    * </ul>
    *
    */
+  @Override
   public void setUp() throws Exception {
     dataDir = new File(System.getProperty("java.io.tmpdir")
         + System.getProperty("file.separator")
         + getClass().getName() + "-" + System.currentTimeMillis());
     dataDir.mkdirs();
         
-    solrConfig = h.createConfig(getSolrConfigFile());
+    solrConfig = TestHarness.createConfig(getSolrConfigFile());
     h = new TestHarness( dataDir.getAbsolutePath(),
                     solrConfig,
                     getSchemaFile());
@@ -110,6 +111,7 @@ public abstract class AbstractSolrTestCase extends TestCase {
    * to delete dataDir, unless the system property "solr.test.leavedatadir"
    * is set.
    */
+  @Override
   public void tearDown() throws Exception {
     if (h != null) { h.close(); }
     String skip = System.getProperty("solr.test.leavedatadir");
@@ -202,13 +204,13 @@ public abstract class AbstractSolrTestCase extends TestCase {
    * @see TestHarness#optimize
    */
   public String optimize(String... args) {
-    return h.optimize();
+    return TestHarness.optimize();
   }
   /**
    * @see TestHarness#commit
    */
   public String commit(String... args) {
-    return h.commit();
+    return TestHarness.commit();
   }
 
   /**
@@ -258,7 +260,7 @@ public abstract class AbstractSolrTestCase extends TestCase {
    * @see TestHarness#deleteById
    */
   public String delI(String id) {
-    return h.deleteById(id);
+    return TestHarness.deleteById(id);
   }
   /**
    * Generates a &lt;delete&gt;... XML string for an query
@@ -266,7 +268,7 @@ public abstract class AbstractSolrTestCase extends TestCase {
    * @see TestHarness#deleteByQuery
    */
   public String delQ(String q) {
-    return h.deleteByQuery(q);
+    return TestHarness.deleteByQuery(q);
   }
   
   /**
@@ -277,7 +279,7 @@ public abstract class AbstractSolrTestCase extends TestCase {
    */
   public Doc doc(String... fieldsAndValues) {
     Doc d = new Doc();
-    d.xml = h.makeSimpleDoc(fieldsAndValues).toString();
+    d.xml = TestHarness.makeSimpleDoc(fieldsAndValues).toString();
     return d;
   }
 
@@ -308,6 +310,7 @@ public abstract class AbstractSolrTestCase extends TestCase {
   /** Neccessary to make method signatures un-ambiguous */
   public static class Doc {
     public String xml;
+    @Override
     public String toString() { return xml; }
   }
 

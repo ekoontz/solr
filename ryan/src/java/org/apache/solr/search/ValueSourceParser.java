@@ -65,26 +65,31 @@ public abstract class ValueSourceParser implements NamedListInitializedPlugin
   public static Map<String, ValueSourceParser> standardValueSourceParsers = new HashMap<String, ValueSourceParser>();
   static {
     standardValueSourceParsers.put("ord", new ValueSourceParser() {
+      @Override
       public ValueSource parse(FunctionQParser fp) throws ParseException {
         String field = fp.parseId();
         return new OrdFieldSource(field);
       }
 
+      @Override
       public void init(NamedList args) {
       }
       
     });
     standardValueSourceParsers.put("rord", new ValueSourceParser() {
+      @Override
       public ValueSource parse(FunctionQParser fp) throws ParseException {
         String field = fp.parseId();
         return new ReverseOrdFieldSource(field);
       }
 
+      @Override
       public void init(NamedList args) {
       }
       
     });
     standardValueSourceParsers.put("linear", new ValueSourceParser() {
+      @Override
       public ValueSource parse(FunctionQParser fp) throws ParseException {
         ValueSource source = fp.parseValueSource();
         float slope = fp.parseFloat();
@@ -92,22 +97,26 @@ public abstract class ValueSourceParser implements NamedListInitializedPlugin
         return new LinearFloatFunction(source,slope,intercept);
       }
 
+      @Override
       public void init(NamedList args) {
       }
       
     });
     standardValueSourceParsers.put("max", new ValueSourceParser() {
+      @Override
       public ValueSource parse(FunctionQParser fp) throws ParseException {
         ValueSource source = fp.parseValueSource();
         float val = fp.parseFloat();
         return new MaxFloatFunction(source,val);
       }
 
+      @Override
       public void init(NamedList args) {
       }
       
     });
     standardValueSourceParsers.put("recip", new ValueSourceParser() {
+      @Override
       public ValueSource parse(FunctionQParser fp) throws ParseException {
         ValueSource source = fp.parseValueSource();
         float m = fp.parseFloat();
@@ -116,11 +125,13 @@ public abstract class ValueSourceParser implements NamedListInitializedPlugin
         return new ReciprocalFloatFunction(source,m,a,b);
       }
 
+      @Override
       public void init(NamedList args) {
       }
       
     });
     standardValueSourceParsers.put("scale", new ValueSourceParser() {
+      @Override
       public ValueSource parse(FunctionQParser fp) throws ParseException {
         ValueSource source = fp.parseValueSource();
         float min = fp.parseFloat();
@@ -128,33 +139,39 @@ public abstract class ValueSourceParser implements NamedListInitializedPlugin
         return new ScaleFloatFunction(source,min,max);
       }
 
+      @Override
       public void init(NamedList args) {
       }
       
     });
     standardValueSourceParsers.put("pow", new ValueSourceParser() {
+      @Override
       public ValueSource parse(FunctionQParser fp) throws ParseException {
         ValueSource a = fp.parseValueSource();
         ValueSource b = fp.parseValueSource();
         return new PowFloatFunction(a,b);
       }
 
+      @Override
       public void init(NamedList args) {
       }
       
     });
     standardValueSourceParsers.put("div", new ValueSourceParser() {
+      @Override
       public ValueSource parse(FunctionQParser fp) throws ParseException {
         ValueSource a = fp.parseValueSource();
         ValueSource b = fp.parseValueSource();
         return new DivFloatFunction(a,b);
       }
 
+      @Override
       public void init(NamedList args) {
       }
       
     });
     standardValueSourceParsers.put("map", new ValueSourceParser() {
+      @Override
       public ValueSource parse(FunctionQParser fp) throws ParseException {
         ValueSource source = fp.parseValueSource();
         float min = fp.parseFloat();
@@ -163,81 +180,99 @@ public abstract class ValueSourceParser implements NamedListInitializedPlugin
         return new RangeMapFloatFunction(source,min,max,target);
       }
 
+      @Override
       public void init(NamedList args) {
       }
       
     });
     standardValueSourceParsers.put("sqrt", new ValueSourceParser() {
+      @Override
       public ValueSource parse(FunctionQParser fp) throws ParseException {
         ValueSource source = fp.parseValueSource();
         return new SimpleFloatFunction(source) {
+          @Override
           protected String name() {
             return "sqrt";
           }
+          @Override
           protected float func(int doc, DocValues vals) {
             return (float)Math.sqrt(vals.floatVal(doc));
           }
         };
       }
+      @Override
       public void init(NamedList args) {
       }
     });
     standardValueSourceParsers.put("log", new ValueSourceParser() {
+      @Override
       public ValueSource parse(FunctionQParser fp) throws ParseException {
         ValueSource source = fp.parseValueSource();
         return new SimpleFloatFunction(source) {
+          @Override
           protected String name() {
             return "log";
           }
+          @Override
           protected float func(int doc, DocValues vals) {
             return (float)Math.log10(vals.floatVal(doc));
           }
         };
       }
 
+      @Override
       public void init(NamedList args) {
       }
       
     });
     standardValueSourceParsers.put("abs", new ValueSourceParser() {
+      @Override
       public ValueSource parse(FunctionQParser fp) throws ParseException {
         ValueSource source = fp.parseValueSource();
         return new SimpleFloatFunction(source) {
+          @Override
           protected String name() {
             return "abs";
           }
+          @Override
           protected float func(int doc, DocValues vals) {
-            return (float)Math.abs(vals.floatVal(doc));
+            return Math.abs(vals.floatVal(doc));
           }
         };
       }
 
+      @Override
       public void init(NamedList args) {
       }
       
     });
     standardValueSourceParsers.put("sum", new ValueSourceParser() {
+      @Override
       public ValueSource parse(FunctionQParser fp) throws ParseException {
         List<ValueSource> sources = fp.parseValueSourceList();
         return new SumFloatFunction(sources.toArray(new ValueSource[sources.size()]));
       }
 
+      @Override
       public void init(NamedList args) {
       }
       
     });
     standardValueSourceParsers.put("product", new ValueSourceParser() {
+      @Override
       public ValueSource parse(FunctionQParser fp) throws ParseException {
         List<ValueSource> sources = fp.parseValueSourceList();
         return new ProductFloatFunction(sources.toArray(new ValueSource[sources.size()]));
       }
 
+      @Override
       public void init(NamedList args) {
       }
       
     });
     standardValueSourceParsers.put("query", new ValueSourceParser() {
       // boost(query($q),rating)
+      @Override
       public ValueSource parse(FunctionQParser fp) throws ParseException {
         Query q = fp.parseNestedQuery();
         float defVal = 0.0f;
@@ -247,11 +282,13 @@ public abstract class ValueSourceParser implements NamedListInitializedPlugin
         return new QueryValueSource(q, defVal);
       }
 
+      @Override
       public void init(NamedList args) {
       }
       
     });
     standardValueSourceParsers.put("boost", new ValueSourceParser() {
+      @Override
       public ValueSource parse(FunctionQParser fp) throws ParseException {
         Query q = fp.parseNestedQuery();
         ValueSource vs = fp.parseValueSource();
@@ -259,6 +296,7 @@ public abstract class ValueSourceParser implements NamedListInitializedPlugin
         return new QueryValueSource(bq, 0.0f);
       }
 
+      @Override
       public void init(NamedList args) {
       }
       

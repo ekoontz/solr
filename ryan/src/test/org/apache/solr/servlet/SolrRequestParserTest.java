@@ -40,11 +40,14 @@ import org.apache.solr.util.AbstractSolrTestCase;
 
 public class SolrRequestParserTest extends AbstractSolrTestCase {
 
+  @Override
   public String getSchemaFile() { return "schema.xml"; } 
+  @Override
   public String getSolrConfigFile() { return "solrconfig.xml"; } 
   
   SolrRequestParsers parser;
 
+  @Override
   public void setUp() throws Exception {
     super.setUp();
     parser = new SolrRequestParsers( h.getCore().getSolrConfig() );

@@ -25,16 +25,8 @@ import org.apache.lucene.analysis.StopFilter;
 import org.apache.lucene.analysis.fr.*;
 import java.io.IOException;
 import java.util.Set;
-import java.util.HashSet;
-import java.util.Arrays;
-import java.util.Iterator;
-import org.apache.lucene.analysis.Token;
 import org.apache.lucene.analysis.TokenStream;
-import org.apache.lucene.analysis.TokenFilter;
-import java.util.Map;
 import java.util.List;
-import java.util.Set;
-import java.io.IOException;
 
 public class ElisionFilterFactory extends BaseTokenFilterFactory implements ResourceLoaderAware {
 
@@ -46,7 +38,7 @@ public class ElisionFilterFactory extends BaseTokenFilterFactory implements Reso
     if (articlesFile != null) {
       try {
         List<String> wlist = loader.getLines(articlesFile);
-        articles = StopFilter.makeStopSet((String[])wlist.toArray(new String[0]), false);
+        articles = StopFilter.makeStopSet(wlist.toArray(new String[0]), false);
       } catch (IOException e) {
         throw new RuntimeException(e);
       }

@@ -84,7 +84,7 @@ public class SolrDeletionPolicy implements IndexDeletionPolicy, NamedListInitial
    */
   public void onInit(List commits) throws IOException {
     log.info("SolrDeletionPolicy.onInit: commits:" + str(commits));
-    updateCommits((List<IndexCommit>) commits);
+    updateCommits(commits);
   }
 
   /**
@@ -92,7 +92,7 @@ public class SolrDeletionPolicy implements IndexDeletionPolicy, NamedListInitial
    */
   public void onCommit(List commits) throws IOException {
     log.info("SolrDeletionPolicy.onCommit: commits:" + str(commits));
-    updateCommits((List<IndexCommit>) commits);
+    updateCommits(commits);
   }
 
 

@@ -19,13 +19,8 @@ package org.apache.solr.handler;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.io.Writer;
-import java.io.File;
-import java.util.HashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javanet.staxutils.BaseXMLInputFactory;
 
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLInputFactory;
@@ -37,16 +32,12 @@ import javax.xml.transform.TransformerConfigurationException;
 import org.apache.commons.io.IOUtils;
 import org.apache.solr.common.SolrException;
 import org.apache.solr.common.SolrInputDocument;
-import org.apache.solr.common.params.MapSolrParams;
 import org.apache.solr.common.params.SolrParams;
 import org.apache.solr.common.params.UpdateParams;
 import org.apache.solr.common.util.ContentStream;
 import org.apache.solr.common.util.NamedList;
 import org.apache.solr.common.util.StrUtils;
-import org.apache.solr.common.util.XML;
-import org.apache.solr.core.SolrCore;
 import org.apache.solr.request.SolrQueryRequest;
-import org.apache.solr.request.SolrQueryRequestBase;
 import org.apache.solr.request.SolrQueryResponse;
 import org.apache.solr.update.AddUpdateCommand;
 import org.apache.solr.update.CommitUpdateCommand;
@@ -72,9 +63,6 @@ public class XmlUpdateRequestHandler extends RequestHandlerBase
   public static final String WAIT_FLUSH = "waitFlush";
   
   public static final String OVERWRITE = "overwrite";
-  public static final String OVERWRITE_COMMITTED = "overwriteCommitted"; // @Deprecated
-  public static final String OVERWRITE_PENDING = "overwritePending";  // @Deprecated
-  public static final String ALLOW_DUPS = "allowDups"; 
 
   XMLInputFactory inputFactory;
 
@@ -84,7 +72,7 @@ public class XmlUpdateRequestHandler extends RequestHandlerBase
   {
     super.init(args);
     
-    inputFactory = BaseXMLInputFactory.newInstance();
+    inputFactory = XMLInputFactory.newInstance();
     try {
       // The java 1.6 bundled stax parser (sjsxp) does not currently have a thread-safe
       // XMLInputFactory, as that implementation tries to cache and reuse the
@@ -158,37 +146,17 @@ public class XmlUpdateRequestHandler extends RequestHandlerBase
             log.trace("SolrCore.update(add)");
             
             addCmd = new AddUpdateCommand();
-            boolean overwrite=true;  // the default
+            addCmd.allowDups = false;
 
-            Boolean overwritePending = null;
-            Boolean overwriteCommitted = null;
             for (int i=0; i<parser.getAttributeCount(); i++) {
               String attrName = parser.getAttributeLocalName(i);
               String attrVal = parser.getAttributeValue(i);
               if (OVERWRITE.equals(attrName)) {
-                overwrite = StrUtils.parseBoolean(attrVal);
-              } else if (ALLOW_DUPS.equals(attrName)) {
-                overwrite = !StrUtils.parseBoolean(attrVal);
-              } else if ( OVERWRITE_PENDING.equals(attrName) ) {
-                overwritePending = StrUtils.parseBoolean(attrVal);
-              } else if ( OVERWRITE_COMMITTED.equals(attrName) ) {
-                overwriteCommitted = StrUtils.parseBoolean(attrVal);
+                addCmd.allowDups = !StrUtils.parseBoolean(attrVal);
               } else {
                 log.warn("Unknown attribute id in add:" + attrName);
               }
             }
-            
-            // check if these flags are set
-            if( overwritePending != null && overwriteCommitted != null ) {
-              if( overwritePending != overwriteCommitted ) {
-                throw new SolrException( SolrException.ErrorCode.BAD_REQUEST, 
-                    "can't have different values for 'overwritePending' and 'overwriteCommitted'" );
-              }
-              overwrite=overwritePending;
-            }
-            addCmd.overwriteCommitted =  overwrite;
-            addCmd.overwritePending   =  overwrite;
-            addCmd.allowDups          = !overwrite;
           } 
           else if ("doc".equals(currTag)) {
             log.trace("adding doc...");
@@ -364,43 +332,6 @@ public class XmlUpdateRequestHandler extends RequestHandlerBase
           }
         }
         break;
-      }
-    }
-  }
-
-  /**
-   * A Convenience method for getting back a simple XML string indicating
-   * success or failure from an XML formated Update (from the Reader)
-   * 
-   * @since solr 1.2
-   * 
-   * @deprecated Use
-   *             {@link #processUpdate(UpdateRequestProcessor, XMLStreamReader)}
-   *             instead.
-   */
-  @Deprecated
-  public void doLegacyUpdate(Reader input, Writer output) {
-    try {
-      SolrCore core = SolrCore.getSolrCore();
-
-      // Old style requests do not choose a custom handler
-      UpdateRequestProcessorChain processorFactory = core.getUpdateProcessingChain( null );
-      
-      SolrParams params = new MapSolrParams( new HashMap<String, String>() );
-      SolrQueryRequestBase req = new SolrQueryRequestBase( core, params ) {};
-      SolrQueryResponse rsp = new SolrQueryResponse(); // ignored
-      XMLStreamReader parser = inputFactory.createXMLStreamReader(input);
-      UpdateRequestProcessor processor = processorFactory.createProcessor(req, rsp);
-      this.processUpdate( processor, parser );
-      processor.finish();
-      output.write("<result status=\"0\"></result>");
-    } 
-    catch (Exception ex) {
-      try {
-        SolrException.logOnce(log, "Error processing \"legacy\" update command", ex);
-        XML.writeXML(output, "result", SolrException.toStr(ex), "status", "1");
-      } catch (Exception ee) {
-        log.error("Error writing to output stream: " + ee);
       }
     }
   }

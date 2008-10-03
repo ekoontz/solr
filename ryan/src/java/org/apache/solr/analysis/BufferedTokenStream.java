@@ -74,6 +74,7 @@ public abstract class BufferedTokenStream extends TokenStream {
    */
   protected abstract Token process(Token t) throws IOException;
 
+  @Override
   public final Token next() throws IOException {
     while (true) {
       if (!outQueue.isEmpty()) return outQueue.removeFirst();

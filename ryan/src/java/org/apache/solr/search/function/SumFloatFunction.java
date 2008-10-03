@@ -35,6 +35,7 @@ public class SumFloatFunction extends MultiFloatFunction {
     return "sum";
   }
 
+  @Override
   protected float func(int doc, DocValues[] valsArr) {
     float val = 0.0f;
     for (DocValues vals : valsArr) {
@@ -55,6 +56,7 @@ abstract class MultiFloatFunction extends ValueSource {
   abstract protected String name();
   abstract protected float func(int doc, DocValues[] valsArr);
 
+  @Override
   public String description() {
     StringBuilder sb = new StringBuilder();
     sb.append(name()+'(');
@@ -71,6 +73,7 @@ abstract class MultiFloatFunction extends ValueSource {
     return sb.toString();
   }
 
+  @Override
   public DocValues getValues(IndexReader reader) throws IOException {
     final DocValues[] valsArr = new DocValues[sources.length];
     for (int i=0; i<sources.length; i++) {
@@ -78,21 +81,27 @@ abstract class MultiFloatFunction extends ValueSource {
     }
 
     return new DocValues() {
+      @Override
       public float floatVal(int doc) {
         return func(doc, valsArr);
       }
+      @Override
       public int intVal(int doc) {
         return (int)floatVal(doc);
       }
+      @Override
       public long longVal(int doc) {
         return (long)floatVal(doc);
       }
+      @Override
       public double doubleVal(int doc) {
-        return (double)floatVal(doc);
+        return floatVal(doc);
       }
+      @Override
       public String strVal(int doc) {
         return Float.toString(floatVal(doc));
       }
+      @Override
       public String toString(int doc) {
         StringBuilder sb = new StringBuilder();
         sb.append(name()+'(');
@@ -111,10 +120,12 @@ abstract class MultiFloatFunction extends ValueSource {
     };
   }
 
+  @Override
   public int hashCode() {
     return Arrays.hashCode(sources) + name().hashCode();
   }
 
+  @Override
   public boolean equals(Object o) {
     if (this.getClass() != o.getClass()) return false;
     MultiFloatFunction other = (MultiFloatFunction)o;

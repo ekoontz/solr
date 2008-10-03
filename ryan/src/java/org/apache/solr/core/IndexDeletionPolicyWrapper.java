@@ -92,44 +92,54 @@ public class IndexDeletionPolicyWrapper implements IndexDeletionPolicy {
       this.delegate = delegate;
     }
 
+    @Override
     public String getSegmentsFileName() {
       return delegate.getSegmentsFileName();
     }
 
+    @Override
     public Collection getFileNames() throws IOException {
       return delegate.getFileNames();
     }
 
+    @Override
     public Directory getDirectory() {
       return delegate.getDirectory();
     }
 
+    @Override
     public void delete() {
       Long reserve = reserves.get(delegate.getVersion());
       if (reserve != null && System.currentTimeMillis() < reserve) return;
       delegate.delete();
     }
 
+    @Override
     public boolean isOptimized() {
       return delegate.isOptimized();
     }
 
+    @Override
     public boolean equals(Object o) {
       return delegate.equals(o);
     }
 
+    @Override
     public int hashCode() {
       return delegate.hashCode();
     }
 
+    @Override
     public long getVersion() {
       return delegate.getVersion();
     }
 
+    @Override
     public long getGeneration() {
       return delegate.getGeneration();
     }
 
+    @Override
     public boolean isDeleted() {
       return delegate.isDeleted();
     }

@@ -145,6 +145,7 @@ public interface FacetParams {
    */
   public enum FacetDateOther {
     BEFORE, AFTER, BETWEEN, ALL, NONE;
+    @Override
     public String toString() { return super.toString().toLowerCase(); }
     public static FacetDateOther get(String label) {
       try {

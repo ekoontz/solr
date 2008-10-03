@@ -41,18 +41,22 @@ public class QueryValueSource extends ValueSource {
   public Query getQuery() { return q; }
   public float getDefaultValue() { return defVal; }
 
+  @Override
   public String description() {
     return "query(" + q + ",def=" + defVal + ")";
   }
 
+  @Override
   public DocValues getValues(IndexReader reader) throws IOException {
     return new QueryDocValues(reader, q, defVal);
   }
 
+  @Override
   public int hashCode() {
     return q.hashCode() * 29;
   }
 
+  @Override
   public boolean equals(Object o) {
     if (QueryValueSource.class != o.getClass()) return false;
     QueryValueSource other = (QueryValueSource)o;
@@ -83,6 +87,7 @@ class QueryDocValues extends DocValues {
     weight = q.weight(searcher);
   }
 
+  @Override
   public float floatVal(int doc) {
     try {
       if (doc < lastDocRequested) {
@@ -121,18 +126,23 @@ class QueryDocValues extends DocValues {
     }
   }
   
+  @Override
   public int intVal(int doc) {
     return (int)floatVal(doc);
   }
+  @Override
   public long longVal(int doc) {
     return (long)floatVal(doc);
   }
+  @Override
   public double doubleVal(int doc) {
-    return (double)floatVal(doc);
+    return floatVal(doc);
   }
+  @Override
   public String strVal(int doc) {
     return Float.toString(floatVal(doc));
   }
+  @Override
   public String toString(int doc) {
     return "query(" + q + ",def=" + defVal + ")=" + floatVal(doc);
   }

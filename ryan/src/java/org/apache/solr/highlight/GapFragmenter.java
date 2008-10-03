@@ -87,6 +87,7 @@ class LuceneGapFragmenter extends SimpleFragmenter {
   /* (non-Javadoc)
    * @see org.apache.lucene.search.highlight.TextFragmenter#start(java.lang.String)
    */
+  @Override
   public void start(String originalText) {
     fragOffsetAccum = 0;
   }
@@ -94,6 +95,7 @@ class LuceneGapFragmenter extends SimpleFragmenter {
   /* (non-Javadoc)
    * @see org.apache.lucene.search.highlight.TextFragmenter#isNewFragment(org.apache.lucene.analysis.Token)
    */
+  @Override
   public boolean isNewFragment(Token token) {
     boolean isNewFrag = 
       token.endOffset() >= fragOffsetAccum + getFragmentSize() ||

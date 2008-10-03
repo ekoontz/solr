@@ -17,24 +17,11 @@
 
 package org.apache.solr.search.function;
 
-import org.apache.lucene.analysis.ngram.EdgeNGramTokenFilter;
-import org.apache.lucene.queryParser.ParseException;
-import org.apache.lucene.search.Query;
-import org.apache.solr.search.ValueSourceParser;
-import org.apache.solr.search.FunctionQParser;
-import org.apache.solr.search.function.DocValues;
-import org.apache.solr.search.function.QueryValueSource;
-import org.apache.solr.search.function.SimpleFloatFunction;
-import org.apache.solr.search.function.ValueSource;
 import org.apache.solr.util.AbstractSolrTestCase;
-import org.apache.solr.common.util.NamedList;
-import org.apache.solr.core.SolrCore;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Arrays;
-import java.io.File;
 import java.io.Writer;
 import java.io.OutputStreamWriter;
 import java.io.FileOutputStream;
@@ -45,15 +32,19 @@ import java.io.FileOutputStream;
  */
 public class TestFunctionQuery extends AbstractSolrTestCase {
 
+  @Override
   public String getSchemaFile() { return "schema11.xml"; }
+  @Override
   public String getSolrConfigFile() { return "solrconfig-functionquery.xml"; }
   public String getCoreName() { return "basic"; }
 
+  @Override
   public void setUp() throws Exception {
     // if you override setUp or tearDown, you better call
     // the super classes version
     super.setUp();
   }
+  @Override
   public void tearDown() throws Exception {
     // if you override setUp or tearDown, you better call
     // the super classes version

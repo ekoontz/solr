@@ -40,8 +40,6 @@ public class AddUpdateCommand extends UpdateCommand {
    public SolrInputDocument solrDoc;
 
    public boolean allowDups;
-   public boolean overwritePending;
-   public boolean overwriteCommitted;
 
    /** Reset state to reuse this object with a different document in the same request */
    public void clear() {
@@ -110,8 +108,6 @@ public class AddUpdateCommand extends UpdateCommand {
      sb.append(':');
      if (indexedId !=null) sb.append("id=").append(indexedId);
      sb.append(",allowDups=").append(allowDups);
-     sb.append(",overwritePending=").append(overwritePending);
-     sb.append(",overwriteCommitted=").append(overwriteCommitted);
      return sb.toString();
    }
  }

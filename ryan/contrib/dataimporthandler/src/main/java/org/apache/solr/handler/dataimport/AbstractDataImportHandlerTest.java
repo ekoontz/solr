@@ -86,56 +86,69 @@ public abstract class AbstractDataImportHandlerTest extends
             parentDataSource, currProcess, Collections.EMPTY_MAP,
             new HashMap<String, Object>(), null, null);
     return new Context() {
+      @Override
       public String getEntityAttribute(String name) {
         return entityAttrs == null ? delegate.getEntityAttribute(name)
                 : entityAttrs.get(name);
       }
 
+      @Override
       public List<Map<String, String>> getAllEntityFields() {
         return entityFields == null ? delegate.getAllEntityFields()
                 : entityFields;
       }
 
+      @Override
       public VariableResolver getVariableResolver() {
         return delegate.getVariableResolver();
       }
 
+      @Override
       public DataSource getDataSource() {
         return delegate.getDataSource();
       }
 
+      @Override
       public boolean isRootEntity() {
         return false;
       }
 
+      @Override
       public int currentProcess() {
         return delegate.currentProcess();
       }
 
+      @Override
       public Map<String, Object> getRequestParameters() {
         return delegate.getRequestParameters();
       }
 
+      @Override
       public EntityProcessor getEntityProcessor() {
         return null;
       }
 
+      @Override
       public void setSessionAttribute(String name, Object val, String scope) {
         delegate.setSessionAttribute(name, val, scope);
       }
 
+      @Override
       public Object getSessionAttribute(String name, String scope) {
         return delegate.getSessionAttribute(name, scope);
       }
 
+      @Override
       public Context getParentContext() {
         return delegate.getParentContext();
       }
 
+      @Override
       public DataSource getDataSource(String name) {
         return delegate.getDataSource(name);
       }
 
+      @Override
       public SolrCore getSolrCore() {
         return delegate.getSolrCore();
       }

@@ -46,8 +46,10 @@ public class FieldQParserPlugin extends QParserPlugin {
   public void init(NamedList args) {
   }
 
+  @Override
   public QParser createParser(String qstr, SolrParams localParams, SolrParams params, SolrQueryRequest req) {
     return new QParser(qstr, localParams, params, req) {
+      @Override
       public Query parse() throws ParseException {
         String field = localParams.get(QueryParsing.F);
         String queryText = localParams.get(QueryParsing.V);
@@ -104,7 +106,7 @@ public class FieldQParserPlugin extends QParserPlugin {
               // no phrase query:
               BooleanQuery q = new BooleanQuery(true);
               for (int i = 0; i < lst.size(); i++) {
-                t = (org.apache.lucene.analysis.Token) lst.get(i);
+                t = lst.get(i);
                 TermQuery currentQuery = new TermQuery(
                         new Term(field, new String(t.termBuffer(), 0, t.termLength())));
                 q.add(currentQuery, BooleanClause.Occur.SHOULD);
@@ -117,7 +119,7 @@ public class FieldQParserPlugin extends QParserPlugin {
               mpq.setSlop(phraseSlop);
               ArrayList multiTerms = new ArrayList();
               for (int i = 0; i < lst.size(); i++) {
-                t = (org.apache.lucene.analysis.Token) lst.get(i);
+                t = lst.get(i);
                 if (t.getPositionIncrement() == 1 && multiTerms.size() > 0) {
                   mpq.add((Term[])multiTerms.toArray(new Term[0]));
                   multiTerms.clear();

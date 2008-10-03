@@ -33,38 +33,48 @@ import java.io.IOException;
   protected abstract String name();
   protected abstract float func(int doc, DocValues vals);
 
+  @Override
   public String description() {
     return name() + '(' + source.description() + ')';
   }
 
+  @Override
   public DocValues getValues(IndexReader reader) throws IOException {
     final DocValues vals =  source.getValues(reader);
     return new DocValues() {
+      @Override
       public float floatVal(int doc) {
 	return func(doc, vals);
       }
+      @Override
       public int intVal(int doc) {
         return (int)floatVal(doc);
       }
+      @Override
       public long longVal(int doc) {
         return (long)floatVal(doc);
       }
+      @Override
       public double doubleVal(int doc) {
-        return (double)floatVal(doc);
+        return floatVal(doc);
       }
+      @Override
       public String strVal(int doc) {
         return Float.toString(floatVal(doc));
       }
+      @Override
       public String toString(int doc) {
 	return name() + '(' + vals.toString(doc) + ')';
       }
     };
   }
 
+  @Override
   public int hashCode() {
     return source.hashCode() + name().hashCode();
   }
 
+  @Override
   public boolean equals(Object o) {
     if (this.getClass() != o.getClass()) return false;
     SimpleFloatFunction other = (SimpleFloatFunction)o;

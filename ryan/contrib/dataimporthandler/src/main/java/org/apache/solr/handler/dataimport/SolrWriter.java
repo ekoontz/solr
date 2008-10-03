@@ -62,8 +62,6 @@ public abstract class SolrWriter {
       AddUpdateCommand command = new AddUpdateCommand();
       command.solrDoc = d;
       command.allowDups = false;
-      command.overwritePending = true;
-      command.overwriteCommitted = true;
       processor.processAdd(command);
     } catch (IOException e) {
       log.error( "Exception while adding: " + d, e);

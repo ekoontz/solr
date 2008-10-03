@@ -42,6 +42,7 @@ public class TokenizerChain extends SolrAnalyzer {
   public TokenizerFactory getTokenizerFactory() { return tokenizer; }
   public TokenFilterFactory[] getTokenFilterFactories() { return filters; }
 
+  @Override
   public TokenStream tokenStream(String fieldName, Reader reader) {
     TokenStream ts = tokenizer.create(reader);
     for (int i=0; i<filters.length; i++) {
@@ -50,6 +51,7 @@ public class TokenizerChain extends SolrAnalyzer {
     return ts;
   }
 
+  @Override
   public String toString() {
     StringBuilder sb = new StringBuilder("TokenizerChain(");
     sb.append(tokenizer);

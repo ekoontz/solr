@@ -30,19 +30,23 @@ import java.io.IOException;
  * @version $Id$
  */
 public class TextField extends CompressableField {
+  @Override
   protected void init(IndexSchema schema, Map<String,String> args) {
     properties |= TOKENIZED;
     super.init(schema, args);    
   }
 
+  @Override
   public SortField getSortField(SchemaField field, boolean reverse) {
     return getStringSort(field, reverse);
   }
 
+  @Override
   public void write(XMLWriter xmlWriter, String name, Fieldable f) throws IOException {
     xmlWriter.writeStr(name, f.stringValue());
   }
 
+  @Override
   public void write(TextResponseWriter writer, String name, Fieldable f) throws IOException {
     writer.writeStr(name, f.stringValue(), true);
   }

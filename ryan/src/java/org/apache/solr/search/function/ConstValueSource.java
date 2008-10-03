@@ -31,37 +31,47 @@ public class ConstValueSource extends ValueSource {
     this.constant = constant;
   }
 
+  @Override
   public String description() {
     return "const(" + constant + ")";
   }
 
+  @Override
   public DocValues getValues(IndexReader reader) throws IOException {
     return new DocValues() {
+      @Override
       public float floatVal(int doc) {
         return constant;
       }
+      @Override
       public int intVal(int doc) {
         return (int)floatVal(doc);
       }
+      @Override
       public long longVal(int doc) {
         return (long)floatVal(doc);
       }
+      @Override
       public double doubleVal(int doc) {
-        return (double)floatVal(doc);
+        return floatVal(doc);
       }
+      @Override
       public String strVal(int doc) {
         return Float.toString(floatVal(doc));
       }
+      @Override
       public String toString(int doc) {
         return description();
       }
     };
   }
 
+  @Override
   public int hashCode() {
     return Float.floatToIntBits(constant) * 31;
   }
 
+  @Override
   public boolean equals(Object o) {
     if (ConstValueSource.class != o.getClass()) return false;
     ConstValueSource other = (ConstValueSource)o;

@@ -41,6 +41,7 @@ public class TestSpellCheckResponse extends SolrExampleTestBase {
   int port = 0;
   static final String context = "/example";
 
+  @Override
   public void setUp() throws Exception {
     super.setUp();
 
@@ -86,10 +87,12 @@ public class TestSpellCheckResponse extends SolrExampleTestBase {
     Assert.assertEquals("Incorrect spelling results", "samsung", response.getFirstSuggestion("samsang"));
   }
 
+  @Override
   protected SolrServer getSolrServer() {
     return server;
   }
 
+  @Override
   protected SolrServer createNewSolrServer() {
     try {
       // setup the server...

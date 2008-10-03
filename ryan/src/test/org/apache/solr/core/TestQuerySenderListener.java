@@ -17,10 +17,6 @@
 
 package org.apache.solr.core;
 
-import org.apache.solr.handler.RequestHandlerBase;
-import org.apache.solr.request.SolrQueryRequest;
-import org.apache.solr.request.SolrQueryResponse;
-import org.apache.solr.request.SolrRequestHandler;
 import org.apache.solr.util.AbstractSolrTestCase;
 
 public class TestQuerySenderListener extends AbstractSolrTestCase {

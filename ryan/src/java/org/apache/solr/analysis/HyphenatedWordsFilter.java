@@ -62,7 +62,8 @@ public final class HyphenatedWordsFilter extends TokenFilter {
 	 * @inheritDoc
 	 * @see org.apache.lucene.analysis.TokenStream#next()
 	 */
-	public final Token next(Token in) throws IOException {
+	@Override
+  public final Token next(Token in) throws IOException {
 		StringBuilder termText = new StringBuilder(25);
 		int startOffset = -1, firstPositionIncrement = -1, wordsMerged = 0;
 		Token lastToken = null;

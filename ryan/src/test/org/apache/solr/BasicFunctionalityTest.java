@@ -40,8 +40,6 @@ import java.io.StringWriter;
 import java.io.ByteArrayInputStream;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.List;
-import java.util.ArrayList;
 
 /**
  * Tests some basic functionality of Solr while demonstrating good

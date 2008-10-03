@@ -76,6 +76,7 @@ public class CacheHeaderTest extends CacheHeaderTestBase {
         - d.getTime() > 100000);
   }
 
+  @Override
   protected void doLastModified(String method) throws Exception {
     // We do a first request to get the last modified
     // This must result in a 200 OK response
@@ -131,6 +132,7 @@ public class CacheHeaderTest extends CacheHeaderTestBase {
   }
 
   // test ETag
+  @Override
   protected void doETag(String method) throws Exception {
     HttpMethodBase get = getSelectMethod(method);
     getClient().executeMethod(get);
@@ -202,6 +204,7 @@ public class CacheHeaderTest extends CacheHeaderTestBase {
         .getStatusCode());
   }
 
+  @Override
   protected void doCacheControl(String method) throws Exception {
     if ("POST".equals(method)) {
       HttpMethodBase m = getSelectMethod(method);

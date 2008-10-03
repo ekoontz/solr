@@ -33,7 +33,6 @@ import org.apache.lucene.index.Term;
 import org.apache.lucene.search.spell.Dictionary;
 import org.apache.lucene.search.spell.LevensteinDistance;
 import org.apache.lucene.search.spell.SpellChecker;
-import org.apache.lucene.search.spell.StringDistance;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.RAMDirectory;
@@ -77,6 +76,7 @@ public abstract class AbstractLuceneSpellChecker extends SolrSpellChecker {
   protected float accuracy = 0.5f;
   public static final String FIELD = "field";
 
+  @Override
   public String init(NamedList config, SolrCore core) {
     super.init(config, core);
     indexDir = (String) config.get(INDEX_DIR);
@@ -127,6 +127,7 @@ public abstract class AbstractLuceneSpellChecker extends SolrSpellChecker {
     return name;
   }
   
+  @Override
   @SuppressWarnings("unchecked")
   public SpellingResult getSuggestions(Collection<Token> tokens,
                                        IndexReader reader, int count, boolean onlyMorePopular,
@@ -137,7 +138,7 @@ public abstract class AbstractLuceneSpellChecker extends SolrSpellChecker {
     Term term = field != null ? new Term(field, "") : null;
     for (Token token : tokens) {
       String tokenText = new String(token.termBuffer(), 0, token.termLength());
-      String[] suggestions = spellChecker.suggestSimilar(tokenText, (int) Math.max(count, AbstractLuceneSpellChecker.DEFAULT_SUGGESTION_COUNT),
+      String[] suggestions = spellChecker.suggestSimilar(tokenText, Math.max(count, AbstractLuceneSpellChecker.DEFAULT_SUGGESTION_COUNT),
             field != null ? reader : null, //workaround LUCENE-1295
             field,
             onlyMorePopular);
@@ -171,6 +172,7 @@ public abstract class AbstractLuceneSpellChecker extends SolrSpellChecker {
     return reader;
   }
 
+  @Override
   public void reload() throws IOException {
     spellChecker.setSpellIndex(index);
 

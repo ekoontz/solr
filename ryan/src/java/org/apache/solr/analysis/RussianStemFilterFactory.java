@@ -28,6 +28,7 @@ public class RussianStemFilterFactory extends BaseTokenFilterFactory {
   
   private char[] charset;
   
+  @Override
   public void init(Map<String, String> args) {
     super.init(args);
     charset = RussianCommon.getCharset(args.get("charset"));

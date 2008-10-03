@@ -28,7 +28,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.io.File;
 import java.util.Set;
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -48,12 +47,12 @@ public class StopFilterFactory extends BaseTokenFilterFactory implements Resourc
         java.io.File keepWordsFile = new File(stopWordFiles);
         if (keepWordsFile.exists()) {
           List<String> wlist = loader.getLines(stopWordFiles);
-          stopWords = StopFilter.makeStopSet((String[])wlist.toArray(new String[0]), ignoreCase);
+          stopWords = StopFilter.makeStopSet(wlist.toArray(new String[0]), ignoreCase);
         } else  {
           List<String> files = StrUtils.splitFileNames(stopWordFiles);
           for (String file : files) {
             List<String> wlist = loader.getLines(file.trim());
-            stopWords.addAll(StopFilter.makeStopSet((String[])wlist.toArray(new String[0]), ignoreCase));
+            stopWords.addAll(StopFilter.makeStopSet(wlist.toArray(new String[0]), ignoreCase));
           }
         }
       } catch (IOException e) {

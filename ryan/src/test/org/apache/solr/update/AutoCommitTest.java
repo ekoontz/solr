@@ -64,7 +64,9 @@ class CommitListener implements SolrEventListener {
 
 public class AutoCommitTest extends AbstractSolrTestCase {
 
+  @Override
   public String getSchemaFile() { return "schema.xml"; }
+  @Override
   public String getSolrConfigFile() { return "solrconfig.xml"; }
   
   /**

@@ -50,6 +50,7 @@ public class TemplateTransformer extends Transformer {
 
   private static final Logger LOG = LoggerFactory.getLogger(TemplateTransformer.class);
 
+  @Override
   @SuppressWarnings("unchecked")
   public Object transformRow(Map<String, Object> row, Context context) {
 

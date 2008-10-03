@@ -29,22 +29,26 @@ public class NoCacheHeaderTest extends CacheHeaderTestBase {
   @Override public String getSolrConfigFilename() { return "solrconfig-nocache.xml";  }
 
   // The tests
+  @Override
   public void testLastModified() throws Exception {
     doLastModified("GET");
     doLastModified("HEAD");
   }
 
+  @Override
   public void testEtag() throws Exception {
     doETag("GET");
     doETag("HEAD");
   }
 
+  @Override
   public void testCacheControl() throws Exception {
     doCacheControl("GET");
     doCacheControl("HEAD");
     doCacheControl("POST");
   }
   
+  @Override
   protected void doLastModified(String method) throws Exception {
     // We do a first request to get the last modified
     // This must result in a 200 OK response
@@ -96,6 +100,7 @@ public class NoCacheHeaderTest extends CacheHeaderTestBase {
   }
 
   // test ETag
+  @Override
   protected void doETag(String method) throws Exception {
     HttpMethodBase get = getSelectMethod(method);
     getClient().executeMethod(get);
@@ -144,6 +149,7 @@ public class NoCacheHeaderTest extends CacheHeaderTestBase {
         .getStatusCode());
   }
 
+  @Override
   protected void doCacheControl(String method) throws Exception {
       HttpMethodBase m = getSelectMethod(method);
       getClient().executeMethod(m);

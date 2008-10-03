@@ -19,7 +19,6 @@ package org.apache.solr.search;
 
 import org.apache.lucene.search.HitCollector;
 import org.apache.solr.util.OpenBitSet;
-import org.apache.solr.core.SolrConfig;
 
 /**
  * @version $Id$
@@ -47,6 +46,7 @@ final class DocSetHitCollector extends HitCollector {
     scratch = new int[HASHDOCSET_MAXSIZE];
   }
 
+  @Override
   public void collect(int doc, float score) {
     // optimistically collect the first docs in an array
     // in case the total number will be small enough to represent

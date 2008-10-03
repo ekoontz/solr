@@ -64,17 +64,6 @@ public final class IndexSchema {
   private float version;
 
   /**
-   * Constructs a schema using the specified file name using the normal
-   * Config path directory searching rules.
-   *
-   * @see Config#openResource
-   * @deprecated Use {@link #IndexSchema(SolrConfig, String, InputStream)} instead.
-   */
-  @Deprecated
-  public IndexSchema(SolrConfig solrConfig, String name) {
-    this(solrConfig, name, null);
-  }
-    /**
    * Constructs a schema using the specified resource name and stream.
    * If the is stream is null, the resource loader will load the schema resource by name.
    * @see SolrResourceLoader#openSchema
@@ -119,31 +108,6 @@ public final class IndexSchema {
   float getVersion() {
     return version;
   }
-  
-  /**
-   * Direct access to the InputStream for the schemaFile used by this instance.
-   * @see Config#openResource
-   * @deprecated Use {@link #getSolrConfig()} and open a resource input stream
-   *             for {@link #getResourceName()} instead.
-   */
-  @Deprecated
-  public InputStream getInputStream() {
-    return solrConfig.getResourceLoader().openResource(resourceName);
-  }
-
-  /** Gets the name of the schema file.
-   * @deprecated Use {@link #getResourceName()} instead.
-   */
-  @Deprecated
-  public String getSchemaFile() {
-    return resourceName;
-  }
-
-  /** The Name of this schema (as specified in the schema file)
-   * @deprecated Use {@link #getSchemaName()} instead.
-   */
-  @Deprecated
-  public String getName() { return name; }
 
   private final HashMap<String, SchemaField> fields = new HashMap<String,SchemaField>();
   private final HashMap<String, FieldType> fieldTypes = new HashMap<String,FieldType>();
@@ -344,6 +308,7 @@ public final class IndexSchema {
       return analyzer!=null ? analyzer : getDynamicFieldType(fieldName).getAnalyzer();
     }
 
+    @Override
     public TokenStream tokenStream(String fieldName, Reader reader)
     {
       return getAnalyzer(fieldName).tokenStream(fieldName,reader);
@@ -527,12 +492,13 @@ public final class IndexSchema {
     log.trace("Dynamic Field Ordering:" + dFields);
 
     // stuff it in a normal array for faster access
-    dynamicFields = (DynamicField[])dFields.toArray(new DynamicField[dFields.size()]);
+    dynamicFields = dFields.toArray(new DynamicField[dFields.size()]);
 
 
     Node node = (Node) xpath.evaluate("/schema/similarity", document, XPathConstants.NODE);
     if (node==null) {
       similarityFactory = new SimilarityFactory() {
+        @Override
         public Similarity getSimilarity() {
           return Similarity.getDefault();
         }
@@ -548,6 +514,7 @@ public final class IndexSchema {
       } else {
         // just like always, assume it's a Similarlity and get an ClassCastException - reasonable error handling
         similarityFactory = new SimilarityFactory() {
+          @Override
           public Similarity getSimilarity() {
             return (Similarity) obj;
           }
@@ -851,6 +818,7 @@ public final class IndexSchema {
       return new SchemaField(prototype, name);
     }
 
+    @Override
     public String toString() {
       return prototype.toString();
     }

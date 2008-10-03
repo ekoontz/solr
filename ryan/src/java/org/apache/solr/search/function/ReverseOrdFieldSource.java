@@ -47,10 +47,12 @@ public class ReverseOrdFieldSource extends ValueSource {
     this.field = field;
   }
 
+  @Override
   public String description() {
     return "rord("+field+')';
   }
 
+  @Override
   public DocValues getValues(IndexReader reader) throws IOException {
     final FieldCache.StringIndex sindex = FieldCache.DEFAULT.getStringIndex(reader, field);
 
@@ -58,33 +60,40 @@ public class ReverseOrdFieldSource extends ValueSource {
     final int end = sindex.lookup.length;
 
     return new DocValues() {
+      @Override
       public float floatVal(int doc) {
-        return (float)(end - arr[doc]);
+        return (end - arr[doc]);
       }
 
+      @Override
       public int intVal(int doc) {
-        return (int)(end - arr[doc]);
+        return (end - arr[doc]);
       }
 
+      @Override
       public long longVal(int doc) {
-        return (long)(end - arr[doc]);
+        return (end - arr[doc]);
       }
 
+      @Override
       public double doubleVal(int doc) {
-        return (double)(end - arr[doc]);
+        return (end - arr[doc]);
       }
 
+      @Override
       public String strVal(int doc) {
         // the string value of the ordinal, not the string itself
         return Integer.toString((end - arr[doc]));
       }
 
+      @Override
       public String toString(int doc) {
         return description() + '=' + strVal(doc);
       }
     };
   }
 
+  @Override
   public boolean equals(Object o) {
     if (o.getClass() !=  ReverseOrdFieldSource.class) return false;
     ReverseOrdFieldSource other = (ReverseOrdFieldSource)o;
@@ -92,6 +101,7 @@ public class ReverseOrdFieldSource extends ValueSource {
   }
 
   private static final int hcode = ReverseOrdFieldSource.class.hashCode();
+  @Override
   public int hashCode() {
     return hcode + field.hashCode();
   };

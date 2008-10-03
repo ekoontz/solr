@@ -291,6 +291,7 @@ public class DataImportHandler extends RequestHandlerBase implements
         }
       }
 
+      @Override
       public void log(int event, String name, Object row) {
         if (debugLogger == null) {
           debugLogger = new DebugLogger();
@@ -300,6 +301,7 @@ public class DataImportHandler extends RequestHandlerBase implements
 
 
 
+      @Override
       public SolrDoc getSolrDocInstance() {
         return new SolrDocumentWrapper();
       }
@@ -325,6 +327,7 @@ public class DataImportHandler extends RequestHandlerBase implements
       doc.addField(name, value, boost);
     }
 
+    @Override
     public String toString() {
       return doc.toString();
     }

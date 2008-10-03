@@ -46,6 +46,7 @@ public class FileDataSource extends DataSource<Reader> {
 
   private String encoding = null;
 
+  @Override
   public void init(Context context, Properties initProps) {
     basePath = initProps.getProperty(BASE_PATH);
     if (initProps.get(HttpDataSource.ENCODING) != null)
@@ -66,6 +67,7 @@ public class FileDataSource extends DataSource<Reader> {
    * returned Reader</b>
    * </p>
    */
+  @Override
   public Reader getData(String query) {
     try {
       File file0 = new File(query);
@@ -97,6 +99,7 @@ public class FileDataSource extends DataSource<Reader> {
     }
   }
 
+  @Override
   public void close() {
 
   }

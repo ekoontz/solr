@@ -128,12 +128,14 @@ public class DateField extends FieldType {
   // The easiest fix is to simply remove the 'Z' for the internal
   // format.
   
+  @Override
   protected void init(IndexSchema schema, Map<String,String> args) {
   }
 
   protected static String NOW = "NOW";
   protected static char Z = 'Z';
   
+  @Override
   public String toInternal(String val) {
     return toInternal(parseMath(null, val));
   }
@@ -185,10 +187,12 @@ public class DateField extends FieldType {
     return formatDate(val);
   }
 
+  @Override
   public String indexedToReadable(String indexedForm) {
     return indexedForm + Z;
   }
 
+  @Override
   public String toExternal(Fieldable f) {
     return indexedToReadable(f.stringValue());
   }
@@ -206,32 +210,24 @@ public class DateField extends FieldType {
     }
   }
 
+  @Override
   public SortField getSortField(SchemaField field,boolean reverse) {
     return getStringSort(field,reverse);
   }
 
+  @Override
   public ValueSource getValueSource(SchemaField field) {
     return new OrdFieldSource(field.name);
   }
 
+  @Override
   public void write(XMLWriter xmlWriter, String name, Fieldable f) throws IOException {
     xmlWriter.writeDate(name, toExternal(f));
   }
 
+  @Override
   public void write(TextResponseWriter writer, String name, Fieldable f) throws IOException {
     writer.writeDate(name, toExternal(f));
-  }
-
-  /**
-   * Returns a formatter that can be use by the current thread if needed to
-   * convert Date objects to the Internal representation.
-   *
-   * Only the <tt>format(Date)</tt> can be used safely.
-   * 
-   * @deprecated - use formatDate(Date) instead
-   */
-  protected DateFormat getThreadLocalDateFormat() {
-    return fmtThreadLocal.get();
   }
 
   /**
@@ -271,6 +267,7 @@ public class DateField extends FieldType {
       this.setTimeZone(CANONICAL_TZ);
     }
 
+    @Override
     public Date parse(String i, ParsePosition p) {
       /* delegate to SimpleDateFormat for easy stuff */
       Date d = super.parse(i, p);
@@ -292,6 +289,7 @@ public class DateField extends FieldType {
       return d;
     }
 
+    @Override
     public StringBuffer format(Date d, StringBuffer toAppendTo,
                                FieldPosition pos) {
       /* delegate to SimpleDateFormat for easy stuff */
@@ -310,6 +308,7 @@ public class DateField extends FieldType {
       return toAppendTo;
     }
 
+    @Override
     public Object clone() {
       ISO8601CanonicalDateFormat c
         = (ISO8601CanonicalDateFormat) super.clone();
@@ -326,6 +325,7 @@ public class DateField extends FieldType {
       super();
       proto = d;
     }
+    @Override
     protected DateFormat initialValue() {
       return (DateFormat) proto.clone();
     }

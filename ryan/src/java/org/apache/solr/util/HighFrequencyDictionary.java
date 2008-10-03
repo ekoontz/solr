@@ -62,7 +62,7 @@ public class HighFrequencyDictionary implements Dictionary {
     HighFrequencyIterator() {
       try {
         termEnum = reader.terms(new Term(field, ""));
-        minNumDocs = (int)(thresh * (float)reader.numDocs());
+        minNumDocs = (int)(thresh * reader.numDocs());
       } catch (IOException e) {
         throw new RuntimeException(e);
       }

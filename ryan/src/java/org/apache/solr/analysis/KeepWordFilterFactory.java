@@ -27,7 +27,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.io.File;
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -52,12 +51,12 @@ public class KeepWordFilterFactory extends BaseTokenFilterFactory implements Res
         if (keepWordsFile.exists()) {
           List<String> wlist = loader.getLines(wordFiles);
           words = StopFilter.makeStopSet(
-              (String[])wlist.toArray(new String[0]), ignoreCase);
+              wlist.toArray(new String[0]), ignoreCase);
         } else  {
           List<String> files = StrUtils.splitFileNames(wordFiles);
           for (String file : files) {
             List<String> wlist = loader.getLines(file.trim());
-            words.addAll(StopFilter.makeStopSet((String[])wlist.toArray(new String[0]), ignoreCase));
+            words.addAll(StopFilter.makeStopSet(wlist.toArray(new String[0]), ignoreCase));
           }
         }
       } 

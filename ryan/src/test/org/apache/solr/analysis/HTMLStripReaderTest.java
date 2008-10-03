@@ -26,7 +26,6 @@ import java.io.Reader;
 import java.io.BufferedReader;
 import java.util.Set;
 import java.util.HashSet;
-import java.util.Collections;
 
 public class HTMLStripReaderTest extends TestCase {
 

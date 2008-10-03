@@ -167,6 +167,7 @@ public abstract class UpdateHandler implements SolrInfoMBean {
       this.searcher = searcher;
     }
 
+    @Override
     public void collect(int doc, float score) {
       try {
         searcher.getReader().deleteDocument(doc);

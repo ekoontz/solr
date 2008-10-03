@@ -23,9 +23,12 @@ import java.io.File;
 
 public class TestBadConfig extends AbstractSolrTestCase {
 
+  @Override
   public String getSchemaFile() { return "schema.xml"; }
+  @Override
   public String getSolrConfigFile() { return "bad_solrconfig.xml"; }
 
+  @Override
   public void setUp() throws Exception {
 
     dataDir = new File(System.getProperty("java.io.tmpdir")

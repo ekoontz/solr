@@ -35,6 +35,7 @@ public class FunctionQParser extends QParser {
     super(qstr, localParams, params, req);
   }
 
+  @Override
   public Query parse() throws ParseException {
     sp = new QueryParsing.StrParser(getString());
     ValueSource vs = parseValueSource();

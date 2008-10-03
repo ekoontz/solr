@@ -25,6 +25,7 @@ import java.io.IOException;
  * @version $Id$
  */
 public class BCDStrField extends BCDIntField {
+  @Override
   public void write(XMLWriter xmlWriter, String name, Fieldable f) throws IOException {
     xmlWriter.writeStr(name,toExternal(f));
   }

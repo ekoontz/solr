@@ -36,6 +36,7 @@ import java.util.logging.Logger;
  * @since solr 1.3
  */
 public final class LogLevelSelection extends HttpServlet {
+  @Override
   public void init() throws ServletException {
   }
 
@@ -43,6 +44,7 @@ public final class LogLevelSelection extends HttpServlet {
    * Processes an HTTP GET request and changes the logging level as
    * specified.
    */
+  @Override
   public void doGet(HttpServletRequest request,
                     HttpServletResponse response)
           throws IOException, ServletException {
@@ -149,6 +151,7 @@ public final class LogLevelSelection extends HttpServlet {
   }
 
 
+  @Override
   public void doPost(HttpServletRequest request,
                      HttpServletResponse response)
           throws IOException, ServletException {
@@ -261,6 +264,7 @@ public final class LogLevelSelection extends HttpServlet {
       return name.compareTo(((LogWrapper) other).name);
     }
 
+    @Override
     public boolean equals(Object other) {
       return name.equals(((LogWrapper) other).name);
     }

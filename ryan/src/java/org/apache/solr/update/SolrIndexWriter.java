@@ -152,6 +152,7 @@ public class SolrIndexWriter extends IndexWriter {
    * ****
    */
 
+  @Override
   public void close() throws IOException {
     log.debug("Closing Writer " + name);
     super.close();

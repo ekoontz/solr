@@ -52,24 +52,31 @@ public class ReciprocalFloatFunction extends ValueSource {
     this.b=b;
   }
 
+  @Override
   public DocValues getValues(IndexReader reader) throws IOException {
     final DocValues vals = source.getValues(reader);
     return new DocValues() {
+      @Override
       public float floatVal(int doc) {
         return a/(m*vals.floatVal(doc) + b);
       }
+      @Override
       public int intVal(int doc) {
         return (int)floatVal(doc);
       }
+      @Override
       public long longVal(int doc) {
         return (long)floatVal(doc);
       }
+      @Override
       public double doubleVal(int doc) {
-        return (double)floatVal(doc);
+        return floatVal(doc);
       }
+      @Override
       public String strVal(int doc) {
         return Float.toString(floatVal(doc));
       }
+      @Override
       public String toString(int doc) {
         return Float.toString(a) + "/("
                 + m + "*float(" + vals.toString(doc) + ')'
@@ -78,18 +85,21 @@ public class ReciprocalFloatFunction extends ValueSource {
     };
   }
 
+  @Override
   public String description() {
     return Float.toString(a) + "/("
            + m + "*float(" + source.description() + ")"
            + "+" + b + ')';
   }
 
+  @Override
   public int hashCode() {
     int h = Float.floatToIntBits(a) + Float.floatToIntBits(m);
     h ^= (h << 13) | (h >>> 20);
     return h + (Float.floatToIntBits(b)) + source.hashCode();
   }
 
+  @Override
   public boolean equals(Object o) {
     if (ReciprocalFloatFunction.class != o.getClass()) return false;
     ReciprocalFloatFunction other = (ReciprocalFloatFunction)o;

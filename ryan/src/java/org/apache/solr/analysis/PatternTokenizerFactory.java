@@ -21,8 +21,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.lucene.analysis.Token;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.solr.common.SolrException;
-import org.apache.solr.core.SolrConfig;
-
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;

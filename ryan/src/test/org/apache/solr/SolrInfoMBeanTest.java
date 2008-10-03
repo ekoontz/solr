@@ -7,10 +7,6 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-import javax.management.Query;
-
-import org.apache.lucene.search.function.FieldCacheSource;
-import org.apache.solr.common.util.NamedList;
 import org.apache.solr.core.SolrInfoMBean;
 import org.apache.solr.handler.StandardRequestHandler;
 import org.apache.solr.handler.admin.LukeRequestHandler;
@@ -18,9 +14,6 @@ import org.apache.solr.handler.component.SearchComponent;
 import org.apache.solr.handler.component.SearchHandler;
 import org.apache.solr.highlight.DefaultSolrHighlighter;
 import org.apache.solr.search.LRUCache;
-import org.apache.solr.search.QueryUtils;
-import org.apache.solr.update.UpdateHandler;
-
 import junit.framework.TestCase;
 
 /**

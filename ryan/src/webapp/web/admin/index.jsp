@@ -88,7 +88,7 @@
 
 <%
  // a quick hack to get rid of get-file.jsp -- note this still spits out invalid HTML
- out.write( org.apache.solr.handler.admin.ShowFileRequestHandler.getFileContents( "admin-extra.html" ) );
+ // out.write( org.apache.solr.handler.admin.ShowFileRequestHandler.getFileContents( "admin-extra.html" ) );
 %>
 
 </table><P>

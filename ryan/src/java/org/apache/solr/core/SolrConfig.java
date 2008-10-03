@@ -17,11 +17,6 @@
 
 package org.apache.solr.core;
 
-import org.apache.solr.common.util.NamedList;
-import org.apache.solr.handler.PingRequestHandler;
-import org.apache.solr.request.LocalSolrQueryRequest;
-import org.apache.solr.request.SolrQueryRequest;
-
 import org.apache.solr.search.CacheConfig;
 import org.apache.solr.update.SolrIndexConfig;
 import org.apache.lucene.search.BooleanQuery;
@@ -33,7 +28,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.StringTokenizer;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import java.io.IOException;
@@ -50,13 +44,6 @@ import java.io.InputStream;
 public class SolrConfig extends Config {
 
   public static final String DEFAULT_CONF_FILE = "solrconfig.xml";
-
-  /**
-   * Compatibility feature for single-core (pre-solr{215,350} patch); should go away at solr-2.0
-   * @deprecated Use {@link SolrCore#getSolrConfig()} instead.
-   */
-  @Deprecated
-  public static SolrConfig config = null; 
 
   /**
    * Singleton keeping track of configuration errors
@@ -133,11 +120,9 @@ public class SolrConfig extends Config {
     hashSetInverseLoadFactor = 1.0f / getFloat("//HashDocSet/@loadFactor",0.75f);
     hashDocSetMaxSize= getInt("//HashDocSet/@maxSize",3000);
     
-    pingQueryParams = readPingQueryParams(this);
-
     httpCachingConfig = new HttpCachingConfig(this);
     
-    Node jmx = (Node) getNode("jmx", false);
+    Node jmx = getNode("jmx", false);
     if (jmx != null) {
       jmxConfig = new JmxConfiguration(true, get("jmx/@agentId", null), get(
           "jmx/@serviceUrl", null));
@@ -146,9 +131,6 @@ public class SolrConfig extends Config {
     }
     
     Config.log.info("Loaded SolrConfig: " + name);
-    
-    // TODO -- at solr 2.0. this should go away
-    config = this;
   }
 
   /* The set of materialized parameters: */
@@ -182,39 +164,6 @@ public class SolrConfig extends Config {
     return httpCachingConfig;
   }
   
-  /**
-   * ping query request parameters
-   * @deprecated Use {@link PingRequestHandler} instead.
-   */
-  @Deprecated
-  private final NamedList pingQueryParams;
-
-  static private NamedList readPingQueryParams(SolrConfig config) {  
-    // TODO: check for nested tags and parse as a named list instead
-    String urlSnippet = config.get("admin/pingQuery", "").trim();
-    
-    StringTokenizer qtokens = new StringTokenizer(urlSnippet,"&");
-    String tok;
-    NamedList params = new NamedList();
-    while (qtokens.hasMoreTokens()) {
-      tok = qtokens.nextToken();
-      String[] split = tok.split("=", 2);
-      params.add(split[0], split[1]);
-    }
-    return params;
-  }
-  
-  /**
-   * Returns a Request object based on the admin/pingQuery section
-   * of the Solr config file.
-   * 
-   * @deprecated use {@link PingRequestHandler} instead 
-   */
-  @Deprecated
-  public SolrQueryRequest getPingQueryRequest(SolrCore core) {
-    return new LocalSolrQueryRequest(core, pingQueryParams);
-  }
-
   public static class JmxConfiguration {
     public boolean enabled = false;
 

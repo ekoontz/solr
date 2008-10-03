@@ -20,7 +20,6 @@ package org.apache.solr.analysis;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.solr.core.SolrConfig;
 import org.apache.commons.codec.Encoder;
 import org.apache.commons.codec.language.DoubleMetaphone;
 import org.apache.commons.codec.language.Metaphone;

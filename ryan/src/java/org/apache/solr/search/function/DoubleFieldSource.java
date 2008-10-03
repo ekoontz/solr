@@ -42,41 +42,50 @@ public class DoubleFieldSource extends FieldCacheSource {
     this.parser = parser;
   }
 
+  @Override
   public String description() {
     return "double(" + field + ')';
   }
 
+  @Override
   public DocValues getValues(IndexReader reader) throws IOException {
     final double[] arr = (parser == null) ?
             ((ExtendedFieldCache) cache).getDoubles(reader, field) :
             ((ExtendedFieldCache) cache).getDoubles(reader, field, parser);
     return new DocValues() {
+      @Override
       public float floatVal(int doc) {
         return (float) arr[doc];
       }
 
+      @Override
       public int intVal(int doc) {
         return (int) arr[doc];
       }
 
+      @Override
       public long longVal(int doc) {
         return (long) arr[doc];
       }
 
+      @Override
       public double doubleVal(int doc) {
         return arr[doc];
       }
 
+      @Override
       public String strVal(int doc) {
         return Double.toString(arr[doc]);
       }
 
+      @Override
       public String toString(int doc) {
         return description() + '=' + floatVal(doc);
       }
     };
   }
 
+  @Override
   public boolean equals(Object o) {
     if (o.getClass() != DoubleFieldSource.class) return false;
     DoubleFieldSource other = (DoubleFieldSource) o;
@@ -85,6 +94,7 @@ public class DoubleFieldSource extends FieldCacheSource {
             this.parser.getClass() == other.parser.getClass();
   }
 
+  @Override
   public int hashCode() {
     int h = parser == null ? Float.class.hashCode() : parser.getClass().hashCode();
     h += super.hashCode();

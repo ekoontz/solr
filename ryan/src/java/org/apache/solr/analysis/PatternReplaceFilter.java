@@ -65,6 +65,7 @@ public final class PatternReplaceFilter extends TokenFilter {
     this.all=all;
   }
   
+  @Override
   public final Token next(Token in) throws IOException {
     Token t = input.next(in);
     if (t == null)

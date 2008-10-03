@@ -18,7 +18,11 @@
 package org.apache.solr.util;
 
 import org.apache.solr.common.params.CommonParams;
+import org.apache.solr.common.params.ModifiableSolrParams;
+import org.apache.solr.common.util.ContentStream;
+import org.apache.solr.common.util.ContentStreamBase;
 import org.apache.solr.common.util.NamedList;
+import org.apache.solr.common.util.SimpleOrderedMap;
 import org.apache.solr.common.util.XML;
 import org.apache.solr.core.SolrConfig;
 import org.apache.solr.core.SolrCore;
@@ -29,6 +33,7 @@ import org.apache.solr.handler.XmlUpdateRequestHandler;
 import org.apache.solr.request.LocalSolrQueryRequest;
 import org.apache.solr.request.QueryResponseWriter;
 import org.apache.solr.request.SolrQueryRequest;
+import org.apache.solr.request.SolrQueryRequestBase;
 import org.apache.solr.request.SolrQueryResponse;
 import org.apache.solr.schema.IndexSchema;
 import org.w3c.dom.Document;
@@ -36,7 +41,6 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -44,9 +48,9 @@ import javax.xml.xpath.XPathFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -201,12 +205,19 @@ public class TestHarness {
    */
   @Deprecated
   public String update(String xml) {
-                
-    StringReader req = new StringReader(xml);
-    StringWriter writer = new StringWriter(32000);
-
-    updater.doLegacyUpdate(req, writer);
-    return writer.toString();
+    
+    ArrayList<ContentStream> streams = new ArrayList<ContentStream>();
+    streams.add( new ContentStreamBase.StringStream( xml  ) );
+    SolrQueryRequestBase req = new SolrQueryRequestBase( core, new ModifiableSolrParams() ) {};
+    req.setContentStreams( streams );  
+    
+    SolrQueryResponse rsp = new SolrQueryResponse(); // ignored
+    rsp.getValues().add( "responseHeader", new SimpleOrderedMap() );
+    updater.handleRequest(req, rsp);
+    if( rsp.getException() != null ) {
+      return("<result status=\"1\"></result>"); // 
+    }
+    return("<result status=\"0\"></result>"); // legacy
   }
   
         

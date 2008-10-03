@@ -28,7 +28,9 @@ import java.util.concurrent.*;
 import java.util.*;
 public class SolrCoreTest extends AbstractSolrTestCase {
 
+  @Override
   public String getSchemaFile() { return "schema.xml"; }
+  @Override
   public String getSolrConfigFile() { return "solrconfig.xml"; }
   
   public void testRequestHandlerRegistry() {

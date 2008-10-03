@@ -47,7 +47,7 @@
     isEnabled = new File(enabledFile).exists();
   }
 
-  String collectionName = schema!=null ? schema.getName():"unknown";
+  String collectionName = core.getName();
   InetAddress addr = null;
   String hostname = "unknown";
   try {
@@ -106,5 +106,5 @@
   }
   
   String cwd=System.getProperty("user.dir");
-  String solrHome= solrConfig.getInstanceDir();
+  String solrHome= "???"; //solrConfig.getInstanceDir();
 %>

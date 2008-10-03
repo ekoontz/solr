@@ -38,6 +38,7 @@ import java.util.Map;
 public class CachedSqlEntityProcessor extends SqlEntityProcessor {
   private boolean isFirst;
 
+  @Override
   @SuppressWarnings("unchecked")
   public void init(Context context) {
     super.init(context);
@@ -45,6 +46,7 @@ public class CachedSqlEntityProcessor extends SqlEntityProcessor {
     isFirst = true;
   }
 
+  @Override
   public Map<String, Object> nextRow() {
     if (rowcache != null) return getFromRowCache();
     if (dataSourceRowCache != null)
@@ -61,6 +63,7 @@ public class CachedSqlEntityProcessor extends SqlEntityProcessor {
 
   }
 
+  @Override
   protected List<Map<String, Object>> getAllNonCachedRows() {
     List<Map<String, Object>> rows = new ArrayList<Map<String, Object>>();
     String q = getQuery();

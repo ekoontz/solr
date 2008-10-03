@@ -35,8 +35,10 @@ public class OutputWriterTest extends AbstractSolrTestCase {
     /** The XML string that's output for testing purposes. */
     public static final String USELESS_OUTPUT = "useless output";
     
+    @Override
     public String getSchemaFile() { return "solr/crazy-path-to-schema.xml"; }
     
+    @Override
     public String getSolrConfigFile() { return "solr/crazy-path-to-config.xml"; }
     
     

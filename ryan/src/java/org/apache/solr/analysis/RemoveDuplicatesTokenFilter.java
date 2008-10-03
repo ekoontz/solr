@@ -29,6 +29,7 @@ import java.io.IOException;
  */
 public class RemoveDuplicatesTokenFilter extends BufferedTokenStream {
   public RemoveDuplicatesTokenFilter(TokenStream input) {super(input);}
+  @Override
   protected Token process(Token t) throws IOException {
     Token tok = read();
     while (tok != null && tok.getPositionIncrement()==0) {

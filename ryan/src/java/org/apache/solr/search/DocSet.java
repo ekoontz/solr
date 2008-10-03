@@ -141,6 +141,7 @@ public interface DocSet /* extends Collection<Integer> */ {
 abstract class DocSetBase implements DocSet {
 
   // Not implemented efficiently... for testing purposes only
+  @Override
   public boolean equals(Object obj) {
     if (!(obj instanceof DocSet)) return false;
     DocSet other = (DocSet)obj;

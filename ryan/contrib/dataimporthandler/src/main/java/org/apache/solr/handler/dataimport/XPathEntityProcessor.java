@@ -72,6 +72,7 @@ public class XPathEntityProcessor extends EntityProcessorBase {
   
   private int batchSz = 1000;
 
+  @Override
   @SuppressWarnings("unchecked")
   public void init(Context context) {
     super.init(context);
@@ -153,6 +154,7 @@ public class XPathEntityProcessor extends EntityProcessorBase {
 
   }
 
+  @Override
   public Map<String, Object> nextRow() {
     Map<String, Object> result;
 
@@ -317,6 +319,7 @@ public class XPathEntityProcessor extends EntityProcessorBase {
     final BlockingQueue<Map<String, Object>> blockingQueue = new ArrayBlockingQueue<Map<String, Object>>(batchSz);
     final AtomicBoolean isEnd = new AtomicBoolean(false);
     new Thread() {
+      @Override
       public void run() {
         try {
           xpathReader.streamRecords(data, new XPathRecordReader.Handler() {

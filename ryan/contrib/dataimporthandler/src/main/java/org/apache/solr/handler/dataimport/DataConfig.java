@@ -201,6 +201,7 @@ public class DataConfig {
     public String nameOrColName;
 
     public Map<String, String> allAttributes = new HashMap<String, String>() {
+      @Override
       public String put(String key, String value) {
         if (super.containsKey(key))
           return super.get(key);

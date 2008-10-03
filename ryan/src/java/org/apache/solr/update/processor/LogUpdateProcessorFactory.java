@@ -52,7 +52,7 @@ public class LogUpdateProcessorFactory extends UpdateRequestProcessorFactory {
 
   @Override
   public UpdateRequestProcessor getInstance(SolrQueryRequest req, SolrQueryResponse rsp, UpdateRequestProcessor next) {
-    boolean doLog = LogUpdateProcessor.log.isInfoEnabled();
+    boolean doLog = UpdateRequestProcessor.log.isInfoEnabled();
     // LogUpdateProcessor.log.error("Will Log=" + doLog);
     if( doLog ) {
       // only create the log processor if we will use it

@@ -46,6 +46,7 @@ public class DateFormatTransformer extends Transformer {
   private static final Logger LOG = LoggerFactory
           .getLogger(DateFormatTransformer.class);
 
+  @Override
   @SuppressWarnings("unchecked")
   public Object transformRow(Map<String, Object> aRow, Context context) {
     for (Map<String, String> map : context.getAllEntityFields()) {

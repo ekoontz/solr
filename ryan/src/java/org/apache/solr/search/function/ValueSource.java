@@ -34,13 +34,16 @@ public abstract class ValueSource implements Serializable {
 
   public abstract DocValues getValues(IndexReader reader) throws IOException;
 
+  @Override
   public abstract boolean equals(Object o);
 
+  @Override
   public abstract int hashCode();
 
   /** description of field, used in explain() */
   public abstract String description();
 
+  @Override
   public String toString() {
     return description();
   }

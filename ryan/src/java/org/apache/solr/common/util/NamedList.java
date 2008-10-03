@@ -197,6 +197,7 @@ public class NamedList<T> implements Cloneable, Serializable, Iterable<Map.Entry
     return result;
   }
 
+  @Override
   public String toString() {
     StringBuffer sb = new StringBuffer();
     sb.append('{');
@@ -231,6 +232,7 @@ public class NamedList<T> implements Cloneable, Serializable, Iterable<Map.Entry
   /**
    * Makes a <i>shallow copy</i> of the named list.
    */
+  @Override
   public NamedList<T> clone() {
     ArrayList newList = new ArrayList(nvPairs.size());
     newList.addAll(nvPairs);
@@ -269,6 +271,7 @@ public class NamedList<T> implements Cloneable, Serializable, Iterable<Map.Entry
             return (T)list.getVal( index );
           }
           
+          @Override
           public String toString()
           {
         	  return getKey()+"="+getValue();

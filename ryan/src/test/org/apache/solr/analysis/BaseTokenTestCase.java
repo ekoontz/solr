@@ -26,8 +26,6 @@ import java.util.List;
 import org.apache.lucene.analysis.Token;
 import org.apache.lucene.analysis.TokenStream;
 
-import junit.framework.TestCase;
-
 /**
  * General token testing helper functions
  */

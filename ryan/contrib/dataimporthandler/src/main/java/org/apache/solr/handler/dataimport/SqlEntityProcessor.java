@@ -46,6 +46,7 @@ public class SqlEntityProcessor extends EntityProcessorBase {
 
   protected DataSource<Iterator<Map<String, Object>>> dataSource;
 
+  @Override
   @SuppressWarnings("unchecked")
   public void init(Context context) {
     super.init(context);
@@ -65,6 +66,7 @@ public class SqlEntityProcessor extends EntityProcessorBase {
     }
   }
 
+  @Override
   public Map<String, Object> nextRow() {
     if (rowcache != null)
       return getFromRowCache();
@@ -83,6 +85,7 @@ public class SqlEntityProcessor extends EntityProcessorBase {
 
   }
 
+  @Override
   public Map<String, Object> nextModifiedRowKey() {
     if (rowIterator == null) {
       String deltaQuery = context.getEntityAttribute(DELTA_QUERY);
@@ -93,6 +96,7 @@ public class SqlEntityProcessor extends EntityProcessorBase {
     return getNext();
   }
 
+  @Override
   public Map<String, Object> nextDeletedRowKey() {
     if (rowIterator == null) {
       String deletedPkQuery = context.getEntityAttribute(DEL_PK_QUERY);
@@ -103,6 +107,7 @@ public class SqlEntityProcessor extends EntityProcessorBase {
     return getNext();
   }
 
+  @Override
   public Map<String, Object> nextModifiedParentRowKey() {
     if (rowIterator == null) {
       String parentDeltaQuery = context.getEntityAttribute(PARENT_DELTA_QUERY);

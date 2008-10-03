@@ -44,10 +44,12 @@ public class FunctionQuery extends Query {
     return func;
   }
 
+  @Override
   public Query rewrite(IndexReader reader) throws IOException {
     return this;
   }
 
+  @Override
   public void extractTerms(Set terms) {}
 
   protected class FunctionWeight implements Weight {
@@ -109,6 +111,7 @@ public class FunctionQuery extends Query {
     // the score could either ignore the subscore, or boost it.
     // Containment:  floatline(foo:myTerm, "myFloatField", 1.0, 0.0f)
     // Boost:        foo:myTerm^floatline("myFloatField",1.0,0.0f)
+    @Override
     public boolean next() throws IOException {
       for(;;) {
         ++doc;
@@ -124,19 +127,23 @@ public class FunctionQuery extends Query {
       }
     }
 
+    @Override
     public int doc() {
       return doc;
     }
 
+    @Override
     public float score() throws IOException {
       return qWeight * vals.floatVal(doc);
     }
 
+    @Override
     public boolean skipTo(int target) throws IOException {
       doc=target-1;
       return next();
     }
 
+    @Override
     public Explanation explain(int doc) throws IOException {
       float sc = qWeight * vals.floatVal(doc);
 
@@ -151,12 +158,14 @@ public class FunctionQuery extends Query {
   }
 
 
+  @Override
   protected Weight createWeight(Searcher searcher) {
     return new FunctionQuery.FunctionWeight(searcher);
   }
 
 
   /** Prints a user-readable version of this query. */
+  @Override
   public String toString(String field)
   {
     float boost = getBoost();
@@ -166,6 +175,7 @@ public class FunctionQuery extends Query {
 
 
   /** Returns true if <code>o</code> is equal to this. */
+  @Override
   public boolean equals(Object o) {
     if (FunctionQuery.class != o.getClass()) return false;
     FunctionQuery other = (FunctionQuery)o;
@@ -174,6 +184,7 @@ public class FunctionQuery extends Query {
   }
 
   /** Returns a hash code value for this object. */
+  @Override
   public int hashCode() {
     return func.hashCode()*31 + Float.floatToIntBits(getBoost());
   }

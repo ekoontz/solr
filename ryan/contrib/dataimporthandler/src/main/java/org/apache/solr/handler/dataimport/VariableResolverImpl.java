@@ -73,10 +73,12 @@ public class VariableResolverImpl extends VariableResolver {
       container.remove(name);
   }
 
+  @Override
   public String replaceTokens(String template) {
     return TEMPLATE_STRING.replaceTokens(template, this);
   }
 
+  @Override
   @SuppressWarnings("unchecked")
   public Object resolve(String name) {
     if (name == null)

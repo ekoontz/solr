@@ -162,6 +162,7 @@ public class SolrIndexSearcher extends Searcher implements SolrInfoMBean {
   }
 
 
+  @Override
   public String toString() {
     return name;
   }
@@ -185,6 +186,7 @@ public class SolrIndexSearcher extends Searcher implements SolrInfoMBean {
    *
    * In particular, the underlying reader and any cache's in use are closed.
    */
+  @Override
   public void close() throws IOException {
     if (cachingEnabled) {
       StringBuilder sb = new StringBuilder();
@@ -270,6 +272,7 @@ public class SolrIndexSearcher extends Searcher implements SolrInfoMBean {
     return qr;
   }
 
+  @Override
   public Hits search(Query query, Filter filter, Sort sort) throws IOException {
     // todo - when Solr starts accepting filters, need to
     // change this conditional check (filter!=null) and create a new filter
@@ -287,26 +290,32 @@ public class SolrIndexSearcher extends Searcher implements SolrInfoMBean {
     }
   }
 
+  @Override
   public Hits search(Query query, Filter filter) throws IOException {
     return searcher.search(query, filter);
   }
 
+  @Override
   public Hits search(Query query, Sort sort) throws IOException {
     return searcher.search(query, sort);
   }
 
+  @Override
   public void search(Query query, HitCollector results) throws IOException {
     searcher.search(query, results);
   }
 
+  @Override
   public void setSimilarity(Similarity similarity) {
     searcher.setSimilarity(similarity);
   }
 
+  @Override
   public Similarity getSimilarity() {
     return searcher.getSimilarity();
   }
 
+  @Override
   public int docFreq(Term term) throws IOException {
     return searcher.docFreq(term);
   }
@@ -340,6 +349,7 @@ public class SolrIndexSearcher extends Searcher implements SolrInfoMBean {
   /**
    * Retrieve the {@link Document} instance corresponding to the document id.
    */
+  @Override
   public Document doc(int i) throws IOException {
     return doc(i, (Set<String>)null);
   }
@@ -401,26 +411,32 @@ public class SolrIndexSearcher extends Searcher implements SolrInfoMBean {
 
   /* ********************** end document retrieval *************************/
 
+  @Override
   public int maxDoc() throws IOException {
     return searcher.maxDoc();
   }
 
+  @Override
   public TopDocs search(Weight weight, Filter filter, int i) throws IOException {
     return searcher.search(weight, filter, i);
   }
 
+  @Override
   public void search(Weight weight, Filter filter, HitCollector hitCollector) throws IOException {
     searcher.search(weight, filter, hitCollector);
   }
 
+  @Override
   public Query rewrite(Query original) throws IOException {
     return searcher.rewrite(original);
   }
 
+  @Override
   public Explanation explain(Weight weight, int i) throws IOException {
     return searcher.explain(weight, i);
   }
 
+  @Override
   public TopFieldDocs search(Weight weight, Filter filter, int i, Sort sort) throws IOException {
     return searcher.search(weight, filter, i, sort);
   }
@@ -607,6 +623,7 @@ public class SolrIndexSearcher extends Searcher implements SolrInfoMBean {
       final DocSetHitCollector hc = new DocSetHitCollector(HASHSET_INVERSE_LOAD_FACTOR, HASHDOCSET_MAXSIZE, maxDoc());
       final DocSet filt = filter;
       searcher.search(query, null, new HitCollector() {
+        @Override
         public void collect(int doc, float score) {
           if (filt.exists(doc)) hc.collect(doc,score);
         }
@@ -875,6 +892,7 @@ public class SolrIndexSearcher extends Searcher implements SolrInfoMBean {
       final int[] numHits = new int[1];
 
       HitCollector hc = new HitCollector() {
+        @Override
         public void collect(int doc, float score) {
           if (filt!=null && !filt.exists(doc)) return;
           numHits[0]++;
@@ -907,6 +925,7 @@ public class SolrIndexSearcher extends Searcher implements SolrInfoMBean {
       final FieldSortedHitQueue hq = new FieldSortedHitQueue(reader, cmd.getSort().getSort(), len);
 
       HitCollector hc = new HitCollector() {
+        @Override
         public void collect(int doc, float score) {
           if (filt!=null && !filt.exists(doc)) return;
           numHits[0]++;
@@ -947,6 +966,7 @@ public class SolrIndexSearcher extends Searcher implements SolrInfoMBean {
       final int[] numHits = new int[1];
       HitCollector hc = new HitCollector() {
         float minScore=Float.NEGATIVE_INFINITY;  // minimum score in the priority queue
+        @Override
         public void collect(int doc, float score) {
           if (filt!=null && !filt.exists(doc)) return;
           if (numHits[0]++ < lastDocRequested || score >= minScore) {
@@ -1079,6 +1099,7 @@ public class SolrIndexSearcher extends Searcher implements SolrInfoMBean {
 
       try {
         searcher.search(query, new HitCollector() {
+          @Override
           public void collect(int doc, float score) {
             hitCollector.collect(doc,score);
             if (filt!=null && !filt.exists(doc)) return;
@@ -1109,6 +1130,7 @@ public class SolrIndexSearcher extends Searcher implements SolrInfoMBean {
 
       try {
         searcher.search(query, new HitCollector() {
+          @Override
           public void collect(int doc, float score) {
             hitCollector.collect(doc,score);
             if (filt!=null && !filt.exists(doc)) return;
@@ -1147,6 +1169,7 @@ public class SolrIndexSearcher extends Searcher implements SolrInfoMBean {
       try {
         searcher.search(query, new HitCollector() {
           float minScore=Float.NEGATIVE_INFINITY;  // minimum score in the priority queue
+          @Override
           public void collect(int doc, float score) {
             hitCollector.collect(doc,score);
             if (filt!=null && !filt.exists(doc)) return;
@@ -1749,6 +1772,7 @@ final class ScorePriorityQueue extends PriorityQueue {
     initialize(size);
   }
 
+  @Override
   protected final boolean lessThan(Object o1, Object o2) {
     ScoreDoc sd1 = (ScoreDoc)o1;
     ScoreDoc sd2 = (ScoreDoc)o2;

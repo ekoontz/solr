@@ -20,16 +20,15 @@ package org.apache.solr.analysis;
 import org.apache.solr.util.AbstractSolrTestCase;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Token;
-import org.apache.lucene.analysis.WhitespaceTokenizer;
-
 import java.io.IOException;
-import java.io.StringReader;
 
 /**
  * New WordDelimiterFilter tests... most of the tests are in ConvertedLegacyTest
  */
 public class TestWordDelimiterFilter extends AbstractSolrTestCase {
+  @Override
   public String getSchemaFile() { return "solr/conf/schema.xml"; }
+  @Override
   public String getSolrConfigFile() { return "solr/conf/solrconfig.xml"; }
 
 
@@ -137,6 +136,7 @@ public class TestWordDelimiterFilter extends AbstractSolrTestCase {
     WordDelimiterFilter wdf = new WordDelimiterFilter(
             new TokenStream() {
               Token t;
+              @Override
               public Token next() throws IOException {
                 if (t!=null) return null;
                 t = new Token("foo-bar", 5, 12);  // actual
@@ -171,6 +171,7 @@ public class TestWordDelimiterFilter extends AbstractSolrTestCase {
     wdf = new WordDelimiterFilter(
             new TokenStream() {
               Token t;
+              @Override
               public Token next() throws IOException {
                 if (t!=null) return null;
                 t = new Token("foo-bar", 5, 6);  // a synonym

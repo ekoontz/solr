@@ -39,41 +39,51 @@ public class MaxFloatFunction extends ValueSource {
     this.fval = fval;
   }
   
+  @Override
   public String description() {
     return "max(" + source.description() + "," + fval + ")";
   }
 
+  @Override
   public DocValues getValues(IndexReader reader) throws IOException {
     final DocValues vals =  source.getValues(reader);
     return new DocValues() {
+      @Override
       public float floatVal(int doc) {
 	float v = vals.floatVal(doc);
         return v < fval ? fval : v;
       }
+      @Override
       public int intVal(int doc) {
         return (int)floatVal(doc);
       }
+      @Override
       public long longVal(int doc) {
         return (long)floatVal(doc);
       }
+      @Override
       public double doubleVal(int doc) {
-        return (double)floatVal(doc);
+        return floatVal(doc);
       }
+      @Override
       public String strVal(int doc) {
         return Float.toString(floatVal(doc));
       }
+      @Override
       public String toString(int doc) {
 	return "max(" + vals.toString(doc) + "," + fval + ")";
       }
     };
   }
 
+  @Override
   public int hashCode() {
     int h = Float.floatToIntBits(fval);
     h = (h >>> 2) | (h << 30);
     return h + source.hashCode();
   }
 
+  @Override
   public boolean equals(Object o) {
     if (MaxFloatFunction.class != o.getClass()) return false;
     MaxFloatFunction other = (MaxFloatFunction)o;

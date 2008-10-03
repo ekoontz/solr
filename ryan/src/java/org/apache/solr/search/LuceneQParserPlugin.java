@@ -42,6 +42,7 @@ public class LuceneQParserPlugin extends QParserPlugin {
   public void init(NamedList args) {
   }
 
+  @Override
   public QParser createParser(String qstr, SolrParams localParams, SolrParams params, SolrQueryRequest req) {
     return new LuceneQParser(qstr, localParams, params, req);
   }
@@ -56,6 +57,7 @@ class LuceneQParser extends QParser {
   }
 
 
+  @Override
   public Query parse() throws ParseException {
     String qstr = getString();
 
@@ -80,6 +82,7 @@ class LuceneQParser extends QParser {
   }
 
 
+  @Override
   public String[] getDefaultHighlightFields() {
     return new String[]{lparser.getField()};
   }
@@ -94,6 +97,7 @@ class OldLuceneQParser extends LuceneQParser {
     super(qstr, localParams, params, req);
   }
 
+  @Override
   public Query parse() throws ParseException {
     // handle legacy "query;sort" syntax
     if (getLocalParams() == null) {

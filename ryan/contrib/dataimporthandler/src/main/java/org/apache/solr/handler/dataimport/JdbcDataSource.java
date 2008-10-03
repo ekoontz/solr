@@ -56,6 +56,7 @@ public class JdbcDataSource extends
 
   private int batchSize = FETCH_SIZE;
 
+  @Override
   public void init(Context context, Properties initProps) {
     Object o = initProps.get(CONVERT_TYPE);
     if (o != null)
@@ -138,6 +139,7 @@ public class JdbcDataSource extends
     };
   }
 
+  @Override
   public Iterator<Map<String, Object>> getData(String query) {
     ResultSetIterator r = new ResultSetIterator(query);
     return r.getIterator();
@@ -306,6 +308,7 @@ public class JdbcDataSource extends
     }
   }
 
+  @Override
   protected void finalize() {
     try {
       conn.close();
@@ -313,6 +316,7 @@ public class JdbcDataSource extends
     }
   }
 
+  @Override
   public void close() {
     try {
       conn.close();

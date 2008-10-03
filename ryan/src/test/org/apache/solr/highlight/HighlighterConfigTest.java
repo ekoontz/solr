@@ -1,15 +1,7 @@
 package org.apache.solr.highlight;
 
-import java.io.IOException;
 import java.util.HashMap;
 
-import org.apache.lucene.search.Query;
-import org.apache.solr.common.util.NamedList;
-import org.apache.solr.common.util.SimpleOrderedMap;
-import org.apache.solr.core.Config;
-import org.apache.solr.core.SolrCore;
-import org.apache.solr.request.SolrQueryRequest;
-import org.apache.solr.search.DocList;
 import org.apache.solr.util.AbstractSolrTestCase;
 import org.apache.solr.util.TestHarness;
 

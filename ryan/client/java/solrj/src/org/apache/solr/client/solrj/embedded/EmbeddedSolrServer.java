@@ -20,15 +20,10 @@ package org.apache.solr.client.solrj.embedded;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
-
-import org.apache.solr.client.solrj.ResponseParser;
 import org.apache.solr.client.solrj.SolrRequest;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.BinaryResponseParser;
-import org.apache.solr.client.solrj.impl.XMLResponseParser;
 import org.apache.solr.common.SolrException;
 import org.apache.solr.common.params.CommonParams;
 import org.apache.solr.common.params.ModifiableSolrParams;
@@ -36,9 +31,7 @@ import org.apache.solr.common.params.SolrParams;
 import org.apache.solr.common.util.NamedList;
 import org.apache.solr.core.CoreContainer;
 import org.apache.solr.core.SolrCore;
-import org.apache.solr.core.CoreDescriptor;
 import org.apache.solr.request.BinaryResponseWriter;
-import org.apache.solr.request.QueryResponseWriter;
 import org.apache.solr.request.SolrQueryRequest;
 import org.apache.solr.request.SolrQueryResponse;
 import org.apache.solr.request.SolrRequestHandler;
@@ -58,30 +51,6 @@ public class EmbeddedSolrServer extends SolrServer
   protected final CoreContainer coreContainer;
   protected final String coreName;
   private final SolrRequestParsers _parser;
-  
-  /**
-   * Use the other constructor using a CoreContainer and a name.
-   * @param core
-   * @deprecated
-   */
-  @Deprecated
-  public EmbeddedSolrServer( SolrCore core )
-  {
-    if ( core == null ) {
-      throw new NullPointerException("SolrCore instance required");
-    }
-    CoreDescriptor dcore = core.getCoreDescriptor();
-    if (dcore == null)
-      throw new NullPointerException("CoreDescriptor required");
-    
-    CoreContainer cores = dcore.getCoreContainer();
-    if (cores == null)
-      throw new NullPointerException("CoreContainer required");
-    
-    coreName = dcore.getName();
-    coreContainer = cores;
-    _parser = new SolrRequestParsers( null );
-  }
     
   /**
    * Creates a SolrServer.

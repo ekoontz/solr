@@ -106,6 +106,7 @@ public class DocBuilder {
       return;
     final AtomicLong startTime = new AtomicLong(System.currentTimeMillis());
     statusMessages.put(TIME_ELAPSED, new Object() {
+      @Override
       public String toString() {
         return getTimeElapsedSince(startTime.get());
       }

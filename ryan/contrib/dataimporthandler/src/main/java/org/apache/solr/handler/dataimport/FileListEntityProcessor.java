@@ -64,6 +64,7 @@ public class FileListEntityProcessor extends EntityProcessorBase {
 
   private Pattern fileNamePattern, excludesPattern;
 
+  @Override
   public void init(Context context) {
     super.init(context);
     fileName = context.getEntityAttribute(FILE_NAME);
@@ -119,6 +120,7 @@ public class FileListEntityProcessor extends EntityProcessorBase {
     }
   }
 
+  @Override
   public Map<String, Object> nextRow() {
     if (rowIterator != null)
       return getAndApplyTrans();

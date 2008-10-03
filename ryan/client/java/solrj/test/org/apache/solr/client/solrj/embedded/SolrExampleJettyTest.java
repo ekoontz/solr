@@ -20,8 +20,6 @@ package org.apache.solr.client.solrj.embedded;
 import org.apache.solr.client.solrj.SolrExampleTests;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
-import org.apache.solr.core.SolrCore;
-import org.apache.solr.schema.SchemaField;
 import org.junit.Assert;
 
 /**

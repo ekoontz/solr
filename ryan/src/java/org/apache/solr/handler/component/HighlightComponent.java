@@ -93,6 +93,7 @@ public class HighlightComponent extends SearchComponent
     }
   }
 
+  @Override
   public void modifyRequest(ResponseBuilder rb, SearchComponent who, ShardRequest sreq) {
     if (!rb.doHighlights) return;
 

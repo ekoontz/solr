@@ -22,7 +22,6 @@ import java.net.UnknownHostException;
 import junit.framework.TestCase;
 
 import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
-import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrException;
 
 /**

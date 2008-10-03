@@ -32,6 +32,7 @@ public class TestBufferedTokenStream extends BaseTokenTestCase {
   /** Example of a class implementing the rule "A" "B" => "Q" "B" */
   public static class AB_Q_Stream extends BufferedTokenStream {
     public AB_Q_Stream(TokenStream input) {super(input);}
+    @Override
     protected Token process(Token t) throws IOException {
       if ("A".equals(new String(t.termBuffer(), 0, t.termLength()))) {
         Token t2 = read();
@@ -45,6 +46,7 @@ public class TestBufferedTokenStream extends BaseTokenTestCase {
   /** Example of a class implementing "A" "B" => "A" "A" "B" */
   public static class AB_AAB_Stream extends BufferedTokenStream {
     public AB_AAB_Stream(TokenStream input) {super(input);}
+    @Override
     protected Token process(Token t) throws IOException {
       if ("A".equals(new String(t.termBuffer(), 0, t.termLength())) && 
           "B".equals(new String(peek(1).termBuffer(), 0, peek(1).termLength())))

@@ -18,8 +18,6 @@
 package org.apache.solr.handler.component;
 
 import static org.apache.solr.common.params.CommonParams.FQ;
-import org.apache.solr.common.params.HighlightParams;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
@@ -84,6 +82,7 @@ public class DebugComponent extends SearchComponent
   }
 
 
+  @Override
   public void modifyRequest(ResponseBuilder rb, SearchComponent who, ShardRequest sreq) {
     if (!rb.isDebug()) return;
 

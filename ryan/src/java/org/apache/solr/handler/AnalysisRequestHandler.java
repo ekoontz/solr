@@ -16,7 +16,6 @@ package org.apache.solr.handler;
  * limitations under the License.
  */
 
-import javanet.staxutils.BaseXMLInputFactory;
 import org.apache.commons.io.IOUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.Token;
@@ -40,9 +39,7 @@ import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,7 +57,7 @@ public class AnalysisRequestHandler extends RequestHandlerBase {
   public void init(NamedList args) {
     super.init(args);
 
-    inputFactory = BaseXMLInputFactory.newInstance();
+    inputFactory = XMLInputFactory.newInstance();
     try {
       // The java 1.6 bundled stax parser (sjsxp) does not currently have a thread-safe
       // XMLInputFactory, as that implementation tries to cache and reuse the
@@ -77,6 +74,7 @@ public class AnalysisRequestHandler extends RequestHandlerBase {
     }
   }
 
+  @Override
   public void handleRequestBody(SolrQueryRequest req, SolrQueryResponse rsp) throws Exception {
     SolrParams params = req.getParams();
     Iterable<ContentStream> streams = req.getContentStreams();

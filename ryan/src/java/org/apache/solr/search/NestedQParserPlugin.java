@@ -21,9 +21,6 @@ import org.apache.lucene.search.Query;
 import org.apache.solr.common.params.SolrParams;
 import org.apache.solr.common.util.NamedList;
 import org.apache.solr.request.SolrQueryRequest;
-import org.apache.solr.search.function.BoostedQuery;
-import org.apache.solr.search.function.FunctionQuery;
-import org.apache.solr.search.function.QueryValueSource;
 import org.apache.solr.search.function.ValueSource;
 
 /**
@@ -41,25 +38,30 @@ public class NestedQParserPlugin extends QParserPlugin {
   public void init(NamedList args) {
   }
 
+  @Override
   public QParser createParser(String qstr, SolrParams localParams, SolrParams params, SolrQueryRequest req) {
     return new QParser(qstr, localParams, params, req) {
       QParser baseParser;
       ValueSource vs;
       String b;
 
+      @Override
       public Query parse() throws ParseException {
         baseParser = subQuery(localParams.get(QueryParsing.V), null);
         return baseParser.getQuery();
       }
 
+      @Override
       public String[] getDefaultHighlightFields() {
         return baseParser.getDefaultHighlightFields();
       }
 
+      @Override
       public Query getHighlightQuery() throws ParseException {
         return baseParser.getHighlightQuery();
       }
 
+      @Override
       public void addDebugInfo(NamedList<Object> debugInfo) {
         // encapsulate base debug info in a sub-list?
         baseParser.addDebugInfo(debugInfo);

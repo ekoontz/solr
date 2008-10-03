@@ -58,6 +58,7 @@ public class HttpDataSource extends DataSource<Reader> {
   public HttpDataSource() {
   }
 
+  @Override
   public void init(Context context, Properties initProps) {
     baseUrl = initProps.getProperty(BASE_URL);
     if (initProps.get(ENCODING) != null)
@@ -81,6 +82,7 @@ public class HttpDataSource extends DataSource<Reader> {
 
   }
 
+  @Override
   public Reader getData(String query) {
     URL url = null;
     try {
@@ -117,6 +119,7 @@ public class HttpDataSource extends DataSource<Reader> {
     }
   }
 
+  @Override
   public void close() {
   }
 

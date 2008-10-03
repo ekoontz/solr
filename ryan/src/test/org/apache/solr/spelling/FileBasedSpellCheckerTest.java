@@ -34,7 +34,9 @@ import java.util.Collection;
  **/
 public class FileBasedSpellCheckerTest extends AbstractSolrTestCase{
 
+  @Override
   public String getSchemaFile() { return "schema.xml"; }
+  @Override
   public String getSolrConfigFile() { return "solrconfig.xml"; }
 
   private SpellingQueryConverter queryConverter;
@@ -63,12 +65,12 @@ public class FileBasedSpellCheckerTest extends AbstractSolrTestCase{
     spellchecker.add(SolrSpellChecker.DICTIONARY_NAME, "external");
     File spelling = new File("spellings.txt");
     spellchecker.add(AbstractLuceneSpellChecker.LOCATION, spelling.getAbsolutePath());
-    spellchecker.add(IndexBasedSpellChecker.FIELD, "teststop");
+    spellchecker.add(AbstractLuceneSpellChecker.FIELD, "teststop");
     spellchecker.add(FileBasedSpellChecker.SOURCE_FILE_CHAR_ENCODING, "UTF-8");
     File tmpDir = new File(System.getProperty("java.io.tmpdir"));
     File indexDir = new File(tmpDir, "spellingIdx" + new Date().getTime());
     indexDir.mkdirs();
-    spellchecker.add(FileBasedSpellChecker.INDEX_DIR, indexDir.getAbsolutePath());
+    spellchecker.add(AbstractLuceneSpellChecker.INDEX_DIR, indexDir.getAbsolutePath());
     SolrCore core = h.getCore();
     String dictName = checker.init(spellchecker, core);
     assertTrue(dictName + " is not equal to " + "external", dictName.equals("external") == true);
@@ -99,13 +101,13 @@ public class FileBasedSpellCheckerTest extends AbstractSolrTestCase{
     spellchecker.add(SolrSpellChecker.DICTIONARY_NAME, "external");
     File spelling = new File("spellings.txt");
     spellchecker.add(AbstractLuceneSpellChecker.LOCATION, spelling.getAbsolutePath());
-    spellchecker.add(IndexBasedSpellChecker.FIELD, "teststop");
+    spellchecker.add(AbstractLuceneSpellChecker.FIELD, "teststop");
     spellchecker.add(FileBasedSpellChecker.SOURCE_FILE_CHAR_ENCODING, "UTF-8");
     File tmpDir = new File(System.getProperty("java.io.tmpdir"));
     File indexDir = new File(tmpDir, "spellingIdx" + new Date().getTime());
     indexDir.mkdirs();
-    spellchecker.add(FileBasedSpellChecker.INDEX_DIR, indexDir.getAbsolutePath());
-    spellchecker.add(FileBasedSpellChecker.FIELD_TYPE, "teststop");
+    spellchecker.add(AbstractLuceneSpellChecker.INDEX_DIR, indexDir.getAbsolutePath());
+    spellchecker.add(AbstractLuceneSpellChecker.FIELD_TYPE, "teststop");
     spellchecker.add(AbstractLuceneSpellChecker.SPELLCHECKER_ARG_NAME, spellchecker);
     SolrCore core = h.getCore();
     String dictName = checker.init(spellchecker, core);
@@ -144,8 +146,8 @@ public class FileBasedSpellCheckerTest extends AbstractSolrTestCase{
     File spelling = new File("spellings.txt");
     spellchecker.add(AbstractLuceneSpellChecker.LOCATION, spelling.getAbsolutePath());
     spellchecker.add(FileBasedSpellChecker.SOURCE_FILE_CHAR_ENCODING, "UTF-8");
-    spellchecker.add(IndexBasedSpellChecker.FIELD, "teststop");
-    spellchecker.add(FileBasedSpellChecker.FIELD_TYPE, "teststop");
+    spellchecker.add(AbstractLuceneSpellChecker.FIELD, "teststop");
+    spellchecker.add(AbstractLuceneSpellChecker.FIELD_TYPE, "teststop");
     spellchecker.add(AbstractLuceneSpellChecker.SPELLCHECKER_ARG_NAME, spellchecker);
 
     SolrCore core = h.getCore();

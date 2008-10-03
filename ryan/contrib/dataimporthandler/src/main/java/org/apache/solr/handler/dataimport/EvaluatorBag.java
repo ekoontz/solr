@@ -67,6 +67,7 @@ public class EvaluatorBag {
    */
   public static Evaluator getSqlEscapingEvaluator() {
     return new Evaluator() {
+      @Override
       public String evaluate(VariableResolver resolver, String expression) {
         Object o = resolver.resolve(expression);
 
@@ -90,6 +91,7 @@ public class EvaluatorBag {
    */
   public static Evaluator getUrlEvaluator() {
     return new Evaluator() {
+      @Override
       public String evaluate(VariableResolver resolver, String expression) {
         Object value = null;
         try {
@@ -126,6 +128,7 @@ public class EvaluatorBag {
    */
   public static Evaluator getDateFormatEvaluator() {
     return new Evaluator() {
+      @Override
       public String evaluate(VariableResolver resolver, String expression) {
         CacheEntry e = getCachedData(expression);
         String expr = e.key;

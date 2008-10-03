@@ -16,14 +16,10 @@ package org.apache.solr.spelling;
  * limitations under the License.
  */
 
-import org.apache.lucene.analysis.WhitespaceAnalyzer;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.solr.common.util.NamedList;
 import org.apache.solr.core.SolrCore;
-import org.apache.solr.core.SolrResourceLoader;
-import org.apache.solr.schema.FieldType;
-import org.apache.solr.schema.IndexSchema;
 import org.apache.solr.search.SolrIndexSearcher;
 import org.apache.solr.util.HighFrequencyDictionary;
 
@@ -52,6 +48,7 @@ public class IndexBasedSpellChecker extends AbstractLuceneSpellChecker {
   protected float threshold;
   protected IndexReader reader;
 
+  @Override
   public String init(NamedList config, SolrCore core) {
     super.init(config, core);
     threshold = config.get(THRESHOLD_TOKEN_FREQUENCY) == null ? 0.0f
@@ -71,6 +68,7 @@ public class IndexBasedSpellChecker extends AbstractLuceneSpellChecker {
     }
   }
 
+  @Override
   public void build(SolrCore core, SolrIndexSearcher searcher) {
     IndexReader reader = null;
     try {

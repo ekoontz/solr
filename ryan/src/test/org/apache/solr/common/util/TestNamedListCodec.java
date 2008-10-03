@@ -22,13 +22,13 @@ import org.apache.solr.TestDistributedSearch;
 
 import java.io.ByteArrayOutputStream;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
+import junit.framework.Assert;
 import junit.framework.TestCase;
 
 public class TestNamedListCodec  extends TestCase {
@@ -253,7 +253,7 @@ public class TestNamedListCodec  extends TestCase {
       if (cmp != null) {
         System.out.println(nl);
         System.out.println(res);
-        TestCase.fail(cmp);
+        Assert.fail(cmp);
       }
     }
   }

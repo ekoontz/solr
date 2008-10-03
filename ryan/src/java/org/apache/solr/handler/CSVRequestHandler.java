@@ -29,13 +29,11 @@ import org.apache.solr.schema.IndexSchema;
 import org.apache.solr.schema.SchemaField;
 import org.apache.solr.update.*;
 import org.apache.solr.update.processor.UpdateRequestProcessorChain;
-import org.apache.solr.update.processor.UpdateRequestProcessorFactory;
 import org.apache.solr.update.processor.UpdateRequestProcessor;
 import org.apache.commons.csv.CSVStrategy;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.io.IOUtils;
 
-import javax.xml.stream.XMLStreamReader;
 import java.util.regex.Pattern;
 import java.util.List;
 import java.io.*;
@@ -46,6 +44,7 @@ import java.io.*;
 
 public class CSVRequestHandler extends RequestHandlerBase {
 
+  @Override
   public void handleRequestBody(SolrQueryRequest req, SolrQueryResponse rsp) throws Exception {
     SolrParams params = req.getParams();
     UpdateRequestProcessorChain processorChain =
@@ -155,6 +154,7 @@ abstract class CSVLoader {
 
   /** add zero length fields */
   private class FieldAdderEmpty extends CSVLoader.FieldAdder {
+    @Override
     void add(SolrInputDocument doc, int line, int column, String val) {
       doc.addField(fields[column].getName(),val,1.0f);
     }
@@ -164,6 +164,7 @@ abstract class CSVLoader {
   private class FieldTrimmer extends CSVLoader.FieldAdder {
     private final CSVLoader.FieldAdder base;
     FieldTrimmer(CSVLoader.FieldAdder base) { this.base=base; }
+    @Override
     void add(SolrInputDocument doc, int line, int column, String val) {
       base.add(doc, line, column, val.trim());
     }
@@ -182,6 +183,7 @@ abstract class CSVLoader {
      this.to=to;
      this.base=base;
    }
+    @Override
     void add(SolrInputDocument doc, int line, int column, String val) {
       if (from.equals(val)) val=to;
       base.add(doc,line,column,val);
@@ -199,6 +201,7 @@ abstract class CSVLoader {
       this.base = base;
     }
 
+    @Override
     void add(SolrInputDocument doc, int line, int column, String val) {
       CSVParser parser = new CSVParser(new StringReader(val), strategy);
       try {
@@ -223,19 +226,7 @@ abstract class CSVLoader {
     schema = req.getSchema();
 
     templateAdd = new AddUpdateCommand();
-    templateAdd.allowDups=false;
-    templateAdd.overwriteCommitted=true;
-    templateAdd.overwritePending=true;
-
-    if (params.getBool(OVERWRITE,true)) {
-      templateAdd.allowDups=false;
-      templateAdd.overwriteCommitted=true;
-      templateAdd.overwritePending=true;
-    } else {
-      templateAdd.allowDups=true;
-      templateAdd.overwriteCommitted=false;
-      templateAdd.overwritePending=false;
-    }
+    templateAdd.allowDups= !params.getBool(OVERWRITE,true);
 
     strategy = new CSVStrategy(',', '"', CSVStrategy.COMMENTS_DISABLED, CSVStrategy.ESCAPE_DISABLED, false, false, false, true);
     String sep = params.get(SEPARATOR);
@@ -423,6 +414,7 @@ class SingleThreadedCSVLoader extends CSVLoader {
     super(req, processor);
   }
 
+  @Override
   void addDoc(int line, String[] vals) throws IOException {
     templateAdd.indexedId = null;
     SolrInputDocument doc = new SolrInputDocument();

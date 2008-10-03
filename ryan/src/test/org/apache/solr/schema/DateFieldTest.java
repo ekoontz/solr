@@ -19,19 +19,25 @@ package org.apache.solr.schema;
 
 import org.apache.solr.schema.DateField;
 import org.apache.solr.util.DateMathParser;
-import org.apache.lucene.document.Fieldable;
 
 import java.util.Date;
-import java.util.TimeZone;
 import java.util.Locale;
-import java.text.DateFormat;
+import java.util.TimeZone;
 
 import junit.framework.TestCase;
 
-public class DateFieldTest extends LegacyDateFieldTest {
+public class DateFieldTest extends TestCase {
+  // if and when this class is removed, make sure to refactor all
+  // appropriate code to DateFieldTest
+
+  public static TimeZone UTC = TimeZone.getTimeZone("UTC");
+  protected DateField f = null;
+  protected DateMathParser p = null;
   
-  public void setUp()  throws Exception {
+  @Override
+  public void setUp() throws Exception {
     super.setUp();
+    p = new DateMathParser(UTC, Locale.US);
     f = new DateField();
   }
   
@@ -103,7 +109,14 @@ public class DateFieldTest extends LegacyDateFieldTest {
     assertEquals("1970-01-01T00:00:00",     f.formatDate(new Date(0)));
     assertEquals("1970-01-01T00:00:00.37",  f.formatDate(new Date(370)));
     assertEquals("1970-01-01T00:00:00.9",   f.formatDate(new Date(900)));
+  }
 
+  public void assertToI(String expected, String input) {
+    assertEquals("Input: " + input, expected, f.toInternal(input));
+  }
+  
+  public void assertToI(String expected, long input) {
+    assertEquals("Input: " + input, expected, f.toInternal(new Date(input)));
   }
 
 }

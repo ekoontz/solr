@@ -29,10 +29,8 @@ import org.apache.solr.search.QParser;
 import org.apache.solr.search.SortSpec;
 import org.apache.solr.search.SolrIndexSearcher;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * This class is experimental and will be changing in the future.

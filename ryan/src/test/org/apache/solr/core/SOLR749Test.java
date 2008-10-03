@@ -27,10 +27,12 @@ import org.apache.solr.search.ValueSourceParser;
  *
  **/
 public class SOLR749Test extends AbstractSolrTestCase{
+  @Override
   public String getSchemaFile() {
     return "schema.xml";
   }
 
+  @Override
   public String getSolrConfigFile() {
     return "solrconfig-SOLR-749.xml";
   }

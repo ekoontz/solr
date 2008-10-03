@@ -18,10 +18,8 @@
 package org.apache.solr.request;
 
 import java.io.IOException;
-import java.io.Writer;
 import java.io.StringWriter;
 
-import org.apache.solr.common.util.NamedList;
 import org.apache.solr.util.AbstractSolrTestCase;
 
 /** Test some aspects of JSON/python writer output (very incomplete)
@@ -29,7 +27,9 @@ import org.apache.solr.util.AbstractSolrTestCase;
  */
 public class JSONWriterTest extends AbstractSolrTestCase {
     
+  @Override
   public String getSchemaFile() { return "schema.xml"; }
+  @Override
   public String getSolrConfigFile() { return "solrconfig.xml"; }
     
   public void testNaNInf() throws IOException {

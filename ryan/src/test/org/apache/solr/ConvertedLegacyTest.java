@@ -91,9 +91,9 @@ public class ConvertedLegacyTest extends AbstractSolrTestCase {
     assertU("<delete><query>id:[100 TO 110]</query></delete>");
     assertU("<add allowDups=\"false\"><doc><field name=\"id\">101</field></doc></add>");
     assertU("<add allowDups=\"false\"><doc><field name=\"id\">101</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">105</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">105</field></doc></add>");
     assertU("<add allowDups=\"false\"><doc><field name=\"id\">102</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">103</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">103</field></doc></add>");
     assertU("<add allowDups=\"false\"><doc><field name=\"id\">101</field></doc></add>");
     assertU("<commit/>");
     assertQ(req("id:[100 TO 110]")
@@ -118,9 +118,9 @@ public class ConvertedLegacyTest extends AbstractSolrTestCase {
     // test range
 
     assertU("<delete><id>44</id></delete>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"val_s\">apple</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"val_s\">banana</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"val_s\">pear</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"val_s\">apple</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"val_s\">banana</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"val_s\">pear</field></doc></add>");
     assertU("<commit/>");
     assertQ(req("val_s:[a TO z]")
             ,"//*[@numFound='3'] "
@@ -310,7 +310,7 @@ public class ConvertedLegacyTest extends AbstractSolrTestCase {
 
     // check for docs that appear more than once in a range
 
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"val_s\">apple</field><field name=\"val_s\">banana</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"val_s\">apple</field><field name=\"val_s\">banana</field></doc></add>");
     assertU("<commit/>");
     assertQ(req("val_s:[* TO *] OR  val_s:[* TO *]")
             ,"//*[@numFound='4']"
@@ -341,8 +341,8 @@ public class ConvertedLegacyTest extends AbstractSolrTestCase {
     // allow duplicates
 
     assertU("<delete><id>44</id></delete>");
-    assertU("<add allowDups=\"true\" overwriteCommitted=\"false\" overwritePending=\"false\"><doc><field name=\"id\">44</field><field name=\"text\">red riding hood</field></doc></add>");
-    assertU("<add allowDups=\"true\" overwriteCommitted=\"false\" overwritePending=\"false\"><doc><field name=\"id\">44</field><field name=\"text\">big bad wolf</field></doc></add>");
+    assertU("<add overwrite=\"false\" overwriteCommitted=\"false\" overwritePending=\"false\"><doc><field name=\"id\">44</field><field name=\"text\">red riding hood</field></doc></add>");
+    assertU("<add overwrite=\"false\" overwriteCommitted=\"false\" overwritePending=\"false\"><doc><field name=\"id\">44</field><field name=\"text\">big bad wolf</field></doc></add>");
     assertU("<commit/>");
     assertQ(req("id:44")
             ,"//@numFound[.='2']"
@@ -502,16 +502,16 @@ public class ConvertedLegacyTest extends AbstractSolrTestCase {
     // test integer ranges and sorting
 
     assertU("<delete><id>44</id></delete>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_i\">1234567890</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_i\">10</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_i\">1</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_i\">2</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_i\">15</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_i\">-1</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_i\">-987654321</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_i\">2147483647</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_i\">-2147483648</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_i\">0</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_i\">1234567890</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_i\">10</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_i\">1</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_i\">2</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_i\">15</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_i\">-1</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_i\">-987654321</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_i\">2147483647</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_i\">-2147483648</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_i\">0</field></doc></add>");
     assertU("<commit/>");
     assertQ(req("id:44")
             ,"*[count(//doc)=10]"
@@ -545,16 +545,16 @@ public class ConvertedLegacyTest extends AbstractSolrTestCase {
     // test long ranges and sorting
 
     assertU("<delete><id>44</id></delete>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_l\">1234567890</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_l\">10</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_l\">1</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_l\">2</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_l\">15</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_l\">-1</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_l\">-987654321</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_l\">9223372036854775807</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_l\">-9223372036854775808</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_l\">0</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_l\">1234567890</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_l\">10</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_l\">1</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_l\">2</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_l\">15</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_l\">-1</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_l\">-987654321</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_l\">9223372036854775807</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_l\">-9223372036854775808</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_l\">0</field></doc></add>");
     assertU("<commit/>");
     assertQ(req("id:44")
             ,"*[count(//doc)=10]"
@@ -588,16 +588,16 @@ public class ConvertedLegacyTest extends AbstractSolrTestCase {
     // test binary float ranges and sorting
 
     assertU("<delete><id>44</id></delete>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_f\">1.4142135</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_f\">Infinity</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_f\">-Infinity</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_f\">NaN</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_f\">2</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_f\">-1</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_f\">-987654321</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_f\">-999999.99</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_f\">-1e20</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_f\">0</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_f\">1.4142135</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_f\">Infinity</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_f\">-Infinity</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_f\">NaN</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_f\">2</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_f\">-1</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_f\">-987654321</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_f\">-999999.99</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_f\">-1e20</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_f\">0</field></doc></add>");
     assertU("<commit/>");
     assertQ(req("id:44")
             ,"*[count(//doc)=10]"
@@ -637,16 +637,16 @@ public class ConvertedLegacyTest extends AbstractSolrTestCase {
     // test binary double ranges and sorting
 
     assertU("<delete><id>44</id></delete>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_d\">1.4142135</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_d\">Infinity</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_d\">-Infinity</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_d\">NaN</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_d\">2</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_d\">-1</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_d\">1e-100</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_d\">-999999.99</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_d\">-1e100</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"num_d\">0</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_d\">1.4142135</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_d\">Infinity</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_d\">-Infinity</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_d\">NaN</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_d\">2</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_d\">-1</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_d\">1e-100</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_d\">-999999.99</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_d\">-1e100</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"num_d\">0</field></doc></add>");
     assertU("<commit/>");
     assertQ(req("id:44")
             ,"*[count(//doc)=10]"
@@ -688,12 +688,12 @@ public class ConvertedLegacyTest extends AbstractSolrTestCase {
     // test sorting on multiple fields
 
     assertU("<delete><id>44</id></delete>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"a_i\">10</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"a_i\">1</field><field name=\"b_i\">100</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"a_i\">-1</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"a_i\">15</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"a_i\">1</field><field name=\"b_i\">50</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id\">44</field><field name=\"a_i\">0</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"a_i\">10</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"a_i\">1</field><field name=\"b_i\">100</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"a_i\">-1</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"a_i\">15</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"a_i\">1</field><field name=\"b_i\">50</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id\">44</field><field name=\"a_i\">0</field></doc></add>");
     assertU("<commit/>");
     assertQ(req("id:44")
             ,"*[count(//doc)=6]"
@@ -731,13 +731,13 @@ public class ConvertedLegacyTest extends AbstractSolrTestCase {
     // test sorting  with some docs missing the sort field
 
     assertU("<delete><query>id_i:[1000 TO 1010]</query></delete>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id_i\">1000</field><field name=\"a_i\">1</field><field name=\"nullfirst\">Z</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id_i\">1001</field><field name=\"a_i\">10</field><field name=\"nullfirst\">A</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id_i\">1002</field><field name=\"a_i\">1</field><field name=\"b_i\">100</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id_i\">1003</field><field name=\"a_i\">-1</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id_i\">1004</field><field name=\"a_i\">15</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id_i\">1005</field><field name=\"a_i\">1</field><field name=\"b_i\">50</field></doc></add>");
-    assertU("<add allowDups=\"true\"><doc><field name=\"id_i\">1006</field><field name=\"a_i\">0</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id_i\">1000</field><field name=\"a_i\">1</field><field name=\"nullfirst\">Z</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id_i\">1001</field><field name=\"a_i\">10</field><field name=\"nullfirst\">A</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id_i\">1002</field><field name=\"a_i\">1</field><field name=\"b_i\">100</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id_i\">1003</field><field name=\"a_i\">-1</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id_i\">1004</field><field name=\"a_i\">15</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id_i\">1005</field><field name=\"a_i\">1</field><field name=\"b_i\">50</field></doc></add>");
+    assertU("<add overwrite=\"false\"><doc><field name=\"id_i\">1006</field><field name=\"a_i\">0</field></doc></add>");
     assertU("<commit/>");
     assertQ(req("id_i:[1000 TO 1010]")
             ,"*[count(//doc)=7]"
@@ -1323,16 +1323,5 @@ public class ConvertedLegacyTest extends AbstractSolrTestCase {
     assertQ(req("+id:45 +text:\"cc dd\"")
             ,"//*[@numFound='1']"
             );
-
-
-    // trigger output of custom value test
-
-    args = new HashMap<String,String>();
-    args.put("version","2.0");
-    req = new LocalSolrQueryRequest(h.getCore(), "values",
-                                    "test", 0, 10, args);
-    assertQ(req
-            );
-
   }
 }

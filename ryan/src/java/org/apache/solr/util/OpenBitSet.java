@@ -590,6 +590,7 @@ public class OpenBitSet implements Cloneable, Serializable {
 
 
 
+  @Override
   public Object clone() {
     try {
       OpenBitSet obs = (OpenBitSet)super.clone();
@@ -727,6 +728,7 @@ public class OpenBitSet implements Cloneable, Serializable {
 
 
   /** returns true if both sets have the same bits set */
+  @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (!(o instanceof OpenBitSet)) return false;
@@ -752,6 +754,7 @@ public class OpenBitSet implements Cloneable, Serializable {
   }
 
 
+  @Override
   public int hashCode() {
 	  long h = 0x98761234;  // something non-zero for length==0
 	  for (int i = bits.length; --i>=0;) {

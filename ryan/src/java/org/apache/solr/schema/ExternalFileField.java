@@ -19,7 +19,6 @@ package org.apache.solr.schema;
 import org.apache.lucene.search.SortField;
 import org.apache.lucene.document.Fieldable;
 import org.apache.solr.search.function.ValueSource;
-import org.apache.solr.search.function.FloatFieldSource;
 import org.apache.solr.search.function.FileFloatSource;
 import org.apache.solr.search.QParser;
 import org.apache.solr.request.XMLWriter;
@@ -61,6 +60,7 @@ public class ExternalFileField extends FieldType {
   private IndexSchema schema;
   private float defVal;
 
+  @Override
   protected void init(IndexSchema schema, Map<String,String> args) {
     restrictProps(SORT_MISSING_FIRST | SORT_MISSING_LAST);
     String ftypeS = getArg("valType", args);
@@ -76,18 +76,22 @@ public class ExternalFileField extends FieldType {
     this.schema = schema;
   }
 
+  @Override
   public void write(XMLWriter xmlWriter, String name, Fieldable f) throws IOException {
     throw new UnsupportedOperationException();
   }
 
+  @Override
   public void write(TextResponseWriter writer, String name, Fieldable f) throws IOException {
     throw new UnsupportedOperationException();
   }
 
+  @Override
   public SortField getSortField(SchemaField field,boolean reverse) {
     throw new UnsupportedOperationException();
   }
 
+  @Override
   public ValueSource getValueSource(SchemaField field, QParser parser) {
     // default key field to unique key
     SchemaField keyField = keyFieldName==null ? schema.getUniqueKeyField() : schema.getField(keyFieldName);

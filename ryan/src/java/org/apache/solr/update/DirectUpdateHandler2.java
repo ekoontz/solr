@@ -152,7 +152,7 @@ public class DirectUpdateHandler2 extends UpdateHandler {
 
   // must only be called when iwCommit lock held
   private void deleteAll() throws IOException {
-    core.log.info(core.getLogId()+"REMOVING ALL DOCUMENTS FROM INDEX");
+    SolrCore.log.info(core.getLogId()+"REMOVING ALL DOCUMENTS FROM INDEX");
     closeWriter();
     writer = createMainIndexWriter("DirectUpdateHandler2", true);
   }
@@ -176,6 +176,7 @@ public class DirectUpdateHandler2 extends UpdateHandler {
     }
   }
 
+  @Override
   public int addDoc(AddUpdateCommand cmd) throws IOException {
     addCommands.incrementAndGet();
     addCommandsCumulative.incrementAndGet();
@@ -184,8 +185,6 @@ public class DirectUpdateHandler2 extends UpdateHandler {
     // if there is no ID field, use allowDups
     if( idField == null ) {
       cmd.allowDups = true;
-      cmd.overwriteCommitted = false;
-      cmd.overwritePending = false;
     }
 
     iwAccess.lock();
@@ -204,7 +203,7 @@ public class DirectUpdateHandler2 extends UpdateHandler {
       // this is the only unsynchronized code in the iwAccess block, which
       // should account for most of the time
 
-      if (cmd.overwriteCommitted || cmd.overwritePending) {
+      if ( !cmd.allowDups ) {
         if (cmd.indexedId == null) {
           cmd.indexedId = getIndexedId(cmd.doc);
         }
@@ -230,6 +229,7 @@ public class DirectUpdateHandler2 extends UpdateHandler {
 
 
   // could return the number of docs deleted, but is that always possible to know???
+  @Override
   public void delete(DeleteUpdateCommand cmd) throws IOException {
     deleteByIdCommands.incrementAndGet();
     deleteByIdCommandsCumulative.incrementAndGet();
@@ -260,7 +260,8 @@ public class DirectUpdateHandler2 extends UpdateHandler {
 
   // why not return number of docs deleted?
   // Depending on implementation, we may not be able to immediately determine the num...
-   public void deleteByQuery(DeleteUpdateCommand cmd) throws IOException {
+   @Override
+  public void deleteByQuery(DeleteUpdateCommand cmd) throws IOException {
      deleteByQueryCommands.incrementAndGet();
      deleteByQueryCommandsCumulative.incrementAndGet();
 
@@ -308,6 +309,7 @@ public class DirectUpdateHandler2 extends UpdateHandler {
 
 
 
+  @Override
   public void commit(CommitUpdateCommand cmd) throws IOException {
 
     if (cmd.optimize) {
@@ -371,6 +373,7 @@ public class DirectUpdateHandler2 extends UpdateHandler {
   }
 
 
+  @Override
   public void close() throws IOException {
     log.info("closing " + this);
     iwCommit.lock();
@@ -511,6 +514,7 @@ public class DirectUpdateHandler2 extends UpdateHandler {
     // to facilitate testing: blocks if called during commit
     public synchronized int getCommitCount() { return autoCommitCount; }
 
+    @Override
     public String toString() {
       if(timeUpperBound > 0 || docsUpperBound > 0) {
         return 
@@ -581,6 +585,7 @@ public class DirectUpdateHandler2 extends UpdateHandler {
     return lst;
   }
 
+  @Override
   public String toString() {
     return "DirectUpdateHandler2" + getStatistics();
   }

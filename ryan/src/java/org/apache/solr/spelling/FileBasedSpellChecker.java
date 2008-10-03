@@ -22,7 +22,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.apache.lucene.analysis.WhitespaceAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexReader;
@@ -54,12 +53,14 @@ public class FileBasedSpellChecker extends AbstractLuceneSpellChecker {
   private String characterEncoding;
   public static final String WORD_FIELD_NAME = "word";
 
+  @Override
   public String init(NamedList config, SolrCore core) {
     super.init(config, core);
     characterEncoding = (String) config.get(SOURCE_FILE_CHAR_ENCODING);
     return name;
   }
 
+  @Override
   public void build(SolrCore core, SolrIndexSearcher searcher) {
     try {
       loadExternalFileDictionary(core.getSchema(), core.getResourceLoader());

@@ -27,7 +27,9 @@ import javax.xml.xpath.XPathConstants;
 
 public class TestConfig extends AbstractSolrTestCase {
 
+  @Override
   public String getSchemaFile() { return "schema.xml"; }
+  @Override
   public String getSolrConfigFile() { return "solrconfig.xml"; }
 
   public void testJavaProperty() {

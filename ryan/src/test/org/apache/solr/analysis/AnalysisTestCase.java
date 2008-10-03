@@ -31,6 +31,7 @@ abstract public class AnalysisTestCase extends TestCase {
   
   public String getSolrConfigFile() { return "solrconfig.xml"; }
 
+  @Override
   public void setUp() throws Exception {
     // if you override setUp or tearDown, you better call
     // the super classes version

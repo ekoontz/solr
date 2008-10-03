@@ -25,9 +25,11 @@ public class ArraysUtilsTest extends TestCase {
     super(s);
   }
 
+  @Override
   protected void setUp() {
   }
 
+  @Override
   protected void tearDown() {
 
   }

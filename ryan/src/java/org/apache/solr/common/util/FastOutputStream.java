@@ -50,6 +50,7 @@ public class FastOutputStream extends OutputStream implements DataOutput {
     write((byte)b);
   }
 
+  @Override
   public void write(byte b[]) throws IOException {
   }
 

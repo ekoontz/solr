@@ -17,7 +17,6 @@ package org.apache.solr.request;
  */
 
 
-import java.io.Writer;
 import java.io.OutputStream;
 import java.io.IOException;
 

@@ -75,6 +75,7 @@ public class SynonymMap {
   }
 
 
+  @Override
   public String toString() {
     StringBuilder sb = new StringBuilder("<");
     if (synonyms!=null) {

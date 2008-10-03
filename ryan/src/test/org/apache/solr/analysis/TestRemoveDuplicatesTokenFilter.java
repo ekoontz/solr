@@ -17,7 +17,6 @@
 
 package org.apache.solr.analysis;
 
-import junit.framework.TestCase;
 import org.apache.lucene.analysis.Token;
 import org.apache.lucene.analysis.TokenStream;
 import java.util.Iterator;
@@ -41,10 +40,11 @@ public class TestRemoveDuplicatesTokenFilter extends AnalysisTestCase {
     
     final TokenStream ts = new RemoveDuplicatesTokenFilter
       (new TokenStream() {
+          @Override
           public Token next() { return toks.hasNext() ? toks.next() : null; }
         });
     
-    final String actual = TestBufferedTokenStream.tsToString(ts);
+    final String actual = BaseTokenTestCase.tsToString(ts);
     assertEquals(expected + " != " + actual, expected, actual);
     
   }

@@ -25,6 +25,7 @@ import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.solr.common.SolrException;
 import org.apache.solr.common.params.AppendedSolrParams;
 import org.apache.solr.common.params.DefaultSolrParams;
+import org.apache.solr.common.params.CommonParams;
 import org.apache.solr.common.params.SolrParams;
 import org.apache.solr.common.util.NamedList;
 import org.apache.solr.common.util.SimpleOrderedMap;
@@ -93,15 +94,6 @@ public class SolrPluginUtils {
       req.setParams(p);
   }
 
-
-  /**
-   * standard param for field list
-   *
-   * @deprecated Use org.apache.solr.common.params.CommonParams.FL.
-   */
-  @Deprecated
-  public static String FL = org.apache.solr.common.params.CommonParams.FL;
-
   /**
    * SolrIndexSearch.numDocs(Query,Query) freaks out if the filtering
    * query is null, so we use this workarround.
@@ -111,58 +103,7 @@ public class SolrPluginUtils {
 
     return (null == f) ? s.getDocSet(q).size() : s.numDocs(q,f);
         
-  }
-    
-  /**
-   * Returns the param, or the default if it's empty or not specified.
-   * @deprecated use SolrParam.get(String,String)
-   */
-  public static String getParam(SolrQueryRequest req,
-                                String param, String def) {
-        
-    String v = req.getParam(param);
-    // Note: parameters passed but given only white-space value are
-    // considered equivalent to passing nothing for that parameter.
-    if (null == v || "".equals(v.trim())) {
-      return def;
-    }
-    return v;
-  }
-    
-  /**
-   * Treats the param value as a Number, returns the default if nothing is
-   * there or if it's not a number.
-   * @deprecated use SolrParam.getFloat(String,float)
-   */
-  public static Number getNumberParam(SolrQueryRequest req,
-                                      String param, Number def) {
-        
-    Number r = def;
-    String v = req.getParam(param);
-    if (null == v || "".equals(v.trim())) {
-      return r;
-    }
-    try {
-      r = new Float(v);
-    } catch (NumberFormatException e) {
-      /* :NOOP" */
-    }
-    return r;
-  }
-        
-  /**
-   * Treats parameter value as a boolean.  The string 'false' is false; 
-   * any other non-empty string is true.
-   * @deprecated use SolrParam.getBool(String,boolean)
-   */
-  public static boolean getBooleanParam(SolrQueryRequest req,
-                                       String param, boolean def) {        
-    String v = req.getParam(param);
-    if (null == v || "".equals(v.trim())) {
-      return def;
-    }
-    return !"false".equals(v.trim());
-  }
+  } 
     
   private final static Pattern splitList=Pattern.compile(",| ");
   
@@ -257,84 +198,6 @@ public class SolrPluginUtils {
     for (int i=0; i<docs.size(); i++) {
       searcher.doc(iter.nextDoc(), fieldFilter);
     }
-  }
-
-  /**
-   * <p>
-   * Returns a NamedList containing many "standard" pieces of debugging
-   * information.
-   * </p>
-   *
-   * <ul>
-   * <li>rawquerystring - the 'q' param exactly as specified by the client
-   * </li>
-   * <li>querystring - the 'q' param after any preprocessing done by the plugin
-   * </li>
-   * <li>parsedquery - the main query executed formated by the Solr
-   *     QueryParsing utils class (which knows about field types)
-   * </li>
-   * <li>parsedquery_toString - the main query executed formated by it's
-   *     own toString method (in case it has internal state Solr
-   *     doesn't know about)
-   * </li>
-   * <li>expain - the list of score explanations for each document in
-   *     results against query.
-   * </li>
-   * <li>otherQuery - the query string specified in 'explainOther' query param.
-   * </li>
-   * <li>explainOther - the list of score explanations for each document in
-   *     results against 'otherQuery'
-   * </li>
-   * </ul>
-   *
-   * @param req the request we are dealing with
-   * @param userQuery the users query as a string, after any basic
-   *                  preprocessing has been done
-   * @param query the query built from the userQuery
-   *              (and perhaps other clauses) that identifies the main
-   *              result set of the response.
-   * @param results the main result set of the response
-   * @deprecated Use doStandardDebug(SolrQueryRequest,String,Query,DocList) with setDefaults
-   */
-  public static NamedList doStandardDebug(SolrQueryRequest req,
-                                          String userQuery,
-                                          Query query,
-                                          DocList results,
-                                          CommonParams params)
-    throws IOException {
-        
-    String debug = getParam(req, org.apache.solr.common.params.CommonParams.DEBUG_QUERY, params.debugQuery);
-
-    NamedList dbg = null;
-    if (debug!=null) {
-      dbg = new SimpleOrderedMap();
-
-      /* userQuery may have been pre-processes .. expose that */
-      dbg.add("rawquerystring", req.getQueryString());
-      dbg.add("querystring", userQuery);
-
-      /* QueryParsing.toString isn't perfect, use it to see converted
-       * values, use regular toString to see any attributes of the
-       * underlying Query it may have missed.
-       */
-      dbg.add("parsedquery",QueryParsing.toString(query, req.getSchema()));
-      dbg.add("parsedquery_toString", query.toString());
-            
-      dbg.add("explain", getExplainList
-              (query, results, req.getSearcher(), req.getSchema()));
-      String otherQueryS = req.getParam("explainOther");
-      if (otherQueryS != null && otherQueryS.length() > 0) {
-        DocList otherResults = doSimpleQuery
-          (otherQueryS,req.getSearcher(), req.getSchema(),0,10);
-        dbg.add("otherQuery",otherQueryS);
-        dbg.add("explainOther", getExplainList
-                (query, otherResults,
-                 req.getSearcher(),
-                 req.getSchema()));
-      }
-    }
-
-    return dbg;
   }
 
 
@@ -762,6 +625,7 @@ public class SolrPluginUtils {
      * DisjunctionMaxQuery.  (so yes: aliases which point at other
      * aliases should work)
      */
+    @Override
     protected Query getFieldQuery(String field, String queryText)
       throws ParseException {
             

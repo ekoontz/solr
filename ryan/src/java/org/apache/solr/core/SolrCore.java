@@ -687,16 +687,6 @@ public final class SolrCore implements SolrInfoMBean {
      closeHooks.add( hook );
    }
 
-  /**
-   * Returns a Request object based on the admin/pingQuery section
-   * of the Solr config file.
-   * 
-   * @deprecated use {@link org.apache.solr.handler.PingRequestHandler} instead
-   */
-  @Deprecated
-  public SolrQueryRequest getPingQueryRequest() {
-    return solrConfig.getPingQueryRequest(this);
-  }
   ////////////////////////////////////////////////////////////////////////////////
   // Request Handler
   ////////////////////////////////////////////////////////////////////////////////
@@ -1248,19 +1238,6 @@ public final class SolrCore implements SolrInfoMBean {
     /*log.info(logid+"" + req.getContext().get("path") + " "
             + req.getParamString()+ " 0 "+
        (int)(rsp.getEndTime() - req.getStartTime()));*/
-  }
-
-  /**
-   * @deprecated Use {@link #execute(SolrRequestHandler, SolrQueryRequest, SolrQueryResponse)} instead. 
-   */
-  @Deprecated
-  public void execute(SolrQueryRequest req, SolrQueryResponse rsp) {
-    SolrRequestHandler handler = getRequestHandler(req.getQueryType());
-    if (handler==null) {
-      log.warn(logid+"Unknown Request Handler '" + req.getQueryType() +"' :" + req);
-      throw new SolrException( SolrException.ErrorCode.BAD_REQUEST,"Unknown Request Handler '" + req.getQueryType() + "'", true);
-    }
-    execute(handler, req, rsp);
   }
   
   protected void setResponseHeaderValues(SolrRequestHandler handler, SolrQueryRequest req, SolrQueryResponse rsp) {

@@ -205,7 +205,7 @@ public class  FacetComponent extends SearchComponent
       NamedList facet_queries = (NamedList)facet_counts.get("facet_queries");
       if (facet_queries != null) {
         for (int i=0; i<facet_queries.size(); i++) {
-          String facet_q = (String)facet_queries.getName(i);
+          String facet_q = facet_queries.getName(i);
           long count = ((Number)facet_queries.getVal(i)).longValue();
           Long prevCount = fi.queryFacets.get(facet_q);
           if (prevCount != null) count += prevCount;
@@ -295,7 +295,7 @@ public class  FacetComponent extends SearchComponent
       for (int i=0; i<facet_queries.size(); i++) {
         try {
           
-          String facet_q = (String)facet_queries.getName(i);
+          String facet_q = facet_queries.getName(i);
           long count = ((Number)facet_queries.getVal(i)).longValue();
 
           // expect {!field f=field}value style params
@@ -584,6 +584,7 @@ class ShardFacetCount {
   long count;
   int termNum;  // term number starting at 0 (used in bit arrays)
 
+  @Override
   public String toString() {
     return "{term="+name+",termNum="+termNum+",count="+count+"}";
   }

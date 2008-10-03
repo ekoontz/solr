@@ -46,6 +46,7 @@ public abstract class CompressableField extends FieldType {
 
   private static String CT = "compressThreshold";
 
+  @Override
   protected void init(IndexSchema schema, Map<String,String> args) {
     SolrParams p = new MapSolrParams(args);
     compressThreshold = p.getInt(CT, DEFAULT_COMPRESS_THRESHOLD);
@@ -53,10 +54,10 @@ public abstract class CompressableField extends FieldType {
     super.init(schema, args);    
   }
 
-    /* Helpers for field construction */
-  protected Field.Store getFieldStore(SchemaField field,
-                                      String internalVal) {
-    /* compress field if length exceeds threshold */
+  /* Helpers for field construction */
+  @Override
+  protected Field.Store getFieldStore(SchemaField field, String internalVal) {
+    // compress field if length exceeds threshold 
     if(field.isCompressed()) {
       return internalVal.length() >= compressThreshold ? 
         Field.Store.COMPRESS : Field.Store.YES;

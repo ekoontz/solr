@@ -36,13 +36,16 @@ import java.io.IOException;
  * @version $Id$
  */
 public class BoolField extends FieldType {
+  @Override
   protected void init(IndexSchema schema, Map<String,String> args) {
   }
 
+  @Override
   public SortField getSortField(SchemaField field,boolean reverse) {
     return getStringSort(field,reverse);
   }
 
+  @Override
   public ValueSource getValueSource(SchemaField field) {
     return new OrdFieldSource(field.name);
   }
@@ -57,9 +60,11 @@ public class BoolField extends FieldType {
 
 
   protected final static Analyzer boolAnalyzer = new SolrAnalyzer() {
+      @Override
       public TokenStream tokenStream(String fieldName, Reader reader) {
         return new Tokenizer(reader) {
           boolean done=false;
+          @Override
           public Token next() throws IOException {
             if (done) return null;
             done=true;
@@ -71,19 +76,23 @@ public class BoolField extends FieldType {
       }
     };
 
+  @Override
   public Analyzer getAnalyzer() {
     return boolAnalyzer;
   }
 
+  @Override
   public Analyzer getQueryAnalyzer() {
     return boolAnalyzer;
   }
 
+  @Override
   public String toInternal(String val) {
     char ch = (val!=null && val.length()>0) ? val.charAt(0) : 0;
     return (ch=='1' || ch=='t' || ch=='T') ? "T" : "F";
   }
 
+  @Override
   public String toExternal(Fieldable f) {
     return indexedToReadable(f.stringValue());
   }
@@ -93,15 +102,18 @@ public class BoolField extends FieldType {
     return Boolean.valueOf( toExternal(f) );
   }
 
+  @Override
   public String indexedToReadable(String indexedForm) {
     char ch = indexedForm.charAt(0);
     return ch=='T' ? "true" : "false";
   }
 
+  @Override
   public void write(XMLWriter xmlWriter, String name, Fieldable f) throws IOException {
     xmlWriter.writeBool(name, f.stringValue().charAt(0) =='T');
   }
 
+  @Override
   public void write(TextResponseWriter writer, String name, Fieldable f) throws IOException {
     writer.writeBool(name, f.stringValue().charAt(0) =='T');
   }

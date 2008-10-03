@@ -473,7 +473,7 @@ public class SimpleFacets {
       }
 
       final String gap = required.getFieldParam(f,FacetParams.FACET_DATE_GAP);
-      final DateMathParser dmp = new DateMathParser(ft.UTC, Locale.US);
+      final DateMathParser dmp = new DateMathParser(DateField.UTC, Locale.US);
       dmp.setNow(NOW);
       
       try {
@@ -571,9 +571,11 @@ public class SimpleFacets {
     }
     public K key;
     public V val;
+    @Override
     public int hashCode() {
       return key.hashCode() ^ val.hashCode();
     }
+    @Override
     public boolean equals(Object o) {
       return (o instanceof CountPair)
         && (0 == this.compareTo((CountPair<K,V>) o));

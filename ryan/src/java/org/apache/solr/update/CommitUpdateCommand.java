@@ -35,6 +35,7 @@ public class CommitUpdateCommand extends UpdateCommand {
     super("commit");
     this.optimize=optimize;
   }
+  @Override
   public String toString() {
     return "commit(optimize="+optimize
             +",waitFlush="+waitFlush

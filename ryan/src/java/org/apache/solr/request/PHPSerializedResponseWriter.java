@@ -62,6 +62,7 @@ class PHPSerializedWriter extends JSONWriter {
     doIndent = false;
   }
 
+  @Override
   public void writeResponse() throws IOException {
     writeNamedList(null, rsp.getValues());
   }

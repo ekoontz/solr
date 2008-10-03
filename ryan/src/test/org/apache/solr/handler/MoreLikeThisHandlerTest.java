@@ -24,7 +24,6 @@ import java.util.Map;
 import org.apache.solr.common.params.CommonParams;
 import org.apache.solr.common.params.MoreLikeThisParams;
 import org.apache.solr.common.params.MultiMapSolrParams;
-import org.apache.solr.common.params.SolrParams;
 import org.apache.solr.common.util.ContentStream;
 import org.apache.solr.common.util.ContentStreamBase;
 import org.apache.solr.core.SolrCore;
@@ -55,7 +54,7 @@ public class MoreLikeThisHandlerTest extends AbstractSolrTestCase {
     
     Map<String,String[]> params = new HashMap<String,String[]>();
     MultiMapSolrParams mmparams = new MultiMapSolrParams( params );
-    SolrQueryRequestBase req = new SolrQueryRequestBase( core, (SolrParams)mmparams ) {};
+    SolrQueryRequestBase req = new SolrQueryRequestBase( core, mmparams ) {};
     
     // requires 'q' or single content stream
     try {
@@ -87,7 +86,7 @@ public class MoreLikeThisHandlerTest extends AbstractSolrTestCase {
     params.put(MoreLikeThisParams.MIN_TERM_FREQ,new String[]{"1"});
     params.put(MoreLikeThisParams.MIN_DOC_FREQ,new String[]{"1"});
     
-    SolrQueryRequest mltreq = new LocalSolrQueryRequest( core, (SolrParams)mmparams);
+    SolrQueryRequest mltreq = new LocalSolrQueryRequest( core, mmparams);
     assertQ("morelikethis - tom cruise",mltreq
         ,"//result/doc[1]/int[@name='id'][.='46']"
         ,"//result/doc[2]/int[@name='id'][.='43']");

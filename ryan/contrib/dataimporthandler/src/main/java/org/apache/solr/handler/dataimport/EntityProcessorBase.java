@@ -56,6 +56,7 @@ public class EntityProcessorBase extends EntityProcessor {
   @SuppressWarnings("unchecked")
   private Map session;
 
+  @Override
   public void init(Context context) {
     rowIterator = null;
     rowcache = null;
@@ -78,6 +79,7 @@ public class EntityProcessorBase extends EntityProcessor {
 
     String[] transArr = transClasses.split(",");
     transformers = new ArrayList<Transformer>() {
+      @Override
       public boolean add(Transformer transformer) {
         return super.add(DebugLogger.wrapTransformer(transformer));
       }
@@ -134,6 +136,7 @@ public class EntityProcessorBase extends EntityProcessor {
       o = clazz.newInstance();
     }
 
+    @Override
     public Object transformRow(Map<String, Object> aRow, Context context) {
       try {
         return meth.invoke(o, aRow);
@@ -233,14 +236,17 @@ public class EntityProcessorBase extends EntityProcessor {
     }
   }
 
+  @Override
   public Map<String, Object> nextModifiedRowKey() {
     return null;
   }
 
+  @Override
   public Map<String, Object> nextDeletedRowKey() {
     return null;
   }
 
+  @Override
   public Map<String, Object> nextModifiedParentRowKey() {
     return null;
   }
@@ -267,11 +273,13 @@ public class EntityProcessorBase extends EntityProcessor {
    *         Object or a Collection of objects. Return null to signal end of
    *         rows
    */
+  @Override
   public Map<String, Object> nextRow() {
     return null;// do not do anything
   }
 
 
+  @Override
   public void destroy() {
     /*no op*/
   }

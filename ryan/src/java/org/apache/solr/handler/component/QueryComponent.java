@@ -121,7 +121,7 @@ public class QueryComponent extends SearchComponent
     SolrParams params = req.getParams();
 
     // -1 as flag if not set.
-    long timeAllowed = (long)params.getInt( CommonParams.TIME_ALLOWED, -1 );
+    long timeAllowed = params.getInt( CommonParams.TIME_ALLOWED, -1 );
 
     // Optional: This could also be implemented by the top-level searcher sending
     // a filter that lists the ids... that would be transparent to

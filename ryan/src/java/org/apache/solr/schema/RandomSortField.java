@@ -170,22 +170,22 @@ public class RandomSortField extends FieldType {
           private final int seed = getSeed(field, reader);
           @Override
           public float floatVal(int doc) {
-            return (float)hash(doc+seed);
+            return hash(doc+seed);
           }
 
           @Override
           public int intVal(int doc) {
-            return (int)hash(doc+seed);
+            return hash(doc+seed);
           }
 
           @Override
           public long longVal(int doc) {
-            return (long)hash(doc+seed);
+            return hash(doc+seed);
           }
 
           @Override
           public double doubleVal(int doc) {
-            return (double)hash(doc+seed);
+            return hash(doc+seed);
           }
 
           @Override

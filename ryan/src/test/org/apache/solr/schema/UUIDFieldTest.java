@@ -1,7 +1,5 @@
 package org.apache.solr.schema;
 
-import java.util.UUID;
-
 import junit.framework.TestCase;
 
 import org.apache.solr.common.SolrException;

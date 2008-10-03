@@ -23,7 +23,9 @@ import org.apache.solr.util.AbstractSolrTestCase;
 
 public class EchoParamsTest extends AbstractSolrTestCase {
 
+  @Override
   public String getSchemaFile() { return "solr/crazy-path-to-schema.xml"; }
+  @Override
   public String getSolrConfigFile() { return "solr/crazy-path-to-config.xml"; }
 
   private static final String HEADER_XPATH = "/response/lst[@name='responseHeader']";

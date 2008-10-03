@@ -23,7 +23,6 @@ import java.util.HashMap;
 import org.apache.solr.common.params.MapSolrParams;
 import org.apache.solr.common.params.SolrParams;
 import org.apache.solr.common.params.UpdateParams;
-import org.apache.solr.request.SolrQueryRequest;
 import org.apache.solr.request.SolrQueryResponse;
 import org.apache.solr.update.CommitUpdateCommand;
 import org.apache.solr.update.processor.UpdateRequestProcessor;
@@ -44,45 +43,6 @@ public class RequestHandlerUtils
     rsp.add( "WARNING", "This response format is experimental.  It is likely to change in the future." ); 
   }
   
-  /**
-   * Check the request parameters and decide if it should commit or optimize.
-   * If it does, it will check parameters for "waitFlush" and "waitSearcher"
-   * 
-   * @deprecated Use {@link #handleCommit(UpdateRequestProcessor,SolrParams,boolean)}
-   *
-   * @since solr 1.2
-   */
-  @Deprecated
-  public static boolean handleCommit( SolrQueryRequest req, SolrQueryResponse rsp, boolean force ) throws IOException
-  {
-    SolrParams params = req.getParams();
-    if( params == null ) {
-      params = new MapSolrParams( new HashMap<String, String>() ); 
-    }
-    
-    boolean optimize = params.getBool( UpdateParams.OPTIMIZE, false );
-    boolean commit   = params.getBool( UpdateParams.COMMIT,   false );
-    
-    if( optimize || commit || force ) {
-      CommitUpdateCommand cmd = new CommitUpdateCommand( optimize );
-      cmd.waitFlush    = params.getBool( UpdateParams.WAIT_FLUSH,    cmd.waitFlush    );
-      cmd.waitSearcher = params.getBool( UpdateParams.WAIT_SEARCHER, cmd.waitSearcher );
-      cmd.maxOptimizeSegments = params.getInt(UpdateParams.MAX_OPTIMIZE_SEGMENTS, cmd.maxOptimizeSegments);
-      req.getCore().getUpdateHandler().commit( cmd );
-      
-      // Lets wait till after solr1.2 to define consistent output format
-      //if( optimize ) {
-      //  rsp.add( "optimize", true );
-      //}
-      //else {
-      //  rsp.add( "commit", true );
-      //}
-      return true;
-    }
-    return false;
-  }
-  
-
   /**
    * Check the request parameters and decide if it should commit or optimize.
    * If it does, it will check parameters for "waitFlush" and "waitSearcher"

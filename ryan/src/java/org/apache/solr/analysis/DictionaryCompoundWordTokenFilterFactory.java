@@ -22,7 +22,6 @@ import org.apache.lucene.analysis.StopFilter;
 import org.apache.lucene.analysis.compound.*;
 import org.apache.solr.util.plugin.ResourceLoaderAware;
 import org.apache.solr.common.ResourceLoader;
-import org.apache.lucene.analysis.Token;
 import org.apache.lucene.analysis.TokenStream;
 import java.util.List;
 import java.util.Set;
@@ -36,6 +35,7 @@ public class DictionaryCompoundWordTokenFilterFactory extends BaseTokenFilterFac
   private int minSubwordSize;
   private int maxSubwordSize;
   private boolean onlyLongestMatch;
+  @Override
   public void init(Map<String, String> args) {
     super.init(args);
     dictFile = args.get("dictionary");
@@ -47,7 +47,7 @@ public class DictionaryCompoundWordTokenFilterFactory extends BaseTokenFilterFac
   public void inform(ResourceLoader loader) {
     try {
       List<String> wlist = loader.getLines(dictFile);
-      dictionary = StopFilter.makeStopSet((String[])wlist.toArray(new String[0]), false);
+      dictionary = StopFilter.makeStopSet(wlist.toArray(new String[0]), false);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

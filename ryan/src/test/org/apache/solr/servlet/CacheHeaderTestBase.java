@@ -32,6 +32,7 @@ public abstract class CacheHeaderTestBase extends SolrExampleTestBase {
   
   abstract public String getSolrConfigFilename();
   
+  @Override
   public String getSolrConfigFile() { return getSolrHome()+"conf/"+getSolrConfigFilename(); }
   
   CommonsHttpSolrServer server;

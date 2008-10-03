@@ -21,8 +21,6 @@ import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
 
-import junit.framework.TestCase;
-
 import org.apache.lucene.analysis.Token;
 import org.apache.lucene.analysis.TokenStream;
 
@@ -53,7 +51,7 @@ public class TestPatternTokenizerFactory extends AnalysisTestCase
       tokenizer.init( args );
       
       TokenStream stream = tokenizer.create( new StringReader( test[2] ) );
-      String out = TestHyphenatedWordsFilter.tsToString( stream );
+      String out = BaseTokenTestCase.tsToString( stream );
       System.out.println( test[2] + " ==> " + out );
       
       assertEquals("pattern: "+test[2], test[3], out );

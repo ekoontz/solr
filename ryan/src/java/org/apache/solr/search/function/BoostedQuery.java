@@ -39,6 +39,7 @@ public class BoostedQuery extends Query {
   public Query getQuery() { return q; }
   public ValueSource getValueSource() { return boostVal; }
 
+  @Override
   public Query rewrite(IndexReader reader) throws IOException {
     Query newQ = q.rewrite(reader);
     if (newQ == q) return this;
@@ -47,10 +48,12 @@ public class BoostedQuery extends Query {
     return bq;
   }
 
+  @Override
   public void extractTerms(Set terms) {
     q.extractTerms(terms);
   }
 
+  @Override
   protected Weight createWeight(Searcher searcher) throws IOException {
     return new BoostedQuery.BoostedWeight(searcher);
   }
@@ -111,22 +114,27 @@ public class BoostedQuery extends Query {
       this.vals = vs.getValues(reader);
     }
 
+    @Override
     public boolean next() throws IOException {
       return scorer.next();
     }
 
+    @Override
     public int doc() {
       return scorer.doc();
     }
 
+    @Override
     public float score() throws IOException {
       return qWeight * scorer.score() * vals.floatVal(scorer.doc());
     }
 
+    @Override
     public boolean skipTo(int target) throws IOException {
       return scorer.skipTo(target);
     }
 
+    @Override
     public Explanation explain(int doc) throws IOException {
       Explanation subQueryExpl = weight.qWeight.explain(reader,doc);
       if (!subQueryExpl.isMatch()) {
@@ -142,6 +150,7 @@ public class BoostedQuery extends Query {
   }
 
 
+  @Override
   public String toString(String field) {
     StringBuilder sb = new StringBuilder();
     sb.append("boost(").append(q.toString(field)).append(',').append(boostVal).append(')');
@@ -149,6 +158,7 @@ public class BoostedQuery extends Query {
     return sb.toString();
   }
 
+  @Override
   public boolean equals(Object o) {
     if (getClass() != o.getClass()) return false;
     BoostedQuery other = (BoostedQuery)o;
@@ -157,6 +167,7 @@ public class BoostedQuery extends Query {
            && this.boostVal.equals(other.boostVal);
   }
 
+  @Override
   public int hashCode() {
     int h = q.hashCode();
     h ^= (h << 17) | (h >>> 16);

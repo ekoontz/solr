@@ -19,12 +19,10 @@ package org.apache.solr.handler.admin;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.solr.common.SolrException;
 import org.apache.solr.common.SolrException.ErrorCode;
 import org.apache.solr.common.params.CommonParams;
@@ -32,10 +30,8 @@ import org.apache.solr.common.params.ModifiableSolrParams;
 import org.apache.solr.common.util.ContentStreamBase;
 import org.apache.solr.common.util.NamedList;
 import org.apache.solr.common.util.SimpleOrderedMap;
-import org.apache.solr.core.SolrCore;
 import org.apache.solr.core.SolrResourceLoader;
 import org.apache.solr.handler.RequestHandlerBase;
-import org.apache.solr.handler.RequestHandlerUtils;
 import org.apache.solr.request.RawResponseWriter;
 import org.apache.solr.request.SolrQueryRequest;
 import org.apache.solr.request.SolrQueryResponse;
@@ -185,32 +181,6 @@ public class ShowFileRequestHandler extends RequestHandlerBase
     }
   }
   
-  /**
-   * This is a utility function that lets you get the contents of an admin file
-   * 
-   * It is only used so that we can get rid of "/admin/get-file.jsp" and include
-   * "admin-extra.html" in "/admin/index.html" using jsp scriptlets
-   * 
-   * @deprecated This functionality is implemented in
-   *             {@link #handleRequestBody(SolrQueryRequest, SolrQueryResponse)}.
-   */
-  @Deprecated
-  public static String getFileContents( String path )
-  {
-    if( instance != null && instance.hiddenFiles != null ) {
-      if( instance.hiddenFiles.contains( path ) ) {
-        return ""; // ignore it...
-      }
-    }
-    try {
-      SolrCore core = SolrCore.getSolrCore();
-      InputStream input = core.getResourceLoader().openResource(path);
-      return IOUtils.toString( input );
-    }
-    catch( Exception ex ) {} // ignore it
-    return "";
-  }
-
   //////////////////////// SolrInfoMBeans methods //////////////////////
 
   @Override

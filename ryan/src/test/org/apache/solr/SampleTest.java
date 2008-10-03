@@ -34,6 +34,7 @@ public class SampleTest extends AbstractSolrTestCase {
    * to any crazy path they want (as long as it works).
    * </p>
    */
+  @Override
   public String getSchemaFile() { return "solr/crazy-path-to-schema.xml"; } 
   
   /**
@@ -44,6 +45,7 @@ public class SampleTest extends AbstractSolrTestCase {
    * to any crazy path they want (as long as it works).
    * </p>
    */
+  @Override
   public String getSolrConfigFile() { return "solr/crazy-path-to-config.xml"; }
     
   /**

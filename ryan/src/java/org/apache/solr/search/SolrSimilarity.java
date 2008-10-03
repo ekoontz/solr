@@ -29,6 +29,7 @@ import java.util.HashMap;
 class SolrSimilarity extends DefaultSimilarity {
   private final HashMap<String,Float> lengthNormConfig = new HashMap<String,Float>();
 
+  @Override
   public float lengthNorm(String fieldName, int numTerms) {
     // Float f = lengthNormConfig.
     // if (lengthNormDisabled.)

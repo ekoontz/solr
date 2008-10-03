@@ -63,42 +63,52 @@ public class ContextImpl extends Context {
     dataImporter = di;
   }
 
+  @Override
   public String getEntityAttribute(String name) {
     return entity == null ? null : entity.allAttributes.get(name);
   }
 
+  @Override
   public List<Map<String, String>> getAllEntityFields() {
     return entity == null ? Collections.EMPTY_LIST : entity.allFieldsList;
   }
 
+  @Override
   public VariableResolver getVariableResolver() {
     return resolver;
   }
 
+  @Override
   public DataSource getDataSource() {
     return ds;
   }
 
+  @Override
   public DataSource getDataSource(String name) {
     return dataImporter.getDataSourceInstance(entity, name, this);
   }
 
+  @Override
   public boolean isRootEntity() {
     return entity.isDocRoot;
   }
 
+  @Override
   public int currentProcess() {
     return currProcess;
   }
 
+  @Override
   public Map<String, Object> getRequestParameters() {
     return requestParams;
   }
 
+  @Override
   public EntityProcessor getEntityProcessor() {
     return entity == null ? null : entity.processor;
   }
 
+  @Override
   public void setSessionAttribute(String name, Object val, String scope) {
     if (Context.SCOPE_ENTITY.equals(scope)) {
       if (entitySession == null)
@@ -115,6 +125,7 @@ public class ContextImpl extends Context {
     }
   }
 
+  @Override
   public Object getSessionAttribute(String name, String scope) {
     if (Context.SCOPE_ENTITY.equals(scope)) {
       if (entitySession == null)
@@ -132,6 +143,7 @@ public class ContextImpl extends Context {
     return null;
   }
 
+  @Override
   public Context getParentContext() {
     return parent;
   }
@@ -153,6 +165,7 @@ public class ContextImpl extends Context {
   }
 
 
+  @Override
   public SolrCore getSolrCore() {
     return dataImporter == null ? null : dataImporter.getCore();
   }

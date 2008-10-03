@@ -31,7 +31,9 @@ import org.apache.solr.util.AbstractSolrTestCase;
  */
 public class DirectUpdateHandlerTest extends AbstractSolrTestCase {
 
+  @Override
   public String getSchemaFile() { return "schema.xml"; }
+  @Override
   public String getSolrConfigFile() { return "solrconfig.xml"; }
   
 
@@ -42,8 +44,6 @@ public class DirectUpdateHandlerTest extends AbstractSolrTestCase {
     UpdateHandler updater = core.getUpdateHandler();
     
     AddUpdateCommand cmd = new AddUpdateCommand();
-    cmd.overwriteCommitted = true;
-    cmd.overwritePending = true;
     cmd.allowDups = false;
     
     // Add a valid document

@@ -21,17 +21,14 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Map;
 import java.util.Set;
 
 import javax.xml.xpath.XPathConstants;
 
-import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.CachingTokenFilter;
 import org.apache.lucene.analysis.Token;
 import org.apache.lucene.analysis.TokenFilter;
@@ -67,6 +64,7 @@ import org.w3c.dom.NodeList;
 public class DefaultSolrHighlighter extends SolrHighlighter
 {
   
+  @Override
   public void initalize( final Config config )
   {
     formatters.clear();
@@ -231,6 +229,7 @@ public class DefaultSolrHighlighter extends SolrHighlighter
    * @return NamedList containing a NamedList for each document, which in 
    * turns contains sets (field, summary) pairs.
    */
+  @Override
   @SuppressWarnings("unchecked")
   public NamedList<Object> doHighlighting(DocList docs, Query query, SolrQueryRequest req, String[] defaultFields) throws IOException {
     SolrParams params = req.getParams(); 

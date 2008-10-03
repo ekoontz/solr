@@ -42,35 +42,44 @@ public class RangeMapFloatFunction extends ValueSource {
     this.target = target;
   }
 
+  @Override
   public String description() {
     return "map(" + source.description() + "," + min + "," + max + "," + target + ")";
   }
 
+  @Override
   public DocValues getValues(IndexReader reader) throws IOException {
     final DocValues vals =  source.getValues(reader);
     return new DocValues() {
+      @Override
       public float floatVal(int doc) {
         float val = vals.floatVal(doc);
         return (val>=min && val<=max) ? target : val;
       }
+      @Override
       public int intVal(int doc) {
         return (int)floatVal(doc);
       }
+      @Override
       public long longVal(int doc) {
         return (long)floatVal(doc);
       }
+      @Override
       public double doubleVal(int doc) {
-        return (double)floatVal(doc);
+        return floatVal(doc);
       }
+      @Override
       public String strVal(int doc) {
         return Float.toString(floatVal(doc));
       }
+      @Override
       public String toString(int doc) {
         return "map(" + vals.toString(doc) + ",min=" + min + ",max=" + max + ",target=" + target + ")";
       }
     };
   }
 
+  @Override
   public int hashCode() {
     int h = source.hashCode();
     h ^= (h << 10) | (h >>> 23);
@@ -82,6 +91,7 @@ public class RangeMapFloatFunction extends ValueSource {
     return h;
   }
 
+  @Override
   public boolean equals(Object o) {
     if (RangeMapFloatFunction.class != o.getClass()) return false;
     RangeMapFloatFunction other = (RangeMapFloatFunction)o;

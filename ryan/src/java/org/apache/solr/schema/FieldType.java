@@ -140,6 +140,7 @@ public abstract class FieldType extends FieldProperties {
     this.typeName = typeName;
   }
 
+  @Override
   public String toString() {
     return typeName + "{class=" + this.getClass().getName()
 //            + propertiesToString(properties)
@@ -307,9 +308,11 @@ public abstract class FieldType extends FieldProperties {
       this.maxChars=maxChars;
     }
 
+    @Override
     public TokenStream tokenStream(String fieldName, Reader reader) {
       return new Tokenizer(reader) {
         char[] cbuf = new char[maxChars];
+        @Override
         public Token next() throws IOException {
           int n = input.read(cbuf,0,maxChars);
           if (n<=0) return null;
