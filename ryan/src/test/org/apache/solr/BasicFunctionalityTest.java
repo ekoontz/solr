@@ -336,7 +336,7 @@ public class BasicFunctionalityTest extends AbstractSolrTestCase {
   
   public void testTermVectorFields() {
     
-    IndexSchema ischema = new IndexSchema(solrConfig, getSchemaFile(), null);
+    IndexSchema ischema = new IndexSchema(solrConfig, h.getCore().getConfiguration(), getSchemaFile(), null);
     SchemaField f; // Solr field type
     Field luf; // Lucene field
 
@@ -505,7 +505,7 @@ public class BasicFunctionalityTest extends AbstractSolrTestCase {
   }   
   public void testCompressableFieldType() {
     
-    IndexSchema ischema = new IndexSchema(solrConfig, getSchemaFile(), null);
+    IndexSchema ischema = new IndexSchema(solrConfig, h.getCore().getConfiguration(), getSchemaFile(), null);
     SchemaField f; // Solr field type
     Field luf; // Lucene field
 

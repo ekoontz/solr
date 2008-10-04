@@ -654,9 +654,10 @@ public class QueryParsing {
    * </pre>
    */
   public static FunctionQuery parseFunction(String func, IndexSchema schema) throws ParseException {
-    SolrCore core = SolrCore.getSolrCore();
+    //SolrCore core = SolrCore.getSolrCore();
+    SolrCore core = SolrCore.INSTANCE;
     return (FunctionQuery)(QParser.getParser(func,"func",new LocalSolrQueryRequest(core,new HashMap())).parse());
-    // return new FunctionQuery(parseValSource(new StrParser(func), schema));
+    //return new FunctionQuery(parseValSourc(new StrParser(func), schema));
   }
 
 }

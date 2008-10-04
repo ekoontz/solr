@@ -30,14 +30,15 @@ import java.util.List;
 /**
  * @version $Id$
  */
-class QuerySenderListener extends AbstractSolrEventListener {
-  public QuerySenderListener(SolrCore core) {
-    super(core);
+public class QuerySenderListener extends AbstractSolrEventListener {
+  public QuerySenderListener() {
+    super();
   }
 
   @Override
   public void newSearcher(SolrIndexSearcher newSearcher, SolrIndexSearcher currentSearcher) {
     final SolrIndexSearcher searcher = newSearcher;
+    final SolrCore core = newSearcher.getCore();
     log.info("QuerySenderListener sending requests to " + newSearcher);
     for (NamedList nlst : (List<NamedList>)args.get("queries")) {
       try {

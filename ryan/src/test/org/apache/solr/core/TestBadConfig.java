@@ -17,6 +17,7 @@
 
 package org.apache.solr.core;
 
+import org.apache.solr.config.SolrConfig;
 import org.apache.solr.util.AbstractSolrTestCase;
 import org.apache.solr.util.TestHarness;
 import java.io.File;

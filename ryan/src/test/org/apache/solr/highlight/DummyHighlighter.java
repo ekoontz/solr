@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.apache.lucene.search.Query;
 import org.apache.solr.common.util.NamedList;
 import org.apache.solr.common.util.SimpleOrderedMap;
-import org.apache.solr.core.Config;
+import org.apache.solr.config.Config;
 import org.apache.solr.request.SolrQueryRequest;
 import org.apache.solr.search.DocList;
 

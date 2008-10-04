@@ -41,7 +41,7 @@ import java.util.Map;
  * across myfield and mytitle, with a higher weight on mytitle.
  */
 public class DisMaxQParserPlugin extends QParserPlugin {
-  public static String NAME = "dismax";
+  public static final String NAME = "dismax";
 
   public void init(NamedList args) {
   }

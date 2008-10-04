@@ -15,13 +15,14 @@
  * limitations under the License.
  */
 
-package org.apache.solr.core;
+package org.apache.solr.config;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 import org.apache.solr.common.SolrException;
 import org.apache.solr.common.util.DOMUtil;
+
 import javax.xml.parsers.*;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFactory;

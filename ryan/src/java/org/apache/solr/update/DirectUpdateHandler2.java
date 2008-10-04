@@ -24,6 +24,7 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.MatchAllDocsQuery;
 
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ExecutionException;
@@ -42,6 +43,7 @@ import org.apache.solr.common.SolrException;
 import org.apache.solr.common.util.NamedList;
 import org.apache.solr.common.util.SimpleOrderedMap;
 import org.apache.solr.core.SolrCore;
+import org.apache.solr.core.SolrEventListener;
 
 /**
  * <code>DirectUpdateHandler2</code> implements an UpdateHandler where documents are added
@@ -140,8 +142,10 @@ public class DirectUpdateHandler2 extends UpdateHandler {
 
   protected IndexWriter writer;
 
-  public DirectUpdateHandler2(SolrCore core) throws IOException {
-    super(core);
+  public DirectUpdateHandler2(SolrCore core, 
+      List<SolrEventListener> commitCallbacks,
+      List<SolrEventListener> optimizeCallbacks ) throws IOException {
+    super(core, commitCallbacks, optimizeCallbacks);
 
     ReadWriteLock rwl = new ReentrantReadWriteLock();
     iwAccess = rwl.readLock();

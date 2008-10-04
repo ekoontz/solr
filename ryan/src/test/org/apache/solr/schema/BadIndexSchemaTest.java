@@ -20,7 +20,7 @@ package org.apache.solr.schema;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.solr.core.SolrConfig;
+import org.apache.solr.config.SolrConfig;
 import org.apache.solr.core.SolrCore;
 import org.apache.solr.util.AbstractSolrTestCase;
 

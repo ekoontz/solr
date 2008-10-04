@@ -24,6 +24,7 @@ import org.apache.lucene.analysis.ngram.NGramTokenFilter;
 import org.apache.solr.analysis.KeywordTokenizerFactory;
 import org.apache.solr.analysis.NGramFilterFactory;
 import org.apache.solr.common.SolrException;
+import org.apache.solr.config.SolrResourceLoader;
 import org.apache.solr.handler.admin.LukeRequestHandler;
 import org.apache.solr.handler.component.FacetComponent;
 import org.apache.solr.request.JSONResponseWriter;

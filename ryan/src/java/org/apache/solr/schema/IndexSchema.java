@@ -26,9 +26,10 @@ import org.apache.solr.common.ResourceLoader;
 import org.apache.solr.common.SolrException;
 import org.apache.solr.common.params.SolrParams;
 import org.apache.solr.common.util.DOMUtil;
-import org.apache.solr.core.SolrConfig;
-import org.apache.solr.core.Config;
-import org.apache.solr.core.SolrResourceLoader;
+import org.apache.solr.config.Config;
+import org.apache.solr.config.SolrConfig;
+import org.apache.solr.config.SolrConfiguraion;
+import org.apache.solr.config.SolrResourceLoader;
 import org.apache.solr.analysis.TokenFilterFactory;
 import org.apache.solr.analysis.TokenizerChain;
 import org.apache.solr.analysis.TokenizerFactory;
@@ -59,6 +60,7 @@ public final class IndexSchema {
 
   final static Logger log = LoggerFactory.getLogger(IndexSchema.class);
   private final SolrConfig solrConfig;
+  private final SolrConfiguraion config;
   private final String resourceName;
   private String name;
   private float version;
@@ -70,10 +72,12 @@ public final class IndexSchema {
    * By default, this follows the normal config path directory searching rules.
    * @see Config#openResource
    */
-  public IndexSchema(SolrConfig solrConfig, String name, InputStream is) {
+  public IndexSchema(SolrConfig solrConfig, SolrConfiguraion config, String name, InputStream is) {
     this.solrConfig = solrConfig;
     if (name == null)
       name = DEFAULT_SCHEMA_FILE;
+    
+    this.config = config;
     this.resourceName = name;
     SolrResourceLoader loader = solrConfig.getResourceLoader();
     InputStream lis = is;
@@ -341,7 +345,7 @@ public final class IndexSchema {
   }
 
   private void readSchema(InputStream is) {
-    log.info("Reading Solr Schema");
+    log.info("Reading Solr Schema: "+this );
 
     try {
       // pass the config resource loader to avoid building an empty one for no reason:
@@ -1110,6 +1114,10 @@ public final class IndexSchema {
    */
   private static boolean isWildCard(String name) {
     return  name.startsWith("*") || name.endsWith("*");
+  }
+
+  public SolrConfiguraion getConfig() {
+    return config;
   }
 
 }

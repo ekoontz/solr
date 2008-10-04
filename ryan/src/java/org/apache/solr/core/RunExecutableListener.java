@@ -29,9 +29,7 @@ import java.util.ArrayList;
 /**
  */
 class RunExecutableListener extends AbstractSolrEventListener {
-  public RunExecutableListener(SolrCore core) {
-    super(core);
-  }
+  
   protected String[] cmd;
   protected File dir;
   protected String[] envp;

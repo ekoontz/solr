@@ -19,9 +19,9 @@
 package org.apache.solr.util;
 
 
-import org.apache.solr.core.SolrConfig;
 import org.apache.solr.common.SolrException;
 import org.apache.solr.common.util.XML;
+import org.apache.solr.config.SolrConfig;
 import org.apache.solr.request.*;
 import org.apache.solr.util.TestHarness;
 

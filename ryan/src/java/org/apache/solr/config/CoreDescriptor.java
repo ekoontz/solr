@@ -15,9 +15,11 @@
  * limitations under the License.
  */
 
-package org.apache.solr.core;
+package org.apache.solr.config;
 
 import java.util.Properties;
+
+import org.apache.solr.core.CoreContainer;
 
 /**
  * A Solr core descriptor
@@ -117,7 +119,7 @@ public class CoreDescriptor implements Cloneable {
     return coreContainer;
   }
 
-  Properties getCoreProperties() {
+  public Properties getCoreProperties() {
     return coreProperties;
   }
 
@@ -129,7 +131,7 @@ public class CoreDescriptor implements Cloneable {
    * 
    * @param coreProperties
    */
-  void setCoreProperties(Properties coreProperties) {
+  public void setCoreProperties(Properties coreProperties) {
     if (this.coreProperties == null) {
       Properties p = initImplicitProperties();
       this.coreProperties = new Properties(p);

@@ -50,7 +50,7 @@ public class SolrRequestParserTest extends AbstractSolrTestCase {
   @Override
   public void setUp() throws Exception {
     super.setUp();
-    parser = new SolrRequestParsers( h.getCore().getSolrConfig() );
+    parser = new SolrRequestParsers( h.getCore().getConfiguration().getDispatcherConfig() );
   }
   
   public void testStreamBody() throws Exception

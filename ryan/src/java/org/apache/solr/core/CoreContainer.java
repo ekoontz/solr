@@ -38,6 +38,11 @@ import org.apache.solr.common.SolrException;
 import org.apache.solr.common.util.DOMUtil;
 import org.apache.solr.common.util.XML;
 import org.apache.solr.common.util.StrUtils;
+import org.apache.solr.config.Config;
+import org.apache.solr.config.CoreDescriptor;
+import org.apache.solr.config.CoreInitalizer;
+import org.apache.solr.config.SolrConfig;
+import org.apache.solr.config.SolrResourceLoader;
 import org.apache.solr.handler.admin.CoreAdminHandler;
 import org.apache.solr.schema.IndexSchema;
 import org.w3c.dom.Node;
@@ -117,7 +122,8 @@ public class CoreContainer
         cores = new CoreContainer(new SolrResourceLoader(instanceDir));
         SolrConfig cfg = solrConfigFilename == null ? new SolrConfig() : new SolrConfig(solrConfigFilename);
         CoreDescriptor dcore = new CoreDescriptor(cores, "", ".");
-        SolrCore singlecore = new SolrCore(null, null, cfg, null, dcore);
+        CoreInitalizer initilizer = new CoreInitalizer(null, null, cfg, null, dcore);
+        SolrCore singlecore = initilizer.initalizeCore( "core" );
         abortOnConfigurationError = cfg.getBool(
                 "abortOnConfigurationError", abortOnConfigurationError);
         cores.register("", singlecore, false);
@@ -332,8 +338,9 @@ public class CoreContainer
     // Initialize the solr config
     SolrResourceLoader solrLoader = new SolrResourceLoader(instanceDir, libLoader, dcore.getCoreProperties());
     SolrConfig config = new SolrConfig(solrLoader, dcore.getConfigName(), null);
-    IndexSchema schema = new IndexSchema(config, dcore.getSchemaName(), null);
-    SolrCore core = new SolrCore(dcore.getName(), null, config, schema, dcore);
+    IndexSchema schema = new IndexSchema(config, config.vars, dcore.getSchemaName(), null);
+    CoreInitalizer initalizer = new CoreInitalizer( dcore.getName(), null, config, schema, dcore);
+    SolrCore core = initalizer.initalizeCore(dcore.getName());
     return core;
   }
     

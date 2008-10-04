@@ -17,7 +17,6 @@
 
 package org.apache.solr.servlet;
 
-import java.io.File;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,13 +28,11 @@ import org.apache.solr.common.params.MapSolrParams;
 import org.apache.solr.common.params.SolrParams;
 import org.apache.solr.common.util.ContentStream;
 import org.apache.solr.common.util.ContentStreamBase;
-import org.apache.solr.core.SolrConfig;
 import org.apache.solr.core.SolrCore;
 import org.apache.solr.request.QueryResponseWriter;
 import org.apache.solr.request.SolrQueryRequest;
 import org.apache.solr.request.SolrQueryResponse;
 import org.apache.solr.request.SolrRequestHandler;
-import org.apache.solr.schema.IndexSchema;
 
 /**
  * DirectSolrConnection provides an interface to solr that is similar to 
@@ -58,52 +55,7 @@ public class DirectSolrConnection
   public DirectSolrConnection( SolrCore c )
   {
     core = c;
-    parser = new SolrRequestParsers( c.getSolrConfig() );
-  }
-
-  /**
-   * This constructor is designed to make it easy for JNI embedded applications 
-   * to setup the entire solr environment with a simple interface.  It takes three parameters:
-   * 
-   * <code>instanceDir:</code> The solr instance directory.  If null, it will check the standard 
-   * places first (JNDI,properties,"solr" directory)
-   * 
-   * <code>dataDir:</code> where the index is stored. 
-   * 
-   * <code>loggingPath:</code> Path to a java.util.logging.config.file.  If the path represents
-   * an absolute path or is relative to the CWD, it will use that.  Next it will try a path 
-   * relative to the instanceDir.  If none of these files exist, it will error.
-   */
-  public DirectSolrConnection( String instanceDir, String dataDir, String loggingPath )
-  {
-    // If a loggingPath is specified, try using that (this needs to happen first)
-    if( loggingPath != null ) {
-      File loggingConfig = new File( loggingPath );
-      if( !loggingConfig.exists() && instanceDir != null ) {
-        loggingConfig = new File( new File(instanceDir), loggingPath  );
-      }
-      if( loggingConfig.exists() ) {
-        System.setProperty("java.util.logging.config.file", loggingConfig.getAbsolutePath() ); 
-      }
-      else {
-        throw new SolrException( SolrException.ErrorCode.SERVER_ERROR, "can not find logging file: "+loggingConfig );
-      }
-    }
-    
-    // Initialize SolrConfig
-    SolrConfig config = null;
-    try {
-      config = new SolrConfig(instanceDir, SolrConfig.DEFAULT_CONF_FILE, null);
-      instanceDir = config.getResourceLoader().getInstanceDir();
-
-      // If the Data directory is specified, initialize SolrCore directly
-      IndexSchema schema = new IndexSchema(config, instanceDir+"/conf/schema.xml", null);
-      core = new SolrCore( null, dataDir, config, schema, null );
-      parser = new SolrRequestParsers( config );
-    } 
-    catch (Exception ee) {
-      throw new RuntimeException(ee);
-    }
+    parser = new SolrRequestParsers( null );
   }
   
 

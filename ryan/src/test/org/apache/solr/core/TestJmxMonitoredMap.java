@@ -17,7 +17,7 @@
 package org.apache.solr.core;
 
 import org.apache.solr.common.util.NamedList;
-import org.apache.solr.core.SolrConfig.JmxConfiguration;
+import org.apache.solr.config.JmxConfiguration;
 import org.junit.After;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

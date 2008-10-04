@@ -20,6 +20,7 @@ package org.apache.solr.update;
 import org.apache.lucene.index.*;
 import org.apache.lucene.store.*;
 import org.apache.solr.common.SolrException;
+import org.apache.solr.config.SolrIndexConfig;
 import org.apache.solr.schema.IndexSchema;
 
 import org.slf4j.Logger;

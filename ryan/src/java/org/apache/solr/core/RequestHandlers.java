@@ -24,30 +24,22 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.xml.xpath.XPathConstants;
-
-import org.apache.solr.common.ResourceLoader;
 import org.apache.solr.common.SolrException;
-import org.apache.solr.common.util.DOMUtil;
 import org.apache.solr.common.util.NamedList;
 import org.apache.solr.common.util.SimpleOrderedMap;
-import org.apache.solr.handler.StandardRequestHandler;
 import org.apache.solr.request.SolrQueryRequest;
 import org.apache.solr.request.SolrQueryResponse;
 import org.apache.solr.request.SolrRequestHandler;
-import org.apache.solr.util.plugin.AbstractPluginLoader;
 import org.apache.solr.util.plugin.ResourceLoaderAware;
 import org.apache.solr.util.plugin.SolrCoreAware;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Node;
 
 /**
  */
-final class RequestHandlers {
+public final class RequestHandlers {
   public static Logger log = LoggerFactory.getLogger(RequestHandlers.class);
 
   public static final String DEFAULT_HANDLER_NAME="standard";
-  protected final SolrCore core;
+  protected final Map<String, SolrInfoMBean> infoRegistry;
   // Use a synchronized map - since the handlers can be changed at runtime, 
   // the map implementation should be thread safe
   private final Map<String, SolrRequestHandler> handlers = Collections.synchronizedMap(
@@ -70,8 +62,8 @@ final class RequestHandlers {
     return p;
   }
   
-  public RequestHandlers(SolrCore core) {
-      this.core = core;
+  public RequestHandlers(Map<String, SolrInfoMBean> infoRegistry) {
+      this.infoRegistry = infoRegistry;
   }
   
   /**
@@ -97,7 +89,7 @@ final class RequestHandlers {
     SolrRequestHandler old = handlers.put(norm, handler);
     if (handlerName != null && handlerName != "") {
       if (handler instanceof SolrInfoMBean) {
-        core.getInfoRegistry().put(handlerName, handler);
+        infoRegistry.put(handlerName, handler);
       }
     }
     return old;
@@ -109,76 +101,7 @@ final class RequestHandlers {
   public Map<String,SolrRequestHandler> getRequestHandlers() {
     return Collections.unmodifiableMap( handlers );
   }
-
-
-  /**
-   * Read solrconfig.xml and register the appropriate handlers
-   * 
-   * This function should <b>only</b> be called from the SolrCore constructor.  It is
-   * not intended as a public API.
-   * 
-   * While the normal runtime registration contract is that handlers MUST be initialized 
-   * before they are registered, this function does not do that exactly.
-   * 
-   * This function registers all handlers first and then calls init() for each one.  
-   * 
-   * This is OK because this function is only called at startup and there is no chance that
-   * a handler could be asked to handle a request before it is initialized.
-   * 
-   * The advantage to this approach is that handlers can know what path they are registered
-   * to and what other handlers are available at startup.
-   * 
-   * Handlers will be registered and initialized in the order they appear in solrconfig.xml
-   */
-  void initHandlersFromConfig( final Config config )  
-  {
-    final RequestHandlers handlers = this;
-    AbstractPluginLoader<SolrRequestHandler> loader = 
-      new AbstractPluginLoader<SolrRequestHandler>( "[solrconfig.xml] requestHandler", true, true )
-    {
-      @Override
-      protected SolrRequestHandler create( ResourceLoader config, String name, String className, Node node ) throws Exception
-      {    
-        String startup = DOMUtil.getAttr( node, "startup" );
-        if( startup != null ) {
-          if( "lazy".equals( startup ) ) {
-            log.info("adding lazy requestHandler: " + className );
-            NamedList args = DOMUtil.childNodesToNamedList(node);
-            return new LazyRequestHandlerWrapper( core, className, args );
-          }
-          else {
-            throw new Exception( "Unknown startup value: '"+startup+"' for: "+className );
-          }
-        }
-        return super.create( config, name, className, node );
-      }
-
-      @Override
-      protected SolrRequestHandler register(String name, SolrRequestHandler plugin) throws Exception {
-        return handlers.register( name, plugin );
-      }
-      
-      @Override
-      protected void init(SolrRequestHandler plugin, Node node ) throws Exception {
-        plugin.init( DOMUtil.childNodesToNamedList(node) );
-      }      
-    };
-    
-    NodeList nodes = (NodeList)config.evaluate("requestHandler", XPathConstants.NODESET);
-    
-    // Load the handlers and get the default one
-    SolrRequestHandler defaultHandler = loader.load( config.getResourceLoader(), nodes );
-    if( defaultHandler == null ) {
-      defaultHandler = get(RequestHandlers.DEFAULT_HANDLER_NAME);
-      if( defaultHandler == null ) {
-        defaultHandler = new StandardRequestHandler();
-        register(RequestHandlers.DEFAULT_HANDLER_NAME, defaultHandler);
-      }
-    }
-    register(null, defaultHandler);
-    register("", defaultHandler);
-  }
-    
+  
 
   /**
    * The <code>LazyRequestHandlerWrapper</core> wraps any {@link SolrRequestHandler}.  
@@ -233,7 +156,7 @@ final class RequestHandlers {
     {
       if( _handler == null ) {
         try {
-          _handler = core.createRequestHandler(_className);
+          _handler = core.getInitalizer().createRequestHandler(_className);
           _handler.init( _args );
           
           if( _handler instanceof ResourceLoaderAware ) {

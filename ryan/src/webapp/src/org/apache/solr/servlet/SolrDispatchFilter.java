@@ -35,6 +35,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.solr.common.SolrException;
 import org.apache.solr.common.params.CommonParams;
+import org.apache.solr.config.SolrConfig;
+import org.apache.solr.config.SolrConfiguraion;
 import org.apache.solr.core.*;
 import org.apache.solr.request.*;
 import org.apache.solr.servlet.cache.HttpCacheHeaderUtil;
@@ -181,12 +183,12 @@ public class SolrDispatchFilter implements Filter
 
         // With a valid core...
         if( core != null ) {
-          final SolrConfig config = core.getSolrConfig();
+          final SolrConfiguraion config = core.getConfiguration();
           // get or create/cache the parser for the core
           SolrRequestParsers parser = null;
           parser = parsers.get(core);
           if( parser == null ) {
-            parser = new SolrRequestParsers(config);
+            parser = new SolrRequestParsers(config.getDispatcherConfig());
             parsers.put( core, parser );
           }
 

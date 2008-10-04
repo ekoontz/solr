@@ -16,7 +16,7 @@
  */
 
 package org.apache.solr.analysis;
-import org.apache.solr.core.SolrConfig;
+import org.apache.solr.config.SolrConfig;
 import org.apache.solr.util.TestHarness;
 import junit.framework.TestCase;
 

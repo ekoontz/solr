@@ -29,10 +29,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.lucene.index.IndexReader;
 
 import org.apache.solr.core.SolrCore;
-import org.apache.solr.core.SolrConfig;
-import org.apache.solr.core.SolrConfig.HttpCachingConfig.LastModFrom;
 import org.apache.solr.common.SolrException;
 import org.apache.solr.common.SolrException.ErrorCode;
+import org.apache.solr.config.SolrConfiguraion;
+import org.apache.solr.config.HttpCachingConfiguration.LastModFrom;
 import org.apache.solr.search.SolrIndexSearcher;
 import org.apache.solr.request.SolrQueryRequest;
 import org.apache.solr.request.SolrQueryResponse;
@@ -99,7 +99,7 @@ public final class HttpCacheHeaderUtil {
     EtagCacheVal etagCache = etagCoreCache.get(core);
     if (null == etagCache) {
       final String etagSeed
-        = core.getSolrConfig().getHttpCachingConfig().getEtagSeed();
+        = core.getConfiguration().getHttpCachingConfig().getEtagSeed();
       etagCache = new EtagCacheVal(etagSeed);
       etagCoreCache.put(core, etagCache);
     }
@@ -144,7 +144,7 @@ public final class HttpCacheHeaderUtil {
     final SolrIndexSearcher searcher = solrReq.getSearcher();
     
     final LastModFrom lastModFrom
-      = core.getSolrConfig().getHttpCachingConfig().getLastModFrom();
+      = core.getConfiguration().getHttpCachingConfig().getLastModFrom();
 
     long lastMod;
     try {
@@ -170,7 +170,7 @@ public final class HttpCacheHeaderUtil {
    * @param resp The servlet response object to modify
    * @param method The request method (GET, POST, ...) used by this request
    */
-  public static void setCacheControlHeader(final SolrConfig conf,
+  public static void setCacheControlHeader(final SolrConfiguraion conf,
                                            final HttpServletResponse resp, final Method method) {
     // We do not emit HTTP header for POST and OTHER request types
     if (Method.POST==method || Method.OTHER==method) {

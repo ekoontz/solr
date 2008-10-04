@@ -33,6 +33,12 @@ import org.apache.solr.util.plugin.NamedListInitializedPlugin;
  */
 public abstract class SearchComponent implements SolrInfoMBean, NamedListInitializedPlugin
 {
+  //////////////////////// NamedListInitializedPlugin methods //////////////////////
+  public void init( NamedList args )
+  {
+    // By default do nothing
+  }
+  
   /**
    * Prepare the response.  Guaranteed to be called before any SearchComponent {@link #process(org.apache.solr.handler.component.ResponseBuilder)} method.
    * Called for every incoming request.
@@ -70,13 +76,6 @@ public abstract class SearchComponent implements SolrInfoMBean, NamedListInitial
    * Useful when different requests are sent to each shard.
    */
   public void finishStage(ResponseBuilder rb) {
-  }
-
-
-  //////////////////////// NamedListInitializedPlugin methods //////////////////////
-  public void init( NamedList args )
-  {
-    // By default do nothing
   }
   
   //////////////////////// SolrInfoMBeans methods //////////////////////

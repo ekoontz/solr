@@ -24,11 +24,12 @@ import org.apache.solr.common.util.ContentStreamBase;
 import org.apache.solr.common.util.NamedList;
 import org.apache.solr.common.util.SimpleOrderedMap;
 import org.apache.solr.common.util.XML;
-import org.apache.solr.core.SolrConfig;
+import org.apache.solr.config.CoreDescriptor;
+import org.apache.solr.config.CoreInitalizer;
+import org.apache.solr.config.SolrConfig;
+import org.apache.solr.config.SolrResourceLoader;
 import org.apache.solr.core.SolrCore;
 import org.apache.solr.core.CoreContainer;
-import org.apache.solr.core.CoreDescriptor;
-import org.apache.solr.core.SolrResourceLoader;
 import org.apache.solr.handler.XmlUpdateRequestHandler;
 import org.apache.solr.request.LocalSolrQueryRequest;
 import org.apache.solr.request.QueryResponseWriter;
@@ -122,7 +123,7 @@ public class TestHarness {
       public TestHarness( String dataDirectory,
                           SolrConfig solrConfig,
                           String schemaFile) {
-     this( dataDirectory, solrConfig, new IndexSchema(solrConfig, schemaFile, null));
+     this( dataDirectory, solrConfig, new IndexSchema(solrConfig, solrConfig.vars, schemaFile, null));
    }
    /**
     * @param dataDirectory path for index data, will not be cleaned up
@@ -180,7 +181,8 @@ public class TestHarness {
       CoreDescriptor dcore = new CoreDescriptor(container, coreName, solrConfig.getResourceLoader().getInstanceDir());
       dcore.setConfigName(solrConfig.getResourceName());
       dcore.setSchemaName(indexSchema.getResourceName());
-      SolrCore core = new SolrCore( null, dataDirectory, solrConfig, indexSchema, dcore);
+      CoreInitalizer initalizer = new CoreInitalizer(null, dataDirectory, solrConfig, indexSchema, dcore);
+      SolrCore core = initalizer.initalizeCore( coreName );
       container.register(coreName, core, false);
       return container;
     }

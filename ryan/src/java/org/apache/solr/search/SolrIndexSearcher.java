@@ -26,7 +26,7 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.util.PriorityQueue;
 import org.apache.solr.common.util.NamedList;
 import org.apache.solr.common.util.SimpleOrderedMap;
-import org.apache.solr.core.SolrConfig;
+import org.apache.solr.config.SolrConfiguraion;
 import org.apache.solr.core.SolrCore;
 import org.apache.solr.core.SolrInfoMBean;
 import org.apache.solr.schema.IndexSchema;
@@ -116,27 +116,27 @@ public class SolrIndexSearcher extends Searcher implements SolrInfoMBean {
     this.closeReader = closeReader;
     searcher.setSimilarity(schema.getSimilarity());
 
-    SolrConfig solrConfig = schema.getSolrConfig();
-    queryResultWindowSize = solrConfig.queryResultWindowSize;
-    queryResultMaxDocsCached = solrConfig.queryResultMaxDocsCached;
-    useFilterForSortedQuery = solrConfig.useFilterForSortedQuery;
-    enableLazyFieldLoading = solrConfig.enableLazyFieldLoading;
+    SolrConfiguraion solrConfig = schema.getConfig();
+    queryResultWindowSize = solrConfig.getQueryResultWindowSize();
+    queryResultMaxDocsCached = solrConfig.getQueryResultMaxDocsCached();
+    useFilterForSortedQuery = solrConfig.isUseFilterForSortedQuery();
+    enableLazyFieldLoading = solrConfig.isEnableLazyFieldLoading();
     
     cachingEnabled=enableCache;
     if (cachingEnabled) {
       ArrayList<SolrCache> clist = new ArrayList<SolrCache>();
-      filterCache= solrConfig.filterCacheConfig==null ? null : solrConfig.filterCacheConfig.newInstance();
+      filterCache= solrConfig.getFilterCacheConfig()==null ? null : solrConfig.getFilterCacheConfig().newInstance();
       if (filterCache!=null) clist.add(filterCache);
-      queryResultCache = solrConfig.queryResultCacheConfig==null ? null : solrConfig.queryResultCacheConfig.newInstance();
+      queryResultCache = solrConfig.getQueryResultCacheConfig() ==null ? null : solrConfig.getQueryResultCacheConfig().newInstance();
       if (queryResultCache!=null) clist.add(queryResultCache);
-      documentCache = solrConfig.documentCacheConfig==null ? null : solrConfig.documentCacheConfig.newInstance();
+      documentCache = solrConfig.getDocumentCacheConfig() ==null ? null : solrConfig.getDocumentCacheConfig().newInstance();
       if (documentCache!=null) clist.add(documentCache);
 
-      if (solrConfig.userCacheConfigs == null) {
+      if (solrConfig.getUserCacheConfigs() == null) {
         cacheMap = noGenericCaches;
       } else {
-        cacheMap = new HashMap<String,SolrCache>(solrConfig.userCacheConfigs.length);
-        for (CacheConfig userCacheConfig : solrConfig.userCacheConfigs) {
+        cacheMap = new HashMap<String,SolrCache>(solrConfig.getUserCacheConfigs().length);
+        for (CacheConfig userCacheConfig : solrConfig.getUserCacheConfigs()) {
           SolrCache cache = null;
           if (userCacheConfig != null) cache = userCacheConfig.newInstance();
           if (cache != null) {
@@ -154,11 +154,12 @@ public class SolrIndexSearcher extends Searcher implements SolrInfoMBean {
       cacheMap = noGenericCaches;
       cacheList= noCaches;
     }
-    optimizer = solrConfig.filtOptEnabled ? new LuceneQueryOptimizer(solrConfig.filtOptCacheSize,solrConfig.filtOptThreshold) : null;
+    optimizer = solrConfig.isFiltOptEnabled()  
+        ? new LuceneQueryOptimizer(solrConfig.getFiltOptCacheSize(),solrConfig.getFiltOptThreshold()) : null;
 
     // for DocSets
-    HASHSET_INVERSE_LOAD_FACTOR = solrConfig.hashSetInverseLoadFactor;
-    HASHDOCSET_MAXSIZE = solrConfig.hashDocSetMaxSize;
+    HASHSET_INVERSE_LOAD_FACTOR = solrConfig.getHashSetInverseLoadFactor();
+    HASHDOCSET_MAXSIZE = solrConfig.getHashDocSetMaxSize();
   }
 
 
@@ -218,9 +219,10 @@ public class SolrIndexSearcher extends Searcher implements SolrInfoMBean {
   //
   // Set default regenerators on filter and query caches if they don't have any
   //
-  public static void initRegenerators(SolrConfig solrConfig) {
-    if (solrConfig.filterCacheConfig != null && solrConfig.filterCacheConfig.getRegenerator() == null) {
-      solrConfig.filterCacheConfig.setRegenerator(
+  public static void initRegenerators(SolrConfiguraion config) {
+    CacheConfig cacheConfig = config.getFilterCacheConfig();
+    if (cacheConfig != null && cacheConfig.getRegenerator() == null) {
+      cacheConfig.setRegenerator(
               new CacheRegenerator() {
                 public boolean regenerateItem(SolrIndexSearcher newSearcher, SolrCache newCache, SolrCache oldCache, Object oldKey, Object oldVal) throws IOException {
                   newSearcher.cacheDocSet((Query)oldKey, null, false);
@@ -230,9 +232,10 @@ public class SolrIndexSearcher extends Searcher implements SolrInfoMBean {
       );
     }
 
-    if (solrConfig.queryResultCacheConfig != null && solrConfig.queryResultCacheConfig.getRegenerator() == null) {
-      final int queryResultWindowSize = solrConfig.queryResultWindowSize;
-      solrConfig.queryResultCacheConfig.setRegenerator(
+    cacheConfig = config.getQueryResultCacheConfig();
+    if (cacheConfig != null && cacheConfig.getRegenerator() == null) {
+      final int queryResultWindowSize = config.getQueryResultWindowSize();
+      cacheConfig.setRegenerator(
               new CacheRegenerator() {
                 public boolean regenerateItem(SolrIndexSearcher newSearcher, SolrCache newCache, SolrCache oldCache, Object oldKey, Object oldVal) throws IOException {
                   QueryResultKey key = (QueryResultKey)oldKey;
@@ -1569,6 +1572,11 @@ public class SolrIndexSearcher extends Searcher implements SolrInfoMBean {
 
   public long getOpenTime() {
     return openTime;
+  }
+  
+  public SolrCore getCore()
+  {
+    return core;
   }
 
   /////////////////////////////////////////////////////////////////////

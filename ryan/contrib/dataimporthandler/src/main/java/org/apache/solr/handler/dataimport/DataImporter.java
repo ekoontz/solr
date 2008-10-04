@@ -17,7 +17,7 @@
 
 package org.apache.solr.handler.dataimport;
 
-import org.apache.solr.core.SolrConfig;
+import org.apache.solr.config.SolrConfig;
 import org.apache.solr.core.SolrCore;
 import org.apache.solr.schema.FieldType;
 import org.apache.solr.schema.IndexSchema;

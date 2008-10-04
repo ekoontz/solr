@@ -18,7 +18,7 @@ package org.apache.solr.core;
 
 import org.apache.solr.common.SolrException;
 import org.apache.solr.common.util.NamedList;
-import org.apache.solr.core.SolrConfig.JmxConfiguration;
+import org.apache.solr.config.JmxConfiguration;
 
 import javax.management.*;
 import javax.management.remote.JMXConnectorServer;
@@ -41,7 +41,7 @@ import org.slf4j.LoggerFactory;
  * </p>
  *
  * @version $Id$
- * @see org.apache.solr.core.SolrConfig.JmxConfiguration
+ * @see org.apache.solr.config.SolrConfig.JmxConfiguration
  * @since solr 1.3
  */
 public class JmxMonitoredMap<K, V> extends

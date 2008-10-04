@@ -23,12 +23,10 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.Fieldable;
 import org.apache.lucene.search.HitCollector;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Node;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.util.Vector;
+
+import java.util.List;
 import java.io.IOException;
 
 import org.apache.solr.search.SolrIndexSearcher;
@@ -36,11 +34,8 @@ import org.apache.solr.schema.IndexSchema;
 import org.apache.solr.schema.SchemaField;
 import org.apache.solr.schema.FieldType;
 import org.apache.solr.common.SolrException;
-import org.apache.solr.common.util.DOMUtil;
 import org.apache.solr.util.plugin.SolrCoreAware;
 import org.apache.solr.core.*;
-
-import javax.xml.xpath.XPathConstants;
 
 /**
  * <code>UpdateHandler</code> handles requests to change the index
@@ -60,44 +55,9 @@ public abstract class UpdateHandler implements SolrInfoMBean {
   protected final FieldType idFieldType;
   protected final Term idTerm; // prototype term to avoid interning fieldname
 
-  protected Vector<SolrEventListener> commitCallbacks = new Vector<SolrEventListener>();
-  protected Vector<SolrEventListener> optimizeCallbacks = new Vector<SolrEventListener>();
-
-  private void parseEventListeners() {
-    final SolrConfig solrConfig = core.getSolrConfig();
-    NodeList nodes = (NodeList) solrConfig.evaluate("updateHandler/listener[@event=\"postCommit\"]", XPathConstants.NODESET);
-    if (nodes!=null) {
-      for (int i=0; i<nodes.getLength(); i++) {
-        Node node = nodes.item(i);
-        try {
-          String className = DOMUtil.getAttr(node,"class");
-          SolrEventListener listener = core.createEventListener(className);
-          listener.init(DOMUtil.childNodesToNamedList(node));
-          // listener.init(DOMUtil.toMapExcept(node.getAttributes(),"class","synchronized"));
-          commitCallbacks.add(listener);
-          log.info("added SolrEventListener for postCommit: " + listener);
-        } catch (Exception e) {
-          throw new SolrException( SolrException.ErrorCode.SERVER_ERROR,"error parsing event listevers", e, false);
-        }
-      }
-    }
-    nodes = (NodeList) solrConfig.evaluate("updateHandler/listener[@event=\"postOptimize\"]", XPathConstants.NODESET);
-    if (nodes!=null) {
-      for (int i=0; i<nodes.getLength(); i++) {
-        Node node = nodes.item(i);
-        try {
-          String className = DOMUtil.getAttr(node,"class");
-          SolrEventListener listener = core.createEventListener(className);
-          listener.init(DOMUtil.childNodesToNamedList(node));
-          optimizeCallbacks.add(listener);
-          log.info("added SolarEventListener for postOptimize: " + listener);
-        } catch (Exception e) {
-          throw new SolrException( SolrException.ErrorCode.SERVER_ERROR,"error parsing event listeners", e, false);
-        }
-      }
-    }
-  }
-
+  protected final List<SolrEventListener> commitCallbacks;
+  protected final List<SolrEventListener> optimizeCallbacks;
+  
   protected void callPostCommitCallbacks() {
     for (SolrEventListener listener : commitCallbacks) {
       listener.postCommit();
@@ -110,17 +70,22 @@ public abstract class UpdateHandler implements SolrInfoMBean {
     }
   }
 
-  public UpdateHandler(SolrCore core)  {
+  public UpdateHandler(SolrCore core, 
+      List<SolrEventListener> commitCallbacks,
+      List<SolrEventListener> optimizeCallbacks )  {
     this.core=core;
     schema = core.getSchema();
     idField = schema.getUniqueKeyField();
     idFieldType = idField!=null ? idField.getType() : null;
     idTerm = idField!=null ? new Term(idField.getName(),"") : null;
-    parseEventListeners();
+    
+    this.commitCallbacks = commitCallbacks;
+    this.optimizeCallbacks = optimizeCallbacks;
   }
 
   protected SolrIndexWriter createMainIndexWriter(String name, boolean removeAllExisting) throws IOException {
-    return new SolrIndexWriter(name,core.getIndexDir(), removeAllExisting, schema, core.getSolrConfig().mainIndexConfig, core.getDeletionPolicy());
+    return new SolrIndexWriter(name,core.getIndexDir(), removeAllExisting, schema, 
+        core.getConfiguration().getMainIndexConfig(), core.getDeletionPolicy());
   }
 
   protected final Term idTerm(String readableId) {

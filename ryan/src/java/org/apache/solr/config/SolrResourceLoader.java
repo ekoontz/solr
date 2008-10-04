@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.solr.core;
+package org.apache.solr.config;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -40,6 +40,7 @@ import org.apache.solr.analysis.TokenFilterFactory;
 import org.apache.solr.analysis.TokenizerFactory;
 import org.apache.solr.common.ResourceLoader;
 import org.apache.solr.common.SolrException;
+import org.apache.solr.core.SolrCore;
 import org.apache.solr.handler.component.SearchComponent;
 import org.apache.solr.request.QueryResponseWriter;
 import org.apache.solr.request.SolrRequestHandler;
@@ -102,7 +103,7 @@ public class SolrResourceLoader implements ResourceLoader
     this(instanceDir, parent, null);
   }
     
-  static ClassLoader createClassLoader(File f, ClassLoader loader) {
+  public static ClassLoader createClassLoader(File f, ClassLoader loader) {
     if( loader == null ) {
       loader = Thread.currentThread().getContextClassLoader();
     }
@@ -404,7 +405,7 @@ public class SolrResourceLoader implements ResourceLoader
   /**
    * Utility function to throw an exception if the class is invalid
    */
-  void assertAwareCompatibility( Class aware, Object obj )
+  public void assertAwareCompatibility( Class aware, Object obj )
   {
     Class[] valid = awareCompatibility.get( aware );
     if( valid == null ) {

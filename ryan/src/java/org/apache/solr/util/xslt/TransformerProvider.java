@@ -29,7 +29,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.solr.common.ResourceLoader;
-import org.apache.solr.core.SolrConfig;
+import org.apache.solr.config.SolrConfig;
 
 /** Singleton that creates a Transformer for the XSLTServletFilter.
  *  For now, only caches the last created Transformer, but

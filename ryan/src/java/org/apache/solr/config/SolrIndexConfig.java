@@ -15,9 +15,8 @@
  * limitations under the License.
  */
 
-package org.apache.solr.update;
+package org.apache.solr.config;
 
-import org.apache.solr.core.SolrConfig;
 import org.apache.lucene.index.LogByteSizeMergePolicy;
 import org.apache.lucene.index.ConcurrentMergeScheduler;
 

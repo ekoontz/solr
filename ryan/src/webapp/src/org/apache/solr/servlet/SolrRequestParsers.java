@@ -43,7 +43,7 @@ import org.apache.solr.common.params.MultiMapSolrParams;
 import org.apache.solr.common.params.SolrParams;
 import org.apache.solr.common.util.ContentStream;
 import org.apache.solr.common.util.ContentStreamBase;
-import org.apache.solr.core.Config;
+import org.apache.solr.config.RequestDispatcherConfiguration;
 import org.apache.solr.core.SolrCore;
 import org.apache.solr.request.ServletSolrParams;
 import org.apache.solr.request.SolrQueryRequest;
@@ -69,24 +69,18 @@ public class SolrRequestParsers
    * Pass in an xml configuration.  A null configuration will enable
    * everythign with maximum values.
    */
-  public SolrRequestParsers( Config globalConfig )
+  public SolrRequestParsers( RequestDispatcherConfiguration config )
   {
     long uploadLimitKB = 1048;  // 2MB default
-    if( globalConfig == null ) {
+    if( config == null ) {
       uploadLimitKB = Long.MAX_VALUE; 
       enableRemoteStreams = true;
       handleSelect = true;
     }
     else {
-      uploadLimitKB = globalConfig.getInt( 
-          "requestDispatcher/requestParsers/@multipartUploadLimitInKB", (int)uploadLimitKB );
-      
-      enableRemoteStreams = globalConfig.getBool( 
-          "requestDispatcher/requestParsers/@enableRemoteStreaming", false ); 
-  
-      // Let this filter take care of /select?xxx format
-      handleSelect = globalConfig.getBool( 
-          "requestDispatcher/@handleSelect", handleSelect ); 
+      uploadLimitKB = config.getUploadLimitKB();
+      enableRemoteStreams = config.isEnableRemoteStreams();
+      handleSelect = config.isHandleSelect();
     }
        
     MultipartRequestParser multi = new MultipartRequestParser( uploadLimitKB );
