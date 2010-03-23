@@ -1,0 +1,5 @@
+As of 2010-03-23, development of Solr moved to a
+new SVN folder and was merged with Lucene development:
+ 	
+The combined checkout of Lucene+Solr can be found here:
+https://svn.apache.org/repos/asf/lucene/dev/trunk
