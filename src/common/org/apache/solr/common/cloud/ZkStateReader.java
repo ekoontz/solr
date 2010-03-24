@@ -40,6 +40,8 @@ public class ZkStateReader {
   private static Logger log = LoggerFactory.getLogger(ZkStateReader.class);
   
   public static final String COLLECTIONS_ZKNODE = "/collections";
+  public static final String URL_PROP = "url";
+  public static final String NODE_NAME = "node_name";
   public static final String SHARDS_ZKNODE = "/shards";
   public static final String LIVE_NODES_ZKNODE = "/live_nodes";
   

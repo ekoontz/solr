@@ -66,8 +66,6 @@ public final class ZkController {
 
   static final String CONFIGS_ZKNODE = "/configs";
 
-  public static final String URL_PROP = "url";
-  public static final String NODE_NAME = "node_name";
   public final static String COLLECTION_PARAM_PREFIX="collection.";
   public final static String CONFIGNAME_PROP="configName";
 
@@ -449,9 +447,9 @@ public final class ZkController {
     }
 
     ZkNodeProps props = new ZkNodeProps();
-    props.put(URL_PROP, shardUrl);
+    props.put(ZkStateReader.URL_PROP, shardUrl);
     
-    props.put(NODE_NAME, getNodeName());
+    props.put(ZkStateReader.NODE_NAME, getNodeName());
 
     byte[] bytes = props.store();
     

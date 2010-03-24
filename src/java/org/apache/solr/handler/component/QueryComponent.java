@@ -30,6 +30,7 @@ import org.apache.solr.common.SolrException;
 import org.apache.solr.common.cloud.CloudState;
 import org.apache.solr.common.cloud.Slice;
 import org.apache.solr.common.cloud.ZkNodeProps;
+import org.apache.solr.common.cloud.ZkStateReader;
 import org.apache.solr.common.params.CommonParams;
 import org.apache.solr.common.params.ModifiableSolrParams;
 import org.apache.solr.common.params.ShardParams;
@@ -203,7 +204,7 @@ public class QueryComponent extends SearchComponent
             StringBuilder sliceShardsStr = new StringBuilder();
             boolean first = true;
             for (ZkNodeProps nodeProps : sliceShards.values()) {
-              if (!liveNodes.contains(nodeProps.get(ZkController.NODE_NAME)))
+              if (!liveNodes.contains(nodeProps.get(ZkStateReader.NODE_NAME)))
                 continue;
               if (first) {
                 first = false;

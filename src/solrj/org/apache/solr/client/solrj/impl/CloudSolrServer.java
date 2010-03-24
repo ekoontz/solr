@@ -14,7 +14,6 @@ import java.util.concurrent.TimeoutException;
 import org.apache.solr.client.solrj.SolrRequest;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.cloud.ZkController;
 import org.apache.solr.common.SolrException;
 import org.apache.solr.common.cloud.CloudState;
 import org.apache.solr.common.cloud.Slice;
@@ -120,10 +119,10 @@ public class CloudSolrServer extends SolrServer {
     List<String> urlList = new ArrayList<String>();
     for (Slice slice : slices.values()) {
       for (ZkNodeProps nodeProps : slice.getShards().values()) {
-        String node = nodeProps.get(ZkController.NODE_NAME);
+        String node = nodeProps.get(ZkStateReader.NODE_NAME);
         if (!liveNodes.contains(node)) continue;
         if (nodes.put(node, nodeProps) == null) {
-          String url = nodeProps.get(ZkController.URL_PROP);
+          String url = nodeProps.get(ZkStateReader.URL_PROP);
           urlList.add(url);
         }
       }

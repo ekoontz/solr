@@ -103,16 +103,16 @@ public class ZkControllerTest extends TestCase {
         assertNotNull(shards.get(SHARD3));
 
         ZkNodeProps props = shards.get(SHARD1);
-        assertEquals(URL1, props.get(ZkController.URL_PROP));
-        assertEquals(TEST_NODE_NAME, props.get(ZkController.NODE_NAME));
+        assertEquals(URL1, props.get(ZkStateReader.URL_PROP));
+        assertEquals(TEST_NODE_NAME, props.get(ZkStateReader.NODE_NAME));
 
         props = shards.get(SHARD2);
-        assertEquals(URL2, props.get(ZkController.URL_PROP));
-        assertEquals(TEST_NODE_NAME, props.get(ZkController.NODE_NAME));
+        assertEquals(URL2, props.get(ZkStateReader.URL_PROP));
+        assertEquals(TEST_NODE_NAME, props.get(ZkStateReader.NODE_NAME));
 
         props = shards.get(SHARD3);
-        assertEquals(URL3, props.get(ZkController.URL_PROP));
-        assertEquals(TEST_NODE_NAME, props.get(ZkController.NODE_NAME));
+        assertEquals(URL3, props.get(ZkStateReader.URL_PROP));
+        assertEquals(TEST_NODE_NAME, props.get(ZkStateReader.NODE_NAME));
 
       }
 
@@ -202,8 +202,8 @@ public class ZkControllerTest extends TestCase {
       KeeperException, InterruptedException {
 
     ZkNodeProps props = new ZkNodeProps();
-    props.put(ZkController.URL_PROP, url);
-    props.put(ZkController.NODE_NAME, TEST_NODE_NAME);
+    props.put(ZkStateReader.URL_PROP, url);
+    props.put(ZkStateReader.NODE_NAME, TEST_NODE_NAME);
     byte[] bytes = props.store();
 
     zkClient
