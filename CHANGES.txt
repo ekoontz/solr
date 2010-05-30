@@ -52,7 +52,8 @@ Bug Fixes
   to the original ValueSource.getValues(reader) so custom sources
   will work. (yonik)
 
-
+* SOLR-1572: FastLRUCache correctly implemented the LRU policy only
+  for the first 2B accesses. (yonik)
 
 
 ================== Release 1.4.0 ==================
