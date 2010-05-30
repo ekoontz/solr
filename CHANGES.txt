@@ -65,6 +65,9 @@ Bug Fixes
 * SOLR-1662: Added Javadocs in BufferedTokenStream and fixed incorrect cloning
   in TestBufferedTokenStream (Robert Muir, Uwe Schindler via shalin)
 
+* SOLR-1711: SolrJ - StreamingUpdateSolrServer had a race condition that
+  could halt the streaming of documents. (Attila Babo via yonik)
+
 ================== Release 1.4.0 ==================
 Release Date:  See http://lucene.apache.org/solr for the official release date.
 

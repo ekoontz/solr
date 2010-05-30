@@ -82,6 +82,7 @@ public class StreamingUpdateSolrServer extends CommonsHttpSolrServer
       log.info( "starting runner: {}" , this );
       PostMethod method = null;
       try {
+        do {
         RequestEntity request = new RequestEntity() {
           // we don't know the length
           public long getContentLength() { return -1; }
@@ -142,6 +143,7 @@ public class StreamingUpdateSolrServer extends CommonsHttpSolrServer
           msg.append( "request: "+method.getURI() );
           handleError( new Exception( msg.toString() ) );
         }
+        }  while( ! queue.isEmpty());
       }
       catch (Throwable e) {
         handleError( e );
@@ -149,6 +151,7 @@ public class StreamingUpdateSolrServer extends CommonsHttpSolrServer
       finally {
         try {
           // make sure to release the connection
+          if(method != null)
           method.releaseConnection();
         }
         catch( Exception ex ){}
@@ -195,11 +198,11 @@ public class StreamingUpdateSolrServer extends CommonsHttpSolrServer
 
       queue.put( req );
       
+        synchronized( runners ) {
       if( runners.isEmpty() 
         || (queue.remainingCapacity() < queue.size() 
          && runners.size() < threadCount) ) 
       {
-        synchronized( runners ) {
           Runner r = new Runner();
           scheduler.execute( r );
           runners.add( r );
