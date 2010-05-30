@@ -59,6 +59,9 @@ Bug Fixes
   set when streaming updates, rather than using UTF-8 as the HTTP headers
   indicated, leading to an encoding mismatch. (hossman, yonik)
 
+* SOLR-1660: CapitalizationFilter crashes if you use the maxWordCountOption
+  (Robert Muir via shalin)
+
 ================== Release 1.4.0 ==================
 Release Date:  See http://lucene.apache.org/solr for the official release date.
 
