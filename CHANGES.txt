@@ -62,6 +62,9 @@ Bug Fixes
 * SOLR-1660: CapitalizationFilter crashes if you use the maxWordCountOption
   (Robert Muir via shalin)
 
+* SOLR-1662: Added Javadocs in BufferedTokenStream and fixed incorrect cloning
+  in TestBufferedTokenStream (Robert Muir, Uwe Schindler via shalin)
+
 ================== Release 1.4.0 ==================
 Release Date:  See http://lucene.apache.org/solr for the official release date.
 
