@@ -22,6 +22,39 @@ See the tutorial at http://lucene.apache.org/solr/tutorial.html
 $Id$
 
 
+================== Release 1.4.1 ==================
+Release Date:  See http://lucene.apache.org/solr for the official release date.
+
+Upgrading from Solr 1.4
+-----------------------
+
+This is a bug fix release no changes should be needed when upgrading
+from Solr 1.4.
+
+Versions of Major Components
+----------------------------
+Apache Lucene 2.9.1  (r832363  on 2.9 branch)
+Apache Tika 0.4
+Carrot2 3.1.0
+
+Lucene Information
+----------------
+
+Since Solr is built on top of Lucene, many people add customizations to Solr
+that are dependent on Lucene.  Please see http://lucene.apache.org/java/2_9_0/,
+especially http://lucene.apache.org/java/2_9_0/changes/Changes.html for more
+information on the version of Lucene used in Solr.
+
+Bug Fixes
+----------------------
+
+* SOLR-1432: Make the new ValueSource.getValues(context,reader) delegate
+  to the original ValueSource.getValues(reader) so custom sources
+  will work. (yonik)
+
+
+
+
 ================== Release 1.4.0 ==================
 Release Date:  See http://lucene.apache.org/solr for the official release date.
 
