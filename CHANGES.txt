@@ -55,6 +55,9 @@ Bug Fixes
 * SOLR-1572: FastLRUCache correctly implemented the LRU policy only
   for the first 2B accesses. (yonik)
 
+* SOLR-1595: StreamingUpdateSolrServer used the platform default character
+  set when streaming updates, rather than using UTF-8 as the HTTP headers
+  indicated, leading to an encoding mismatch. (hossman, yonik)
 
 ================== Release 1.4.0 ==================
 Release Date:  See http://lucene.apache.org/solr for the official release date.
