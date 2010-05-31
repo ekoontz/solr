@@ -89,6 +89,12 @@ Bug Fixes
   (an extremely small) potential for deadlock.
   (gabriele renzi via hossman)
 
+* SOLR-1558: QueryElevationComponent only works if the uniqueKey field is
+  implemented using StrField.  In previous versions of Solr no warning or
+  error would be generated if you attempted to use QueryElevationComponent,
+  it would just fail in unexpected ways.  This has been changed so that it
+  will fail with a clear error message on initialization. (hossman)
+
 ================== Release 1.4.0 ==================
 Release Date:  See http://lucene.apache.org/solr for the official release date.
 
