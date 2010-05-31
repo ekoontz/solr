@@ -111,6 +111,9 @@ Bug Fixes
   "SEVERE: SolrIndexWriter was not closed prior to finalize()" although
   there were no other consequences. (yonik)
 
+* SOLR-1651: Fixed Incorrect dataimport handler package name in SolrResourceLoader
+  (Akshay Ukey via shalin)
+
 ================== Release 1.4.0 ==================
 Release Date:  See http://lucene.apache.org/solr for the official release date.
 
