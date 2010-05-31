@@ -72,6 +72,9 @@ Bug Fixes
   retrieved from ContentStreams are not closed in various places, resulting
   in file descriptor leaks.
   (Christoff Brill, Mark Miller)
+  
+* SOLR-1580: Solr Configuration ignores 'mergeFactor' parameter, always 
+  uses Lucene default. (Lance Norskog via Mark Miller)
 
 * SOLR-1777: fieldTypes with sortMissingLast=true or sortMissingFirst=true can
   result in incorrectly sorted results.  (yonik)
