@@ -82,6 +82,9 @@ Bug Fixes
 * SOLR-1798: Small memory leak (~100 bytes) in fastLRUCache for every
   commit. (yonik)
 
+* SOLR-1522: Show proper message if <script> tag is missing for DIH 
+  ScriptTransformer (noble)
+
 ================== Release 1.4.0 ==================
 Release Date:  See http://lucene.apache.org/solr for the official release date.
 
