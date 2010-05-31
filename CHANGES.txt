@@ -98,6 +98,12 @@ Bug Fixes
 * SOLR-1563: Binary fields, including trie-based numeric fields, caused null
   pointer exceptions in the luke request handler. (yonik)
 
+* SOLR-1579: Fixes to XML escaping in stats.jsp
+  (David Bowen and hossman)
+
+* SOLR-1579: Fixes to XML escaping in stats.jsp
+  (David Bowen and hossman)
+
 ================== Release 1.4.0 ==================
 Release Date:  See http://lucene.apache.org/solr for the official release date.
 
