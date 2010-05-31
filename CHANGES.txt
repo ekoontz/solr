@@ -85,6 +85,10 @@ Bug Fixes
 * SOLR-1522: Show proper message if <script> tag is missing for DIH 
   ScriptTransformer (noble)
 
+* SOLR-1538: Reordering of object allocations in ConcurrentLRUCache to eliminate
+  (an extremely small) potential for deadlock.
+  (gabriele renzi via hossman)
+
 ================== Release 1.4.0 ==================
 Release Date:  See http://lucene.apache.org/solr for the official release date.
 
