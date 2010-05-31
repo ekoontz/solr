@@ -104,9 +104,6 @@ Bug Fixes
 * SOLR-1579: Fixes to XML escaping in stats.jsp
   (David Bowen and hossman)
 
-* SOLR-1579: Fixes to XML escaping in stats.jsp
-  (David Bowen and hossman)
-
 ================== Release 1.4.0 ==================
 Release Date:  See http://lucene.apache.org/solr for the official release date.
 
