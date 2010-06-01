@@ -33,7 +33,7 @@ from Solr 1.4.
 
 Versions of Major Components
 ----------------------------
-Apache Lucene 2.9.1  (r832363  on 2.9 branch)
+Apache Lucene 2.9.2
 Apache Tika 0.4
 Carrot2 3.1.0
 
@@ -41,12 +41,16 @@ Lucene Information
 ----------------
 
 Since Solr is built on top of Lucene, many people add customizations to Solr
-that are dependent on Lucene.  Please see http://lucene.apache.org/java/2_9_0/,
-especially http://lucene.apache.org/java/2_9_0/changes/Changes.html for more
+that are dependent on Lucene.  Please see http://lucene.apache.org/java/2_9_2/,
+especially http://lucene.apache.org/java/2_9_2/changes/Changes.html for more
 information on the version of Lucene used in Solr.
 
 Bug Fixes
 ----------------------
+
+* SOLR-1934: Upgrade to Apache Lucene 2.9.2 to obtain several bug
+  fixes from the previous 2.9.1.  See the Lucene 2.9.2 release notes
+  for details.  (hossman)
 
 * SOLR-1432: Make the new ValueSource.getValues(context,reader) delegate
   to the original ValueSource.getValues(reader) so custom sources
@@ -115,7 +119,7 @@ Bug Fixes
   (Akshay Ukey via shalin)
 
 * SOLR-1936: The JSON response format needed to escape unicode code point
-  U+2028 - 'LINE SEPARATOR' (Robert Hofstra, yonik
+  U+2028 - 'LINE SEPARATOR' (Robert Hofstra, yonik)
 
 ================== Release 1.4.0 ==================
 Release Date:  See http://lucene.apache.org/solr for the official release date.
