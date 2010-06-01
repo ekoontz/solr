@@ -114,6 +114,9 @@ Bug Fixes
 * SOLR-1651: Fixed Incorrect dataimport handler package name in SolrResourceLoader
   (Akshay Ukey via shalin)
 
+* SOLR-1936: The JSON response format needed to escape unicode code point
+  U+2028 - 'LINE SEPARATOR' (Robert Hofstra, yonik
+
 ================== Release 1.4.0 ==================
 Release Date:  See http://lucene.apache.org/solr for the official release date.
 
