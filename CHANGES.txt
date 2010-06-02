@@ -10,6 +10,7 @@ servlet container such as Tomcat.
 
 See http://lucene.apache.org/solr for more information.
 
+$Id$
 
 Getting Started
 ---------------
@@ -18,9 +19,11 @@ In this release, there is an example Solr server including a bundled
 servlet container in the directory named "example".
 See the tutorial at http://lucene.apache.org/solr/tutorial.html
 
-
-$Id$
-
+Although Solr strives to be agnostic of the Locale where the server is
+running, some code paths in Solr 1.4.1 are known to depend on the System
+default Locale, or Charset.  It is recommended that when running Solr
+you set the following system properties:
+  -Duser.language=en -Duser.country=US
 
 ================== Release 1.4.1 ==================
 Release Date:  See http://lucene.apache.org/solr for the official release date.
