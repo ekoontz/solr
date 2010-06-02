@@ -24,6 +24,8 @@ import org.apache.lucene.analysis.TokenFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Token;
 import org.apache.lucene.analysis.WhitespaceTokenizer;
+import org.apache.lucene.analysis.StopFilter;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 import org.apache.lucene.analysis.tokenattributes.PositionIncrementAttribute;
 import org.apache.lucene.analysis.tokenattributes.TermAttribute;
@@ -484,6 +486,29 @@ public class TestWordDelimiterFilter extends AbstractSolrTestCase {
         new int[] { 0, 9, 15 },
         new int[] { 6, 14, 19 },
         new int[] { 1, 11, 1 });
+    
+    Analyzer a3 = new Analyzer() {
+      public TokenStream tokenStream(String field, Reader reader) {
+        StopFilter filter = new StopFilter(
+            new WhitespaceTokenizer(reader), StandardAnalyzer.STOP_WORDS_SET);
+        filter.setEnablePositionIncrements(true);
+        return new WordDelimiterFilter(filter, 
+            1, 1, 0, 0, 1, 1, 0, 1, 1, protWords);
+      }
+    };
+
+    assertAnalyzesTo(a3, "lucene.solr", 
+        new String[] { "lucene", "solr", "lucenesolr" },
+        new int[] { 0, 7, 0 },
+        new int[] { 6, 11, 11 },
+        new int[] { 1, 1, 0 });
+
+    /* the stopword should add a gap here */
+    assertAnalyzesTo(a3, "the lucene.solr", 
+        new String[] { "lucene", "solr", "lucenesolr" }, 
+        new int[] { 4, 11, 4 }, 
+        new int[] { 10, 15, 15 },
+        new int[] { 2, 1, 0 });
   }
 
   private void assertAnalyzesTo(Analyzer a, String input, String[] output,
