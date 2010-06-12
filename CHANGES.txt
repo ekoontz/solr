@@ -130,6 +130,8 @@ Bug Fixes
 * SOLR-1706: fixed WordDelimiterFilter for certain combinations of options
   where it would output incorrect tokens. (Robert Muir, Chris Male)
 
+* SOLR-1948: PatternTokenizerFactory should use parent's args (koji)
+
 ================== Release 1.4.0 ==================
 Release Date:  See http://lucene.apache.org/solr for the official release date.
 
