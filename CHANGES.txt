@@ -44,8 +44,8 @@ Lucene Information
 ----------------
 
 Since Solr is built on top of Lucene, many people add customizations to Solr
-that are dependent on Lucene.  Please see http://lucene.apache.org/java/2_9_2/,
-especially http://lucene.apache.org/java/2_9_2/changes/Changes.html for more
+that are dependent on Lucene.  Please see http://lucene.apache.org/java/2_9_3/,
+especially http://lucene.apache.org/java/2_9_3/changes/Changes.html for more
 information on the version of Lucene used in Solr.
 
 Bug Fixes
