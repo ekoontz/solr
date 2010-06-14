@@ -51,9 +51,9 @@ information on the version of Lucene used in Solr.
 Bug Fixes
 ----------------------
 
-* SOLR-1934: Upgrade to Apache Lucene 2.9.2 to obtain several bug
-  fixes from the previous 2.9.1.  See the Lucene 2.9.2 release notes
-  for details.  (hossman)
+* SOLR-1934: Upgrade to Apache Lucene 2.9.3 to obtain several bug
+  fixes from the previous 2.9.1.  See the Lucene 2.9.3 release notes
+  for details.  (hossman, Mark Miller)
 
 * SOLR-1432: Make the new ValueSource.getValues(context,reader) delegate
   to the original ValueSource.getValues(reader) so custom sources
