@@ -31,8 +31,8 @@ Release Date:  See http://lucene.apache.org/solr for the official release date.
 Upgrading from Solr 1.4
 -----------------------
 
-This is a bug fix release no changes should be needed when upgrading
-from Solr 1.4.
+This is a bug fix release - no changes are required when upgrading from Solr 1.4. 
+However, a reindex is needed for some of the analysis fixes to take effect.
 
 Versions of Major Components
 ----------------------------
