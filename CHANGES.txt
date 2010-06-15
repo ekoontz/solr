@@ -137,6 +137,8 @@ Bug Fixes
   values which are Collections or other classes that implement
   Iterable. (noble, hossman)
 
+* SOLR-1769 Solr 1.4 Replication - Repeater throwing NullPointerException (noble)
+
 ================== Release 1.4.0 ==================
 Release Date:  See http://lucene.apache.org/solr for the official release date.
 
