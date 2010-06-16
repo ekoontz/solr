@@ -695,17 +695,8 @@
 		<copy todir="site">
 			<fileset dir="src/site/build/site"/>
 		</copy>
-		<exec executable="svn" dir="site">
-			<arg value="ci"/>
-			<arg value="-m"/>
-			<arg value="&quot;Forrest Entity updates&quot;"/>
-		</exec>
-    <exec executable="svn" dir="src/site">
-                    <arg value="ci"/>
-                    <arg value="-m"/>
-                    <arg value="&quot;Forrest Entity updates&quot;"/>
-            </exec>
-    <antcall target="svn-up"/>
+
+        <echo>Site rebuilt: now commit site and src/site</echo>
 
   </target>
 	<target name="svn-up">
@@ -756,7 +747,7 @@
 
 
 
-  <target name="prepare-release" depends="clean, svn-up, build-site, package, sign-artifacts" description="Prototype helper for Committers.  Assumes gpg is in the path">
+  <target name="prepare-release" depends="clean, svn-up, package, sign-artifacts" description="Prototype helper for Committers.  Assumes gpg is in the path">
 
     <tar destfile="${dist}/solr-maven.tar" longfile="gnu">
 		  <tarfileset dir="${dist}/maven" prefix="maven"/>
