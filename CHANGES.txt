@@ -25,6 +25,32 @@ default Locale, or Charset.  It is recommended that when running Solr
 you set the following system properties:
   -Duser.language=en -Duser.country=US
 
+================== 1.4.2-dev ==================
+Upgrading from Solr 1.4
+-----------------------
+
+This is a bug fix release - no changes are required when upgrading from Solr 1.4.
+However, a reindex is needed for some of the analysis fixes to take effect.
+
+Versions of Major Components
+----------------------------
+Apache Lucene 2.9.3
+Apache Tika 0.8-SNAPSHOT
+Carrot2 3.1.0
+
+Lucene Information
+----------------
+
+Since Solr is built on top of Lucene, many people add customizations to Solr
+that are dependent on Lucene.  Please see http://lucene.apache.org/java/2_9_3/,
+especially http://lucene.apache.org/java/2_9_3/changes/Changes.html for more
+information on the version of Lucene used in Solr.
+
+Bug Fixes
+----------------------
+
+* SOLR-1902: Upgraded Tika to 0.8-SNAPSHOT (Tommaso Teofili, gsingers)
+
 ================== Release 1.4.1 ==================
 Release Date:  See http://lucene.apache.org/solr for the official release date.
 

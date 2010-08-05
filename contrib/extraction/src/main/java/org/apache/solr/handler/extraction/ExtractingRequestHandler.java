@@ -16,7 +16,6 @@
  */
 package org.apache.solr.handler.extraction;
 
-
 import org.apache.solr.common.SolrException;
 import org.apache.solr.common.SolrException.ErrorCode;
 import org.apache.solr.common.util.DateUtil;
@@ -31,15 +30,15 @@ import org.apache.tika.config.TikaConfig;
 import org.apache.tika.exception.TikaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import java.io.IOException;
+import org.apache.tika.mime.MimeTypeException;
 import java.io.File;
 import java.util.Collection;
 import java.util.HashSet;
 
-
 /**
- * Handler for rich documents like PDF or Word or any other file format that Tika handles that need the text to be extracted
- * first from the document.
+ * Handler for rich documents like PDF or Word or any other file format that Tika handles that need
+ * the text to be extracted first from the document.
  * <p/>
  */
 public class ExtractingRequestHandler extends ContentStreamHandlerBase implements SolrCoreAware {
@@ -47,14 +46,14 @@ public class ExtractingRequestHandler extends ContentStreamHandlerBase implement
   private transient static Logger log = LoggerFactory.getLogger(ExtractingRequestHandler.class);
 
   public static final String CONFIG_LOCATION = "tika.config";
+
   public static final String DATE_FORMATS = "date.formats";
 
   protected TikaConfig config;
 
-
   protected Collection<String> dateFormats = DateUtil.DEFAULT_DATE_FORMATS;
-  protected SolrContentHandlerFactory factory;
 
+  protected SolrContentHandlerFactory factory;
 
   @Override
   public void init(NamedList args) {
@@ -63,7 +62,7 @@ public class ExtractingRequestHandler extends ContentStreamHandlerBase implement
 
   public void inform(SolrCore core) {
     if (initArgs != null) {
-      //if relative,then relative to config dir, otherwise, absolute path
+      // if relative,then relative to config dir, otherwise, absolute path
       String tikaConfigLoc = (String) initArgs.get(CONFIG_LOCATION);
       if (tikaConfigLoc != null) {
         File configFile = new File(tikaConfigLoc);
@@ -73,12 +72,6 @@ public class ExtractingRequestHandler extends ContentStreamHandlerBase implement
         try {
           config = new TikaConfig(configFile);
         } catch (Exception e) {
-          throw new SolrException(ErrorCode.SERVER_ERROR, e);
-        }
-      } else {
-        try {
-          config = TikaConfig.getDefaultConfig();
-        } catch (TikaException e) {
           throw new SolrException(ErrorCode.SERVER_ERROR, e);
         }
       }
@@ -91,12 +84,16 @@ public class ExtractingRequestHandler extends ContentStreamHandlerBase implement
           dateFormats.add(format);
         }
       }
-    } else {
+    }
+    if (config == null) {
       try {
-        config = TikaConfig.getDefaultConfig();
-      } catch (TikaException e) {
+        config = getDefaultConfig(core.getResourceLoader().getClassLoader());
+      } catch (MimeTypeException e) {
+        throw new SolrException(ErrorCode.SERVER_ERROR, e);
+      } catch (IOException e) {
         throw new SolrException(ErrorCode.SERVER_ERROR, e);
       }
+
     }
     factory = createFactory();
   }
@@ -104,7 +101,6 @@ public class ExtractingRequestHandler extends ContentStreamHandlerBase implement
   protected SolrContentHandlerFactory createFactory() {
     return new SolrContentHandlerFactory(dateFormats);
   }
-
 
   protected ContentStreamLoader newLoader(SolrQueryRequest req, UpdateRequestProcessor processor) {
     return new ExtractingDocumentLoader(req, processor, config, factory);
@@ -130,6 +126,9 @@ public class ExtractingRequestHandler extends ContentStreamHandlerBase implement
   public String getSource() {
     return "$URL:$";
   }
+  
+  private TikaConfig getDefaultConfig(ClassLoader classLoader) throws MimeTypeException, IOException {
+    return new TikaConfig(classLoader);
+  }
+
 }
-
-
