@@ -51,6 +51,10 @@ Bug Fixes
 
 * SOLR-1902: Upgraded Tika to 0.8-SNAPSHOT (Tommaso Teofili, gsingers)
 
+* SOLR-2036: Avoid expensive fieldCache ram estimation for the
+  admin stats page. (yonik)
+
+
 ================== Release 1.4.1 ==================
 Release Date:  See http://lucene.apache.org/solr for the official release date.
 
