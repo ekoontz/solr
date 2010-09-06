@@ -278,8 +278,6 @@ public class ReplicationHandler extends RequestHandlerBase implements SolrCoreAw
     try {
       IndexDeletionPolicyWrapper delPolicy = core.getDeletionPolicy();
       IndexCommit indexCommit = delPolicy.getLatestCommit();
-      // race?
-      delPolicy.setReserveDuration(indexCommit.getVersion(), reserveCommitDuration);
       if(indexCommit == null) {
         indexCommit = req.getSearcher().getReader().getIndexCommit();
       }
@@ -791,14 +789,14 @@ public class ReplicationHandler extends RequestHandlerBase implements SolrCoreAw
       }
       List backup = master.getAll("backupAfter");
       boolean backupOnCommit = backup.contains("commit");
-      boolean backupOnOptimize = backup.contains("optimize");
+      boolean backupOnOptimize = !backupOnCommit && backup.contains("optimize");
       List replicateAfter = master.getAll(REPLICATE_AFTER);
       replicateOnCommit = replicateAfter.contains("commit");
-      replicateOnOptimize = replicateAfter.contains("optimize");
+      replicateOnOptimize = !replicateOnCommit && replicateAfter.contains("optimize");
 
       // if we only want to replicate on optimize, we need the deletion policy to
       // save the last optimized commit point.
-      if (replicateOnOptimize && !replicateOnCommit) {
+      if (replicateOnOptimize) {
         IndexDeletionPolicyWrapper wrapper = core.getDeletionPolicy();
         IndexDeletionPolicy policy = wrapper == null ? null : wrapper.getWrappedDeletionPolicy();
         if (policy instanceof SolrDeletionPolicy) {
@@ -825,7 +823,7 @@ public class ReplicationHandler extends RequestHandlerBase implements SolrCoreAw
           IndexReader reader = s==null ? null : s.get().getReader();
           if (reader!=null && reader.getIndexCommit() != null && reader.getIndexCommit().getGeneration() != 1L) {
             try {
-              if(!replicateOnCommit && replicateOnOptimize){
+              if(replicateOnOptimize){
                 Collection<IndexCommit> commits = IndexReader.listCommits(reader.directory());
                 for (IndexCommit ic : commits) {
                   if(ic.isOptimized()){

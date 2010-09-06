@@ -54,6 +54,11 @@ Bug Fixes
 * SOLR-2036: Avoid expensive fieldCache ram estimation for the
   admin stats page. (yonik)
 
+* SOLR-2100: The replication handler backup command didn't save the commit
+  point and hence could fail when a newer commit caused the older commit point
+  to be removed before it was finished being copied.  This did not affect
+  normal master/slave replication.  (Peter Sturge via yonik)
+
 
 ================== Release 1.4.1 ==================
 Release Date:  See http://lucene.apache.org/solr for the official release date.
