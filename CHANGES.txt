@@ -59,6 +59,9 @@ Bug Fixes
   to be removed before it was finished being copied.  This did not affect
   normal master/slave replication.  (Peter Sturge via yonik)
 
+* SOLR-2180: It was possible for EmbeddedSolrServer to leave searchers
+  open if a request threw an exception. (yonik)
+
 
 ================== Release 1.4.1 ==================
 Release Date:  See http://lucene.apache.org/solr for the official release date.
