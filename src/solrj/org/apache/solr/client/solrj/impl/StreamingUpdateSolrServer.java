@@ -227,18 +227,21 @@ public class StreamingUpdateSolrServer extends CommonsHttpSolrServer
     lock = new CountDownLatch(1);
     try {
       // Wait until no runners are running
-      Runner runner = runners.peek();
-      while( runner != null ) {
+      for(;;) {
+        Runner runner;
+        synchronized(runners) {
+          runner = runners.peek();
+        }
+        if (runner == null) break;
         runner.runnerLock.lock();
         runner.runnerLock.unlock();
-        runner = runners.peek();
       }
     } finally {
       lock.countDown();
       lock=null;
     }
   }
-  
+ 
   public void handleError( Throwable ex )
   {
     log.error( "error", ex );
