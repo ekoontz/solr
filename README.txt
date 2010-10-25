@@ -29,7 +29,7 @@ Getting Started
 ---------------
 
 See the "example" directory for an example Solr setup.  A tutorial
-using the example setup can be found in "docs/tutorial.html" 
+using the example setup can be found in "site/tutorial.html"
 
 
 
